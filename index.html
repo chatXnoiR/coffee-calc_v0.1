@@ -131,10 +131,12 @@
       margin-bottom: 18px;
     }
 
+    /* 見出し強め */
     .section-title {
-      font-size: 0.95rem;
-      color: var(--text-sub);
-      margin: 16px 2px 6px;
+      font-size: 1.02rem;
+      color: var(--text-main);
+      font-weight: 600;
+      margin: 18px 2px 8px;
       display: flex;
       align-items: center;
       gap: 6px;
@@ -239,9 +241,9 @@
     }
 
     .summary-temp {
-      font-weight: 600;
-      color: var(--text-main);
-      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--summary-strong); /* 数字と同じ色に */
+      font-size: 1.0rem;
     }
 
     .inline-badge {
@@ -319,10 +321,13 @@
         <button class="toggle-btn" data-mode="water">湯量(ml)で指定</button>
       </div>
 
+      <!-- 作りたい量 -->
+      <div class="section-title">作りたい量</div>
+
       <!-- 杯数入力 -->
       <div id="row-cups" class="row">
         <div class="field">
-          <label for="cupsSelect">作りたい量（杯）</label>
+          <label for="cupsSelect">杯数</label>
           <select id="cupsSelect">
             <option value="">未選択</option>
             <option value="1">1 杯</option>
@@ -342,7 +347,7 @@
       <!-- 湯量入力 -->
       <div id="row-water" class="row" style="display:none;">
         <div class="field">
-          <label for="waterSelect">作りたい湯量（ml）</label>
+          <label for="waterSelect">湯量(ml)</label>
           <select id="waterSelect">
             <option value="">未選択</option>
           </select>
@@ -351,26 +356,20 @@
 
       <div class="hint">※ 1杯 = 150ml として計算（最大10杯まで）</div>
 
+      <!-- 豆の煎り具合（順番をスタイルより前に） -->
+      <div class="section-title">豆の煎り具合</div>
+      <div class="toggle-group" id="roastGroup">
+        <button class="toggle-btn" data-roast="light">浅煎り</button>
+        <button class="toggle-btn" data-roast="medium">中煎り</button>
+        <button class="toggle-btn" data-roast="meddark">中深煎り</button>
+        <button class="toggle-btn" data-roast="dark">深煎り</button>
+      </div>
+
       <!-- スタイル -->
       <div class="section-title">スタイル</div>
       <div class="toggle-group" id="styleGroup">
         <button class="toggle-btn active" data-style="hot">ホット</button>
         <button class="toggle-btn" data-style="ice">アイス</button>
-      </div>
-
-      <!-- 煎り具合 -->
-      <div class="section-title">豆の煎り具合</div>
-      <div class="row">
-        <div class="field">
-          <label for="roastSelect">煎り具合</label>
-          <select id="roastSelect">
-            <option value="">未選択</option>
-            <option value="light">浅煎り</option>
-            <option value="medium">中煎り</option>
-            <option value="meddark">中深煎り</option>
-            <option value="dark">深煎り</option>
-          </select>
-        </div>
       </div>
 
       <!-- サマリー -->
@@ -423,23 +422,23 @@
     ];
     const waterPerCup = 150;
 
-    const cupsSelect = document.getElementById("cupsSelect");
+    const cupsSelect  = document.getElementById("cupsSelect");
     const waterSelect = document.getElementById("waterSelect");
-    const rowCups = document.getElementById("row-cups");
-    const rowWater = document.getElementById("row-water");
+    const rowCups     = document.getElementById("row-cups");
+    const rowWater    = document.getElementById("row-water");
 
-    const sumCups = document.getElementById("sumCups");
+    const sumCups  = document.getElementById("sumCups");
     const sumBeans = document.getElementById("sumBeans");
     const sumWater = document.getElementById("sumWater");
-    const sumIce = document.getElementById("sumIce");
-    const iceRow = document.getElementById("iceRow");
-    const sumTemp = document.getElementById("sumTemp");
-    const roastSelect = document.getElementById("roastSelect");
+    const sumIce   = document.getElementById("sumIce");
+    const iceRow   = document.getElementById("iceRow");
+    const sumTemp  = document.getElementById("sumTemp");
 
     const stepsBox = document.getElementById("stepsBox");
 
     let inputMode = "cups";   // "cups" | "water"
     let styleMode = "hot";    // "hot"  | "ice"
+    let roastMode = "";       // "light" | "medium" | "meddark" | "dark" | ""
 
     // 水量ドロップダウン：150〜1000mlを10刻みで生成
     (function fillWaterOptions() {
@@ -453,16 +452,15 @@
 
     // 煎り具合 → 湯温
     const roastTempMap = {
-      light: "90〜92℃",
-      medium: "86〜88℃",
+      light:   "90〜92℃",
+      medium:  "86〜88℃",
       meddark: "84〜86℃",
-      dark: "82〜84℃"
+      dark:    "82〜84℃"
     };
 
-    roastSelect.addEventListener("change", () => {
-      const v = roastSelect.value;
-      sumTemp.textContent = v ? roastTempMap[v] : "";
-    });
+    function updateTemp() {
+      sumTemp.textContent = roastMode ? roastTempMap[roastMode] : "";
+    }
 
     function roundToHalf(v) {
       return Math.round(v * 2) / 2;
@@ -582,7 +580,8 @@
         sumWater.textContent = "";
         sumIce.textContent = "";
         iceRow.style.display = "none";
-        stepsBox.innerHTML = '<div class="placeholder">杯数または湯量を選択すると、ここにステップが表示されます。</div>';
+        stepsBox.innerHTML =
+          '<div class="placeholder">杯数または湯量を選択すると、ここにステップが表示されます。</div>';
         return;
       }
 
@@ -625,12 +624,14 @@
       stepsBox.innerHTML = html;
     }
 
+    // イベント設定
     cupsSelect.addEventListener("change", updateView);
     waterSelect.addEventListener("change", updateView);
 
     document.querySelectorAll("#inputModeGroup .toggle-btn").forEach(btn => {
       btn.addEventListener("click", () => {
-        document.querySelectorAll("#inputModeGroup .toggle-btn").forEach(b => b.classList.remove("active"));
+        document.querySelectorAll("#inputModeGroup .toggle-btn")
+          .forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
         inputMode = btn.dataset.mode;
 
@@ -647,7 +648,8 @@
 
     document.querySelectorAll("#styleGroup .toggle-btn").forEach(btn => {
       btn.addEventListener("click", () => {
-        document.querySelectorAll("#styleGroup .toggle-btn").forEach(b => b.classList.remove("active"));
+        document.querySelectorAll("#styleGroup .toggle-btn")
+          .forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
         styleMode = btn.dataset.style;
 
@@ -655,6 +657,21 @@
         document.body.classList.add(styleMode + "-mode");
 
         updateView();
+      });
+    });
+
+    document.querySelectorAll("#roastGroup .toggle-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const already = btn.classList.contains("active");
+        document.querySelectorAll("#roastGroup .toggle-btn")
+          .forEach(b => b.classList.remove("active"));
+        if (!already) {
+          btn.classList.add("active");
+          roastMode = btn.dataset.roast;
+        } else {
+          roastMode = "";
+        }
+        updateTemp();
       });
     });
 
