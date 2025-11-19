@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- iOSステータスバー色：背景に寄せる -->
-  <meta name="theme-color" content="#f3f4f6" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#f6f5f3" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#020617" media="(prefers-color-scheme: dark)">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
@@ -18,7 +18,8 @@
 
     /* ライトテーマ */
     :root {
-      --bg: linear-gradient(180deg, #f6f5f3 0%, #ece9e6 100%);
+      --bg-solid: #f6f5f3;
+      --bg-gradient: linear-gradient(180deg, #f6f5f3 0%, #ece9e6 100%);
       --card-bg: #ffffff;
       --text-main: #111827;
       --text-sub: #6b7280;
@@ -45,10 +46,11 @@
     /* ダークテーマ */
     @media (prefers-color-scheme: dark) {
       :root {
-        --bg: linear-gradient(180deg, #020617 0%, #020617 100%);
+        --bg-solid: #020617;
+        --bg-gradient: linear-gradient(180deg, #020617 0%, #020617 100%);
         --card-bg: rgba(15,23,42,0.98);
         --text-main: #e5e7eb;
-        --text-sub: #9ca3af;
+        --text-sub: #d1d5db;            /* だいぶ明るめのグレーに */
         --border-subtle: #111827;
         --shadow-card: 0 18px 36px rgba(0,0,0,0.7);
 
@@ -88,7 +90,10 @@
     html, body {
       margin: 0;
       padding: 0;
-      background: var(--bg);
+      background-color: var(--bg-solid);   /* ステータスバーと揃える */
+      background-image: var(--bg-gradient);
+      background-repeat: no-repeat;
+      background-attachment: fixed;
       min-height: 100vh;
     }
 
@@ -165,7 +170,7 @@
     select {
       padding: 10px 12px;
       border-radius: 12px;
-      border: 1px solid var(--border-subtle);
+      border: 1px solid var(--accent-soft-border);  /* アクセント枠 */
       background: var(--field-bg);
       color: var(--text-main);
       font-size: 1rem;
@@ -192,6 +197,10 @@
       border: 1px solid var(--border-subtle);
       padding: 3px;
       gap: 2px;
+    }
+    /* 入力方法のホイールは縁取りを強調 */
+    .toggle-group.emphasize {
+      border-color: var(--accent-soft-border);
     }
 
     .toggle-btn {
@@ -316,7 +325,7 @@
 
       <!-- 入力方法 -->
       <div class="section-title">入力方法</div>
-      <div class="toggle-group" id="inputModeGroup">
+      <div class="toggle-group emphasize" id="inputModeGroup">
         <button class="toggle-btn active" data-mode="cups">杯数で指定</button>
         <button class="toggle-btn" data-mode="water">湯量(ml)で指定</button>
       </div>
@@ -356,7 +365,7 @@
 
       <div class="hint">※ 1杯 = 150ml として計算（最大10杯まで）</div>
 
-      <!-- 豆の煎り具合（順番をスタイルより前に） -->
+      <!-- 豆の煎り具合 -->
       <div class="section-title">豆の煎り具合</div>
       <div class="toggle-group" id="roastGroup">
         <button class="toggle-btn" data-roast="light">浅煎り</button>
@@ -372,12 +381,8 @@
         <button class="toggle-btn" data-style="ice">アイス</button>
       </div>
 
-      <!-- サマリー -->
+      <!-- サマリー（杯数は削除済み） -->
       <div class="summary" id="summaryBox">
-        <div class="summary-row">
-          <span class="summary-label">杯数</span>
-          <span class="summary-value" id="sumCups"></span>
-        </div>
         <div class="summary-row">
           <span class="summary-label">豆量</span>
           <span class="summary-value" id="sumBeans"></span>
@@ -427,7 +432,6 @@
     const rowCups     = document.getElementById("row-cups");
     const rowWater    = document.getElementById("row-water");
 
-    const sumCups  = document.getElementById("sumCups");
     const sumBeans = document.getElementById("sumBeans");
     const sumWater = document.getElementById("sumWater");
     const sumIce   = document.getElementById("sumIce");
@@ -575,27 +579,21 @@
       const data = calculate();
 
       if (!data) {
-        sumCups.textContent = "";
         sumBeans.textContent = "";
         sumWater.textContent = "";
-        sumIce.textContent = "";
+        sumIce.textContent   = "";
         iceRow.style.display = "none";
         stepsBox.innerHTML =
           '<div class="placeholder">杯数または湯量を選択すると、ここにステップが表示されます。</div>';
         return;
       }
 
-      if (inputMode === "cups") {
-        sumCups.textContent = data.cupsApprox + " 杯";
-      } else {
-        sumCups.textContent = data.cupsApprox.toFixed(1) + " 杯";
-      }
       sumBeans.textContent = formatNumber(data.beans) + " g";
       sumWater.textContent = data.brewWater + " ml";
 
       if (styleMode === "ice") {
         iceRow.style.display = "";
-        sumIce.textContent = data.ice + " g（おおよそ ml 同等）";
+        sumIce.textContent = data.ice + " g";   // 括弧書き削除
       } else {
         iceRow.style.display = "none";
         sumIce.textContent = "";
