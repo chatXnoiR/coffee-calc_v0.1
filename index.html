@@ -5,9 +5,10 @@
   <title>コーヒー計算機</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- iOSステータスバー色 -->
-  <meta name="theme-color" content="#f6f5f3" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#0f0f0f" media="(prefers-color-scheme: dark)">
+  <!-- iOSステータスバー色：背景に寄せる -->
+  <meta name="theme-color" content="#f3f4f6" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#020617" media="(prefers-color-scheme: dark)">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
   <style>
     * {
@@ -37,37 +38,42 @@
       --steps-border: #fde68a;
 
       --sub-strong: #1f2937;
+
+      --summary-strong: #ea580c; /* デフォはホット色 */
     }
 
     /* ダークテーマ */
     @media (prefers-color-scheme: dark) {
       :root {
-        --bg: linear-gradient(180deg, #0f0f0f 0%, #1c1a19 100%);
-        --card-bg: rgba(255,255,255,0.03);
+        --bg: linear-gradient(180deg, #020617 0%, #020617 100%);
+        --card-bg: rgba(15,23,42,0.98);
         --text-main: #e5e7eb;
         --text-sub: #9ca3af;
-        --border-subtle: #2b2b2b;
-        --shadow-card: 0 18px 36px rgba(0,0,0,0.55);
+        --border-subtle: #111827;
+        --shadow-card: 0 18px 36px rgba(0,0,0,0.7);
 
-        --badge-bg: rgba(255,255,255,0.06);
-        --badge-border: rgba(255,255,255,0.14);
+        --badge-bg: rgba(15,23,42,0.9);
+        --badge-border: rgba(148,163,184,0.7);
 
-        --field-bg: rgba(255,255,255,0.06);
+        --field-bg: rgba(15,23,42,0.98);
 
-        --steps-bg: #fef3c7;
-        --steps-border: #facc15;
+        --steps-bg: #e0f2fe;
+        --steps-border: #7dd3fc;
 
-        --sub-strong: #fef3c7;
+        --sub-strong: #e5e7eb;
+
+        --summary-strong: #ea580c;
       }
     }
 
-    /* ホット／アイスでアクセント切り替え */
+    /* ホット／アイスで色切替 */
     body.hot-mode {
       --accent: #f97316;
       --accent-soft: rgba(249,115,22,0.16);
       --accent-soft-border: rgba(249,115,22,0.6);
       --steps-bg: #fef3c7;
       --steps-border: #facc15;
+      --summary-strong: #ea580c; /* 濃いオレンジ */
     }
 
     body.ice-mode {
@@ -76,6 +82,7 @@
       --accent-soft-border: rgba(56,189,248,0.8);
       --steps-bg: #e0f2fe;
       --steps-border: #7dd3fc;
+      --summary-strong: #0284c7; /* 濃い水色 */
     }
 
     html, body {
@@ -227,8 +234,14 @@
 
     .summary-value {
       font-weight: 700;
-      color: #ea580c; /* 濃いオレンジで視認性確保 */
+      color: var(--summary-strong);
       font-size: 1.05rem;
+    }
+
+    .summary-temp {
+      font-weight: 600;
+      color: var(--text-main);
+      font-size: 0.95rem;
     }
 
     .inline-badge {
@@ -312,7 +325,6 @@
           <label for="cupsSelect">作りたい量（杯）</label>
           <select id="cupsSelect">
             <option value="">未選択</option>
-            <!-- 1〜10杯 -->
             <option value="1">1 杯</option>
             <option value="2">2 杯</option>
             <option value="3">3 杯</option>
@@ -333,12 +345,6 @@
           <label for="waterSelect">作りたい湯量（ml）</label>
           <select id="waterSelect">
             <option value="">未選択</option>
-            <!-- 150〜1000ml を 10刻み -->
-            <!-- 150,160,...,1000 -->
-            <!-- 多少ダルいけど一回書けば終わりなので素直に列挙 -->
-            <script>
-              // ここでJS生成したいけど、素のHTMLだけで完結させたいなら手で列挙でもOK
-            </script>
           </select>
         </div>
       </div>
@@ -350,6 +356,21 @@
       <div class="toggle-group" id="styleGroup">
         <button class="toggle-btn active" data-style="hot">ホット</button>
         <button class="toggle-btn" data-style="ice">アイス</button>
+      </div>
+
+      <!-- 煎り具合 -->
+      <div class="section-title">豆の煎り具合</div>
+      <div class="row">
+        <div class="field">
+          <label for="roastSelect">煎り具合</label>
+          <select id="roastSelect">
+            <option value="">未選択</option>
+            <option value="light">浅煎り</option>
+            <option value="medium">中煎り</option>
+            <option value="meddark">中深煎り</option>
+            <option value="dark">深煎り</option>
+          </select>
+        </div>
       </div>
 
       <!-- サマリー -->
@@ -369,6 +390,10 @@
         <div class="summary-row" id="iceRow" style="display:none;">
           <span class="summary-label">氷の目安</span>
           <span class="summary-value" id="sumIce"></span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-label">湯温の目安</span>
+          <span class="summary-temp" id="sumTemp"></span>
         </div>
       </div>
 
@@ -398,7 +423,6 @@
     ];
     const waterPerCup = 150;
 
-    // DOM
     const cupsSelect = document.getElementById("cupsSelect");
     const waterSelect = document.getElementById("waterSelect");
     const rowCups = document.getElementById("row-cups");
@@ -409,23 +433,37 @@
     const sumWater = document.getElementById("sumWater");
     const sumIce = document.getElementById("sumIce");
     const iceRow = document.getElementById("iceRow");
+    const sumTemp = document.getElementById("sumTemp");
+    const roastSelect = document.getElementById("roastSelect");
+
     const stepsBox = document.getElementById("stepsBox");
 
     let inputMode = "cups";   // "cups" | "water"
     let styleMode = "hot";    // "hot"  | "ice"
 
-    // 水量ドロップダウンを150〜1000(10刻み)で生成
+    // 水量ドロップダウン：150〜1000mlを10刻みで生成
     (function fillWaterOptions() {
-      const sel = waterSelect;
       for (let v = 150; v <= 1000; v += 10) {
         const opt = document.createElement("option");
         opt.value = v;
         opt.textContent = v + " ml";
-        sel.appendChild(opt);
+        waterSelect.appendChild(opt);
       }
     })();
 
-    // ヘルパー
+    // 煎り具合 → 湯温
+    const roastTempMap = {
+      light: "90〜92℃",
+      medium: "86〜88℃",
+      meddark: "84〜86℃",
+      dark: "82〜84℃"
+    };
+
+    roastSelect.addEventListener("change", () => {
+      const v = roastSelect.value;
+      sumTemp.textContent = v ? roastTempMap[v] : "";
+    });
+
     function roundToHalf(v) {
       return Math.round(v * 2) / 2;
     }
@@ -459,7 +497,6 @@
       return pts[n - 1].beans;
     }
 
-    // メイン計算
     function calculate() {
       let totalWater;
       let cupsApprox;
@@ -549,7 +586,6 @@
         return;
       }
 
-      // サマリー
       if (inputMode === "cups") {
         sumCups.textContent = data.cupsApprox + " 杯";
       } else {
@@ -566,7 +602,6 @@
         sumIce.textContent = "";
       }
 
-      // ステップ
       let html = `
         <div class="step-row">
           <div class="step-name">蒸らし</div>
@@ -590,7 +625,6 @@
       stepsBox.innerHTML = html;
     }
 
-    // イベント設定
     cupsSelect.addEventListener("change", updateView);
     waterSelect.addEventListener("change", updateView);
 
