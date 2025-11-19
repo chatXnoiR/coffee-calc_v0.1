@@ -10,54 +10,34 @@
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
-    /* ===== テーマ変数：フラット＆パステル調 ===== */
     :root {
-      --bg: #f3f4f6;
-      --card-bg: #ffffff;
-      --text-main: #111827;
-      --text-sub: #6b7280;
-      --border-subtle: #e5e7eb;
-      --shadow-card: 0 16px 36px rgba(15,23,42,0.10);
+      --bg: #0b1120;
+      --card-bg: #020617;
+      --text-main: #e5e7eb;
+      --text-sub: #9ca3af;
+      --border-subtle: #1f2937;
+      --shadow-card: 0 20px 40px rgba(0,0,0,0.7);
 
       --accent: #f97316;
-      --accent-soft: rgba(249,115,22,0.10);
-      --accent-soft-border: rgba(249,115,22,0.5);
+      --accent-soft: rgba(249,115,22,0.16);
+      --accent-soft-border: rgba(249,115,22,0.55);
 
-      --badge-bg: #fee2e2;
-      --badge-border: #fecaca;
+      --badge-bg: rgba(248,250,252,0.05);
+      --badge-border: rgba(148,163,184,0.8);
 
-      --field-bg: #f9fafb;
-      --divider: #e5e7eb;
+      --field-bg: #020617;
+      --divider: #1f2937;
 
-      --steps-bg: #fefce8;
-      --steps-border: #fde68a;
+      --steps-bg: #fef3c7;
+      --steps-border: #facc15;
+
+      --sub-strong: #e5e7eb;
     }
 
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #020617;
-        --card-bg: #020617;
-        --text-main: #e5e7eb;
-        --text-sub: #9ca3af;
-        --border-subtle: #1f2937;
-        --shadow-card: 0 18px 40px rgba(0,0,0,0.6);
-
-        --field-bg: #020617;
-        --divider: #1f2937;
-
-        --steps-bg: rgba(250, 204, 21, 0.08);
-        --steps-border: rgba(250, 204, 21, 0.5);
-      }
-    }
-
-    /* モード別色切り替え */
     body.hot-mode {
       --accent: #f97316;
-      --accent-soft: rgba(249,115,22,0.10);
-      --accent-soft-border: rgba(249,115,22,0.5);
-
-      --badge-bg: #fee2e2;
-      --badge-border: #fecaca;
+      --accent-soft: rgba(249,115,22,0.16);
+      --accent-soft-border: rgba(249,115,22,0.55);
 
       --steps-bg: #fef3c7;
       --steps-border: #facc15;
@@ -65,11 +45,8 @@
 
     body.ice-mode {
       --accent: #0ea5e9;
-      --accent-soft: rgba(14,165,233,0.10);
-      --accent-soft-border: rgba(14,165,233,0.5);
-
-      --badge-bg: #e0f2fe;
-      --badge-border: #bae6fd;
+      --accent-soft: rgba(14,165,233,0.16);
+      --accent-soft-border: rgba(56,189,248,0.8);
 
       --steps-bg: #e0f2fe;
       --steps-border: #7dd3fc;
@@ -79,7 +56,7 @@
       margin: 0;
       padding: 16px;
       min-height: 100vh;
-      background: var(--bg);
+      background: radial-gradient(circle at top, #111827 0, #020617 55%, #000 100%);
       color: var(--text-main);
       display: flex;
       justify-content: center;
@@ -93,10 +70,10 @@
 
     .card {
       background: var(--card-bg);
-      border-radius: 20px;
-      padding: 20px 18px 22px;
+      border-radius: 28px;
+      padding: 20px 18px 18px;
       box-shadow: var(--shadow-card);
-      border: 1px solid var(--border-subtle);
+      border: 1px solid rgba(148,163,184,0.35);
     }
 
     .app-title {
@@ -151,7 +128,7 @@
     }
 
     input[type="number"]::placeholder {
-      color: #9ca3af;
+      color: #64748b;
       font-size: 0.9rem;
     }
 
@@ -163,8 +140,8 @@
     .toggle-group {
       display: inline-flex;
       border-radius: 999px;
-      background: var(--field-bg);
-      border: 1px solid var(--border-subtle);
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(51,65,85,0.9);
       padding: 3px;
       gap: 2px;
       align-items: center;
@@ -184,16 +161,16 @@
 
     .toggle-btn.active {
       background: var(--accent);
-      color: #ffffff;
-      box-shadow: 0 2px 6px rgba(15,23,42,0.25);
+      color: #0b1120;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.55);
     }
 
     .summary {
       margin-top: 10px;
       padding: 12px 13px;
-      border-radius: 14px;
-      background: var(--accent-soft);
-      border: 1px solid var(--accent-soft-border);
+      border-radius: 18px;
+      background: radial-gradient(circle at top left, rgba(15,23,42,0.9) 0, rgba(15,23,42,0.8) 45%, rgba(15,23,42,0.95) 100%);
+      border: 1px solid rgba(148,163,184,0.65);
       font-size: 0.95rem;
       min-height: 52px;
       display: flex;
@@ -214,12 +191,13 @@
 
     .summary-row span.value {
       font-weight: 600;
+      color: var(--sub-strong);
     }
 
     .summary-row span.value-strong {
       font-weight: 700;
       font-size: 1rem;
-      color: var(--text-main);
+      color: #facc15;
     }
 
     .summary-placeholder {
@@ -258,11 +236,10 @@
       color: var(--text-sub);
     }
 
-    /* ===== 注湯ステップ専用カード ===== */
     .steps-card {
       margin-top: 6px;
       padding: 10px 12px;
-      border-radius: 14px;
+      border-radius: 18px;
       background: var(--steps-bg);
       border: 1px solid var(--steps-border);
       min-height: 40px;
@@ -270,7 +247,7 @@
 
     .steps-placeholder {
       font-size: 0.85rem;
-      color: var(--text-sub);
+      color: rgba(31,41,55,0.9);
       text-align: center;
     }
 
@@ -279,7 +256,7 @@
       justify-content: space-between;
       align-items: baseline;
       padding: 4px 0;
-      border-bottom: 1px solid rgba(15,23,42,0.04);
+      border-bottom: 1px solid rgba(15,23,42,0.06);
     }
 
     .step-row:last-child {
@@ -289,11 +266,13 @@
     .step-name {
       font-size: 0.9rem;
       font-weight: 600;
+      color: #1f2937;
     }
 
     .step-detail {
       text-align: right;
       font-size: 0.9rem;
+      color: #111827;
     }
 
     .step-detail-main {
@@ -302,14 +281,15 @@
     }
 
     .step-detail-sub {
-      font-size: 0.78rem;
-      color: var(--text-sub);
+      font-size: 0.8rem;
+      color: rgba(15,23,42,0.8); /* ここ明るめに */
     }
 
     .note {
       margin-top: 10px;
-      font-size: 0.78rem;
-      color: var(--text-sub);
+      font-size: 0.8rem;
+      color: var(--sub-strong);  /* 下の文字を見える色に */
+      opacity: 0.86;
     }
   </style>
 </head>
@@ -324,7 +304,6 @@
         任意の量から、豆量・蒸らし・注湯ステップを自動計算。
       </div>
 
-      <!-- 入力方法 -->
       <div class="row">
         <div class="field" style="flex: 0 0 100%;">
           <label>入力方法</label>
@@ -335,25 +314,22 @@
         </div>
       </div>
 
-      <!-- 杯数入力 -->
       <div class="row" id="row-cups">
         <div class="field">
           <label for="cups">作りたい量（杯）</label>
-          <input id="cups" type="number" min="1" max="10" value="" placeholder="例: 3" />
+          <input id="cups" type="number" min="1" max="10" value="" placeholder="例: 2" />
           <div class="hint-text">※ 1杯 = 150ml として計算（最大10杯まで）</div>
         </div>
       </div>
 
-      <!-- 湯量入力 -->
       <div class="row" id="row-water" style="display:none;">
         <div class="field">
           <label for="water">作りたい湯量（ml）</label>
-          <input id="water" type="number" min="100" max="1500" value="" placeholder="例: 450" />
+          <input id="water" type="number" min="100" max="1500" value="" placeholder="例: 300" />
           <div class="hint-text">目安：150mlごとに1杯分</div>
         </div>
       </div>
 
-      <!-- スタイル -->
       <div class="row">
         <div class="field" style="flex: 0 0 100%;">
           <label>スタイル</label>
@@ -364,12 +340,10 @@
         </div>
       </div>
 
-      <!-- サマリー -->
       <div class="summary" id="summary">
         <div class="summary-placeholder">杯数または湯量を入力してください。</div>
       </div>
 
-      <!-- 注湯ステップ -->
       <div class="section-title">
         注湯ステップ
         <span class="inline-badge">
@@ -381,8 +355,6 @@
       </div>
 
       <div class="note">
-        ・豆量は基準カーブを線形補間して算出し、0.5g刻みで丸め。<br/>
-        ・蒸らしは「豆量×1.5ml」を5ml刻みで丸め。<br/>
         ・アイスは豆量1.5倍・湯量半分・同量の氷を目安。
       </div>
     </div>
@@ -399,8 +371,8 @@
 
     const waterPerCup = 150;
 
-    let mode = "hot";          // "hot" | "ice"
-    let inputMode = "cups";    // "cups" | "water"
+    let mode = "hot";
+    let inputMode = "cups";
 
     const cupsInput = document.getElementById("cups");
     const waterInput = document.getElementById("water");
@@ -432,22 +404,19 @@
       const n = pts.length;
 
       if (water <= pts[0].water) {
-        const p0 = pts[0];
-        const p1 = pts[1];
+        const p0 = pts[0], p1 = pts[1];
         const t = (water - p0.water) / (p1.water - p0.water);
         return p0.beans + (p1.beans - p0.beans) * t;
       }
 
       if (water >= pts[n - 1].water) {
-        const p0 = pts[n - 2];
-        const p1 = pts[n - 1];
+        const p0 = pts[n - 2], p1 = pts[n - 1];
         const t = (water - p0.water) / (p1.water - p0.water);
         return p0.beans + (p1.beans - p0.beans) * t;
       }
 
       for (let i = 1; i < n; i++) {
-        const p0 = pts[i - 1];
-        const p1 = pts[i];
+        const p0 = pts[i - 1], p1 = pts[i];
         if (water >= p0.water && water <= p1.water) {
           const t = (water - p0.water) / (p1.water - p0.water);
           return p0.beans + (p1.beans - p0.beans) * t;
@@ -463,7 +432,7 @@
 
       if (inputMode === "cups") {
         const raw = cupsInput.value.trim();
-        if (raw === "") return null;  // 未入力なら計算しない
+        if (raw === "") return null;
         let cups = parseInt(raw, 10);
         if (isNaN(cups) || cups < 1) cups = 1;
         if (cups > 10) cups = 10;
@@ -472,9 +441,9 @@
         cupsApprox = cups;
       } else {
         const raw = waterInput.value.trim();
-        if (raw === "") return null;  // 未入力なら計算しない
+        if (raw === "") return null;
         let water = parseFloat(raw);
-        if (isNaN(water) || water <= 0) water = 450;
+        if (isNaN(water) || water <= 0) water = 300;
         if (water < 100) water = 100;
         if (water > 1500) water = 1500;
         waterInput.value = Math.round(water);
@@ -500,22 +469,18 @@
 
       let bloom = beans * 1.5;
       bloom = roundTo5ml(bloom);
-      if (bloom > brewWater) {
-        bloom = brewWater;
-      }
+      if (bloom > brewWater) bloom = brewWater;
 
       let remaining = brewWater - bloom;
       let pours = [];
 
       if (remaining > 0) {
-        // 3分割のベースを10ml単位に丸め、1投目と3投目に適用
         const idealEach = remaining / 3;
-        let base = Math.round(idealEach / 10) * 10; // 10ml単位
+        let base = Math.round(idealEach / 10) * 10;
         let p1 = base;
         let p3 = base;
-        let p2 = remaining - p1 - p3; // 合計がぴったり合うように2投目で調整
+        let p2 = remaining - p1 - p3;
 
-        // 万が一極端なケースでマイナスが出た時の保険
         if (p2 < 0) {
           p2 = 0;
           const rest = remaining - p2;
@@ -525,7 +490,6 @@
 
         let acc = bloom;
         const arr = [p1, p2, p3];
-
         for (let i = 0; i < arr.length; i++) {
           acc += arr[i];
           pours.push({
@@ -556,7 +520,6 @@
         return;
       }
 
-      // サマリー
       let html = "";
 
       if (inputMode === "cups") {
@@ -564,10 +527,6 @@
           <div class="summary-row">
             <span class="label">杯数</span>
             <span class="value">${data.cupsApprox} 杯</span>
-          </div>
-          <div class="summary-row">
-            <span class="label">湯量（出来上がりベース）</span>
-            <span class="value">${data.totalWater} ml</span>
           </div>
         `;
       } else {
@@ -584,10 +543,6 @@
       }
 
       html += `
-        <div class="summary-row">
-          <span class="label">スタイル</span>
-          <span class="value">${mode === "hot" ? "ホット" : "アイス"}</span>
-        </div>
         <div class="summary-row">
           <span class="label">豆量</span>
           <span class="value value-strong">${formatNumber(data.beans)} g</span>
@@ -609,28 +564,23 @@
 
       summaryEl.innerHTML = html;
 
-      // 注湯ステップ表示
-      let stepsHtml = "";
-
-      // 蒸らし
-      stepsHtml += `
+      let stepsHtml = `
         <div class="step-row">
           <div class="step-name">蒸らし</div>
           <div class="step-detail">
             <div class="step-detail-main">${data.bloom} ml</div>
-            <div class="step-detail-sub">今回 ${data.bloom} ml</div>
+            <div class="step-detail-sub">投入量 ${data.bloom} ml</div>
           </div>
         </div>
       `;
 
-      // 1投目以降：累計メイン、今回サブ
       data.pours.forEach(p => {
         stepsHtml += `
           <div class="step-row">
             <div class="step-name">${p.name}</div>
             <div class="step-detail">
               <div class="step-detail-main">${p.total} ml</div>
-              <div class="step-detail-sub">今回 ${p.pour} ml</div>
+              <div class="step-detail-sub">投入量 ${p.pour} ml</div>
             </div>
           </div>
         `;
@@ -639,7 +589,6 @@
       stepsContainer.innerHTML = stepsHtml;
     }
 
-    // 入力確定時だけ補正＆再計算
     cupsInput.addEventListener("change", () => {
       const raw = cupsInput.value.trim();
       if (raw === "") {
@@ -660,7 +609,7 @@
         return;
       }
       let v = parseFloat(raw);
-      if (isNaN(v) || v <= 0) v = 450;
+      if (isNaN(v) || v <= 0) v = 300;
       if (v < 100) v = 100;
       if (v > 1500) v = 1500;
       waterInput.value = Math.round(v);
@@ -673,13 +622,8 @@
         btn.classList.add("active");
         mode = btn.dataset.mode;
 
-        // 色テーマ切り替え
         document.body.classList.remove("hot-mode", "ice-mode");
-        if (mode === "hot") {
-          document.body.classList.add("hot-mode");
-        } else {
-          document.body.classList.add("ice-mode");
-        }
+        document.body.classList.add(mode === "hot" ? "hot-mode" : "ice-mode");
 
         update();
       });
@@ -701,7 +645,6 @@
       });
     });
 
-    // 初回は未入力状態の表示だけ
     update();
   </script>
 </body>
