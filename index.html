@@ -4,41 +4,70 @@
   <meta charset="UTF-8" />
   <title>コーヒー計算機</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- iOSステータスバー用 -->
+  <meta name="theme-color" content="#f9fafb" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#020617" media="(prefers-color-scheme: dark)">
+
   <style>
     * {
       box-sizing: border-box;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
+    /* 基本：ライトテーマ */
     :root {
-      --bg: #0b1120;
-      --card-bg: #020617;
-      --text-main: #e5e7eb;
-      --text-sub: #9ca3af;
-      --border-subtle: #1f2937;
-      --shadow-card: 0 20px 40px rgba(0,0,0,0.7);
+      --bg: #f3f4f6;
+      --card-bg: #ffffff;
+      --text-main: #111827;
+      --text-sub: #6b7280;
+      --border-subtle: #e5e7eb;
+      --shadow-card: 0 18px 40px rgba(15,23,42,0.18);
 
       --accent: #f97316;
-      --accent-soft: rgba(249,115,22,0.16);
-      --accent-soft-border: rgba(249,115,22,0.55);
+      --accent-soft: rgba(249,115,22,0.10);
+      --accent-soft-border: rgba(249,115,22,0.5);
 
-      --badge-bg: rgba(248,250,252,0.05);
-      --badge-border: rgba(148,163,184,0.8);
+      --badge-bg: #f9fafb;
+      --badge-border: #e5e7eb;
 
-      --field-bg: #020617;
-      --divider: #1f2937;
+      --field-bg: #f9fafb;
+      --divider: #e5e7eb;
 
-      --steps-bg: #fef3c7;
-      --steps-border: #facc15;
+      --steps-bg: #fefce8;
+      --steps-border: #fde68a;
 
-      --sub-strong: #e5e7eb;
+      --sub-strong: #111827;
     }
 
+    /* 端末がダークモードのときに上書き */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #020617;
+        --card-bg: #020617;
+        --text-main: #e5e7eb;
+        --text-sub: #9ca3af;
+        --border-subtle: #1f2937;
+        --shadow-card: 0 20px 44px rgba(0,0,0,0.7);
+
+        --badge-bg: rgba(15,23,42,0.9);
+        --badge-border: rgba(148,163,184,0.7);
+
+        --field-bg: #020617;
+        --divider: #1f2937;
+
+        --steps-bg: #fef3c7;
+        --steps-border: #facc15;
+
+        --sub-strong: #e5e7eb;
+      }
+    }
+
+    /* ホット／アイスでアクセントだけ切り替え */
     body.hot-mode {
       --accent: #f97316;
       --accent-soft: rgba(249,115,22,0.16);
       --accent-soft-border: rgba(249,115,22,0.55);
-
       --steps-bg: #fef3c7;
       --steps-border: #facc15;
     }
@@ -47,16 +76,20 @@
       --accent: #0ea5e9;
       --accent-soft: rgba(14,165,233,0.16);
       --accent-soft-border: rgba(56,189,248,0.8);
-
       --steps-bg: #e0f2fe;
       --steps-border: #7dd3fc;
     }
 
+    /* 白帯対策：htmlとbody両方に背景 */
+    html,
     body {
       margin: 0;
-      padding: 16px;
+      padding: 0;
       min-height: 100vh;
-      background: radial-gradient(circle at top, #111827 0, #020617 55%, #000 100%);
+      background: var(--bg);
+    }
+
+    body {
       color: var(--text-main);
       display: flex;
       justify-content: center;
@@ -66,6 +99,7 @@
     .app {
       width: 100%;
       max-width: 460px;
+      padding: 16px;
     }
 
     .card {
@@ -73,7 +107,7 @@
       border-radius: 28px;
       padding: 20px 18px 18px;
       box-shadow: var(--shadow-card);
-      border: 1px solid rgba(148,163,184,0.35);
+      border: 1px solid var(--border-subtle);
     }
 
     .app-title {
@@ -128,7 +162,7 @@
     }
 
     input[type="number"]::placeholder {
-      color: #64748b;
+      color: #9ca3af;
       font-size: 0.9rem;
     }
 
@@ -140,8 +174,8 @@
     .toggle-group {
       display: inline-flex;
       border-radius: 999px;
-      background: rgba(15,23,42,0.9);
-      border: 1px solid rgba(51,65,85,0.9);
+      background: var(--field-bg);
+      border: 1px solid var(--border-subtle);
       padding: 3px;
       gap: 2px;
       align-items: center;
@@ -161,16 +195,16 @@
 
     .toggle-btn.active {
       background: var(--accent);
-      color: #0b1120;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.55);
+      color: #ffffff;
+      box-shadow: 0 2px 6px rgba(15,23,42,0.25);
     }
 
     .summary {
       margin-top: 10px;
       padding: 12px 13px;
       border-radius: 18px;
-      background: radial-gradient(circle at top left, rgba(15,23,42,0.9) 0, rgba(15,23,42,0.8) 45%, rgba(15,23,42,0.95) 100%);
-      border: 1px solid rgba(148,163,184,0.65);
+      background: var(--accent-soft);
+      border: 1px solid var(--accent-soft-border);
       font-size: 0.95rem;
       min-height: 52px;
       display: flex;
@@ -282,14 +316,24 @@
 
     .step-detail-sub {
       font-size: 0.8rem;
-      color: rgba(15,23,42,0.8); /* ここ明るめに */
+      color: rgba(15,23,42,0.8);  /* 明るめで読みやすく */
     }
 
     .note {
       margin-top: 10px;
       font-size: 0.8rem;
-      color: var(--sub-strong);  /* 下の文字を見える色に */
+      color: var(--sub-strong);
       opacity: 0.86;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .steps-placeholder {
+        color: rgba(15,23,42,0.9);
+      }
+      .step-name,
+      .step-detail {
+        color: #111827;  /* カードが明るいので常に濃い文字 */
+      }
     }
   </style>
 </head>
@@ -304,6 +348,7 @@
         任意の量から、豆量・蒸らし・注湯ステップを自動計算。
       </div>
 
+      <!-- 入力方法 -->
       <div class="row">
         <div class="field" style="flex: 0 0 100%;">
           <label>入力方法</label>
@@ -314,6 +359,7 @@
         </div>
       </div>
 
+      <!-- 杯数入力 -->
       <div class="row" id="row-cups">
         <div class="field">
           <label for="cups">作りたい量（杯）</label>
@@ -322,6 +368,7 @@
         </div>
       </div>
 
+      <!-- 湯量入力 -->
       <div class="row" id="row-water" style="display:none;">
         <div class="field">
           <label for="water">作りたい湯量（ml）</label>
@@ -330,6 +377,7 @@
         </div>
       </div>
 
+      <!-- スタイル -->
       <div class="row">
         <div class="field" style="flex: 0 0 100%;">
           <label>スタイル</label>
@@ -340,10 +388,12 @@
         </div>
       </div>
 
+      <!-- サマリー -->
       <div class="summary" id="summary">
         <div class="summary-placeholder">杯数または湯量を入力してください。</div>
       </div>
 
+      <!-- 注湯ステップ -->
       <div class="section-title">
         注湯ステップ
         <span class="inline-badge">
@@ -371,8 +421,8 @@
 
     const waterPerCup = 150;
 
-    let mode = "hot";
-    let inputMode = "cups";
+    let mode = "hot";          // "hot" | "ice"
+    let inputMode = "cups";    // "cups" | "water"
 
     const cupsInput = document.getElementById("cups");
     const waterInput = document.getElementById("water");
@@ -645,6 +695,7 @@
       });
     });
 
+    // 初期表示
     update();
   </script>
 </body>
