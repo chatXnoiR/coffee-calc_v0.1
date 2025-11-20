@@ -21,7 +21,7 @@
       --bg-solid: #f6f5f3;
       --bg-gradient: linear-gradient(180deg, #f6f5f3 0%, #ece9e6 100%);
       --card-bg: #ffffff;
-      --text-main: #111827;
+      --text-main: #1f2937;    /* 少し柔らかい濃いグレー */
       --text-sub: #6b7280;
       --border-subtle: #e5e7eb;
       --shadow-card: 0 20px 38px rgba(0,0,0,0.06);
@@ -38,7 +38,7 @@
       --steps-bg: #fefce8;
       --steps-border: #fde68a;
 
-      --sub-strong: #1f2937;
+      --sub-strong: #374151;
 
       --summary-strong: #ea580c;
     }
@@ -129,7 +129,7 @@
     .app {
       width: 100%;
       max-width: 460px;
-      padding: 8px 16px 16px; /* 上側も少し削る */
+      padding: 8px 16px 16px;
     }
 
     .card {
@@ -146,7 +146,7 @@
     }
 
     .title-main {
-      font-size: 1.1rem;
+      font-size: 1.12rem;
       font-weight: 650;
       letter-spacing: 0.18em;
       text-transform: uppercase;
@@ -318,6 +318,7 @@
     .step-row {
       display: flex;
       justify-content: space-between;
+      align-items: flex-start;
       padding: 6px 0;
       border-bottom: 1px solid rgba(0,0,0,0.08);
       gap: 12px;
@@ -325,6 +326,11 @@
 
     .step-row:last-of-type {
       border-bottom: none;
+    }
+
+    /* 左カラムの幅を制限して右側を押し出さない */
+    .step-row > div:first-child {
+      max-width: 65%;
     }
 
     .step-name {
@@ -623,16 +629,6 @@
       dark:    "82〜84℃"
     };
 
-    function updateTemp() {
-      if (!roastMode) {
-        sumTemp.textContent = "焙煎度合いを選択してください";
-        sumTemp.classList.add("placeholder");
-      } else {
-        sumTemp.textContent = roastTempMap[roastMode];
-        sumTemp.classList.remove("placeholder");
-      }
-    }
-
     function roundToHalf(v) {
       return Math.round(v * 2) / 2;
     }
@@ -744,17 +740,26 @@
     }
 
     function updateView() {
-      const data = calculate();
+      const hasBase =
+        (inputMode === "cups"  && cupsSelect.value) ||
+        (inputMode === "water" && waterSelect.value);
 
-      if (!data) {
+      if (!hasBase) {
+        // 量が未選択のときは全部空欄＆ステッププレースホルダ
         sumBeans.textContent = "";
         sumWater.textContent = "";
         sumIce.textContent   = "";
         iceRow.style.display = "none";
+        sumTemp.textContent  = "";
+        sumTemp.classList.add("placeholder");
+
         stepsBox.innerHTML =
           '<div class="placeholder">杯数または湯量を選択すると、ここにステップが表示されます。</div>';
         return;
       }
+
+      const data = calculate();
+      if (!data) return; // 念のため
 
       sumBeans.textContent = formatNumber(data.beans) + " g";
       sumWater.textContent = data.brewWater + " ml";
@@ -765,6 +770,15 @@
       } else {
         iceRow.style.display = "none";
         sumIce.textContent = "";
+      }
+
+      // 焙煎度合いの表示ロジック
+      if (!roastMode) {
+        sumTemp.textContent = "焙煎度合いを選択してください";
+        sumTemp.classList.add("placeholder");
+      } else {
+        sumTemp.textContent = roastTempMap[roastMode] || "";
+        sumTemp.classList.remove("placeholder");
       }
 
       let html = `
@@ -783,7 +797,7 @@
       data.pours.forEach((p, idx) => {
         const isLast = idx === data.pours.length - 1;
         const noteText = isLast
-          ? "※淹れ始めから2分30秒程で3投目の湯が抜けきるように。"
+          ? "※淹れ始めから2分30秒程で<br>3投目の湯が抜けきるように。"
           : "";
 
         html += `
@@ -850,7 +864,7 @@
         } else {
           roastMode = "";
         }
-        updateTemp();
+        updateView();
       });
     });
 
@@ -868,12 +882,13 @@
     themeSwitchBtn.addEventListener("click", () => {
       themeMode = (themeMode === "system") ? "coffee" : "system";
       applyTheme();
+      // テーマ変えても中身は変わらないので再描画だけ
+      updateView();
     });
 
     // 初期表示
-    updateTemp();
-    updateView();
     applyTheme();
+    updateView();
   </script>
 </body>
 </html>
