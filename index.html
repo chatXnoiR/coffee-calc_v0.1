@@ -124,19 +124,20 @@
       margin-bottom: 10px;
     }
 
+    /* 上部のグラデーションバー */
     .app-title {
-      font-size: 1.7rem;
-      font-weight: 800;
-      letter-spacing: 0.04em;
-      background: linear-gradient(120deg, #0f172a, #fb923c);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
+      height: 14px;
+      border-radius: 999px;
+      background: linear-gradient(120deg, #38bdf8, #f97316);
+      margin-bottom: 10px;
+      text-indent: 100%;
+      white-space: nowrap;
+      overflow: hidden; /* 文字は見せない */
     }
 
     @media (prefers-color-scheme: dark) {
       .app-title {
-        background: linear-gradient(120deg, #e5e7eb, #38bdf8);
+        background: linear-gradient(120deg, #38bdf8, #f97316);
       }
     }
 
@@ -145,14 +146,13 @@
       text-transform: uppercase;
       letter-spacing: 0.16em;
       color: var(--text-sub);
-      margin-top: 2px;
       padding-left: 2px;
     }
 
     .app-subtitle {
       font-size: 0.9rem;
       color: var(--text-sub);
-      margin-top: 10px;
+      margin-top: 6px;
       margin-bottom: 18px;
     }
 
@@ -273,6 +273,11 @@
       font-size: 1.0rem;
     }
 
+    .summary-temp.placeholder {
+      font-weight: 400;
+      color: var(--text-sub);
+    }
+
     .inline-badge {
       display: inline-flex;
       align-items: center;
@@ -298,7 +303,7 @@
       padding: 6px 0;
       border-bottom: 1px solid rgba(0,0,0,0.08);
     }
-    .step-row:last-child {
+    .step-row:last-of-type {
       border-bottom: none;
     }
 
@@ -320,6 +325,23 @@
       color: rgba(31,41,55,0.7);
     }
 
+    .step-note-line {
+      font-size: 0.78rem;
+      color: rgba(31,41,55,0.7);
+      margin: 0 0 4px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .step-name,
+      .step-amount {
+        color: #0f172a;
+      }
+      .step-sub,
+      .step-note-line {
+        color: rgba(15,23,42,0.8);
+      }
+    }
+
     .placeholder {
       font-size: 0.85rem;
       text-align: left;
@@ -328,10 +350,47 @@
     }
 
     .note {
-      margin-top: 10px;
+      position: relative;
+      margin-top: 12px;
+      padding: 8px 11px 9px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.9);
+      border: 1px solid rgba(148,163,184,0.7);
+      overflow: hidden;
+    }
+
+    .note::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: linear-gradient(180deg, #f97316, #0ea5e9);
+      opacity: 0.9;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .note {
+        background: rgba(15,23,42,0.97);
+        border-color: rgba(148,163,184,0.8);
+      }
+    }
+
+    .note-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-sub);
+      margin-left: 6px;
+      margin-bottom: 2px;
+    }
+
+    .note-body {
       font-size: 0.8rem;
-      opacity: 0.8;
       color: var(--text-main);
+      margin-left: 6px;
+      line-height: 1.4;
     }
   </style>
 </head>
@@ -341,7 +400,7 @@
 
       <div class="app-header">
         <div class="app-title">コーヒー計算機</div>
-        <div class="title-accent">Hand drip helper</div>
+        <div class="title-accent">HAND DRIP CALCULATOR</div>
       </div>
       <div class="app-subtitle">
         つくりたい量から、豆量とお湯の投入量を計算。
@@ -389,8 +448,8 @@
 
       <div class="hint">※ 1杯 = 150ml として計算（最大10杯まで）</div>
 
-      <!-- 豆の煎り具合 -->
-      <div class="section-title">豆の煎り具合</div>
+      <!-- 豆の焙煎度合い -->
+      <div class="section-title">豆の焙煎度合い</div>
       <div class="toggle-group" id="roastGroup">
         <button class="toggle-btn" data-roast="light">浅煎り</button>
         <button class="toggle-btn" data-roast="medium">中煎り</button>
@@ -421,7 +480,7 @@
         </div>
         <div class="summary-row">
           <span class="summary-label">湯温の目安</span>
-          <span class="summary-temp" id="sumTemp"></span>
+          <span class="summary-temp placeholder" id="sumTemp"></span>
         </div>
       </div>
 
@@ -438,7 +497,10 @@
       </div>
 
       <div class="note">
-        ・アイスは豆量1.5倍、湯量半分、お湯と同量の氷を目安。ロック氷ではなく家庭用冷蔵庫の氷の場合は、溶けやすく薄くなるため氷少なめがベター。
+        <div class="note-label">MEMO</div>
+        <div class="note-body">
+          アイスは豆量1.5倍、湯量半分、お湯と同量の氷を目安。ロック氷ではなく家庭用冷蔵庫の氷の場合は、溶けやすく薄くなるため氷少なめがベター。
+        </div>
       </div>
 
     </div>
@@ -490,7 +552,13 @@
     };
 
     function updateTemp() {
-      sumTemp.textContent = roastMode ? roastTempMap[roastMode] : "";
+      if (!roastMode) {
+        sumTemp.textContent = "焙煎度合いを選択してください";
+        sumTemp.classList.add("placeholder");
+      } else {
+        sumTemp.textContent = roastTempMap[roastMode];
+        sumTemp.classList.remove("placeholder");
+      }
     }
 
     function roundToHalf(v) {
@@ -636,8 +704,10 @@
             <span class="step-sub">投入量 ${data.bloom} ml</span>
           </div>
         </div>
+        <div class="step-note-line">※投入後30秒程待つ。</div>
       `;
-      data.pours.forEach(p => {
+
+      data.pours.forEach((p, idx) => {
         html += `
           <div class="step-row">
             <div class="step-name">${p.name}</div>
@@ -647,7 +717,11 @@
             </div>
           </div>
         `;
+        if (idx === data.pours.length - 1) {
+          html += `<div class="step-note-line">※淹れ始めから2分30秒程で3投目の湯が抜けきるように。</div>`;
+        }
       });
+
       stepsBox.innerHTML = html;
     }
 
@@ -703,6 +777,7 @@
     });
 
     // 初期表示
+    updateTemp();
     updateView();
   </script>
 </body>
