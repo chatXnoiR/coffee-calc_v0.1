@@ -68,7 +68,7 @@
       }
     }
 
-    /* 手動テーマ：コーヒー（標準ライト/ダークにオーバーレイ） */
+    /* 手動テーマ：コーヒー */
     body.theme-coffee {
       --bg-solid: #20110b;
       --bg-gradient: linear-gradient(180deg, #3b2416 0%, #120a05 100%);
@@ -83,14 +83,13 @@
 
       --field-bg: rgba(26,18,12,0.98);
 
-      /* ステップはちょっとカフェラテっぽい色 */
-      --steps-bg: #fef3c7;
-      --steps-border: #fbbf24;
+      --steps-bg: #3b2416;
+      --steps-border: #d1a054;
 
       --sub-strong: #f9fafb;
     }
 
-    /* ホット／アイスで色切替（アクセント系だけ） */
+    /* ホット／アイスでアクセント切替 */
     body.hot-mode {
       --accent: #f97316;
       --accent-soft: rgba(249,115,22,0.16);
@@ -141,13 +140,13 @@
       box-shadow: var(--shadow-card);
     }
 
-    /* ヘッダーまわり */
+    /* ヘッダー */
     .app-header {
       margin-bottom: 6px;
     }
 
     .title-main {
-      font-size: 1.1rem;  /* ここを大きめに */
+      font-size: 1.1rem;
       font-weight: 650;
       letter-spacing: 0.18em;
       text-transform: uppercase;
@@ -156,7 +155,7 @@
     }
 
     .title-bar {
-      height: 4px;        /* 細めのバー */
+      height: 4px;
       border-radius: 999px;
       background: linear-gradient(120deg, #38bdf8, #f97316);
     }
@@ -172,19 +171,6 @@
       color: var(--text-sub);
       margin-top: 8px;
       margin-bottom: 14px;
-    }
-
-    .theme-row {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 8px;
-      margin-bottom: 6px;
-    }
-
-    .theme-label {
-      font-size: 0.78rem;
-      color: var(--text-sub);
     }
 
     .section-title {
@@ -248,6 +234,7 @@
       padding: 3px;
       gap: 2px;
     }
+
     .toggle-group.emphasize {
       border-color: var(--accent-soft-border);
     }
@@ -333,7 +320,9 @@
       justify-content: space-between;
       padding: 6px 0;
       border-bottom: 1px solid rgba(0,0,0,0.08);
+      gap: 12px;
     }
+
     .step-row:last-of-type {
       border-bottom: none;
     }
@@ -356,6 +345,10 @@
       color: rgba(31,41,55,0.7);
     }
 
+    .step-note {
+      margin-top: 2px;
+    }
+
     @media (prefers-color-scheme: dark) {
       .step-name,
       .step-amount {
@@ -364,6 +357,15 @@
       .step-sub {
         color: rgba(15,23,42,0.8);
       }
+    }
+
+    /* コーヒーテーマ時のステップ文字色 */
+    body.theme-coffee .step-name,
+    body.theme-coffee .step-amount {
+      color: #fef9c3;
+    }
+    body.theme-coffee .step-sub {
+      color: #fde68a;
     }
 
     .placeholder {
@@ -401,6 +403,18 @@
       }
     }
 
+    /* コーヒーテーマのメモ */
+    body.theme-coffee .note {
+      background: rgba(32,18,10,0.96);
+      border-color: rgba(248,198,153,0.9);
+    }
+    body.theme-coffee .note-body {
+      color: #fef9c3;
+    }
+    body.theme-coffee .note-label {
+      color: #facc6b;
+    }
+
     .note-label {
       font-size: 0.72rem;
       letter-spacing: 0.16em;
@@ -416,6 +430,29 @@
       margin-left: 6px;
       line-height: 1.4;
     }
+
+    /* テーマ切替ボタン（控えめなやつ） */
+    .theme-small {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 6px;
+    }
+
+    .theme-button {
+      border-radius: 999px;
+      border: 1px dashed rgba(148,163,184,0.7);
+      background: transparent;
+      padding: 4px 10px;
+      font-size: 0.72rem;
+      color: var(--text-sub);
+      cursor: pointer;
+    }
+
+    body.theme-coffee .theme-button {
+      border-style: solid;
+      border-color: rgba(248,198,153,0.9);
+      color: #fde68a;
+    }
   </style>
 </head>
 <body class="hot-mode">
@@ -428,15 +465,6 @@
       </div>
       <div class="app-subtitle">
         つくりたい量から、豆量とお湯の投入量を計算。
-      </div>
-
-      <!-- テーマ切り替え -->
-      <div class="theme-row">
-        <span class="theme-label">テーマ</span>
-        <div class="toggle-group" id="themeGroup">
-          <button class="toggle-btn active" data-theme="system">標準</button>
-          <button class="toggle-btn" data-theme="coffee">コーヒー</button>
-        </div>
       </div>
 
       <!-- 入力方法 -->
@@ -536,6 +564,10 @@
         </div>
       </div>
 
+      <div class="theme-small">
+        <button id="themeSwitch" class="theme-button">テーマ：標準</button>
+      </div>
+
     </div>
   </div>
 
@@ -562,6 +594,8 @@
     const sumTemp  = document.getElementById("sumTemp");
 
     const stepsBox = document.getElementById("stepsBox");
+
+    const themeSwitchBtn = document.getElementById("themeSwitch");
 
     let inputMode = "cups";   // "cups" | "water"
     let styleMode = "hot";    // "hot"  | "ice"
@@ -670,7 +704,6 @@
       let pours = [];
 
       if (remaining > 0) {
-        // 残りを3分割して10ml単位切り下げ、余りは2投目に全部足す
         const baseEach = Math.floor(remaining / 3 / 10) * 10;
         let p1 = baseEach;
         let p2 = baseEach;
@@ -680,7 +713,7 @@
         let rem = remaining - used;
 
         if (rem > 0) {
-          p2 += rem; // 余り全部2投目
+          p2 += rem; // 余りは2投目にまとめる
         }
 
         let acc = bloom;
@@ -732,25 +765,32 @@
 
       let html = `
         <div class="step-row">
-          <div class="step-name">蒸らし</div>
+          <div>
+            <div class="step-name">蒸らし</div>
+            <div class="step-sub step-note">※投入後30秒程待つ。</div>
+          </div>
           <div class="step-amount">
             ${data.bloom} ml<br>
-            <span class="step-sub">投入量 ${data.bloom} ml／※投入後30秒程待つ。</span>
+            <span class="step-sub">投入量 ${data.bloom} ml</span>
           </div>
         </div>
       `;
 
       data.pours.forEach((p, idx) => {
         const isLast = idx === data.pours.length - 1;
-        const note = isLast
-          ? "／※淹れ始めから2分30秒程で3投目の湯が抜けきるように。"
+        const noteText = isLast
+          ? "※淹れ始めから2分30秒程で3投目の湯が抜けきるように。"
           : "";
+
         html += `
           <div class="step-row">
-            <div class="step-name">${p.name}</div>
+            <div>
+              <div class="step-name">${p.name}</div>
+              ${noteText ? `<div class="step-sub step-note">${noteText}</div>` : ""}
+            </div>
             <div class="step-amount">
               ${p.total} ml<br>
-              <span class="step-sub">投入量 ${p.pour} ml${note}</span>
+              <span class="step-sub">投入量 ${p.pour} ml</span>
             </div>
           </div>
         `;
@@ -810,25 +850,26 @@
       });
     });
 
-    // テーマ切り替え
-    document.querySelectorAll("#themeGroup .toggle-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        document.querySelectorAll("#themeGroup .toggle-btn")
-          .forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        themeMode = btn.dataset.theme;
+    // テーマ切替（控えめボタン）
+    function applyTheme() {
+      if (themeMode === "coffee") {
+        document.body.classList.add("theme-coffee");
+        themeSwitchBtn.textContent = "テーマ：コーヒー";
+      } else {
+        document.body.classList.remove("theme-coffee");
+        themeSwitchBtn.textContent = "テーマ：標準";
+      }
+    }
 
-        if (themeMode === "coffee") {
-          document.body.classList.add("theme-coffee");
-        } else {
-          document.body.classList.remove("theme-coffee");
-        }
-      });
+    themeSwitchBtn.addEventListener("click", () => {
+      themeMode = (themeMode === "system") ? "coffee" : "system";
+      applyTheme();
     });
 
     // 初期表示
     updateTemp();
     updateView();
+    applyTheme();
   </script>
 </body>
 </html>
