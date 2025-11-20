@@ -5,8 +5,7 @@
   <title>コーヒー計算機</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
-  <meta name="theme-color" content="#fcfaf8" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#0f0e0d" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#e8dfd8">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
@@ -18,7 +17,7 @@
     }
 
     :root {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Hiragino Sans", sans-serif;
       
       /* 共通アクセント (後ほど上書き) */
       --accent: #f97316;
@@ -36,47 +35,55 @@
 
       /* トランジション設定 */
       --trans-speed: 0.3s;
+      
+      /* 形状 (Blueprintで変更するため変数化) */
+      --radius-card: 32px;
+      --radius-btn: 12px;
+      --radius-pill: 99px;
+      
+      /* 背景パターン */
+      --bg-pattern: none;
     }
 
     /* =========================================
        テーマ定義 (CSS Variables)
        ========================================= */
 
-    /* * 1. Minimal (Default / Old Latte Improved) 
-     * 温かみのあるオフホワイト・生成りベース
+    /* * 1. Minimal (Default / Mocha Cafe Style)
+     * しっかりとしたモカベージュ、ブラウン文字
      */
     :root {
-      --bg-solid: #fcfaf8; /* かなり明るいベージュ/オフホワイト */
-      --bg-gradient: linear-gradient(180deg, #fcfaf8 0%, #f5f0eb 100%);
-      --card-bg: #ffffff;
-      --text-main: #44403c; /* 暖色系のダークグレー */
-      --text-sub: #78716c;
-      --border-subtle: #e7e5e4;
-      --shadow-card: 0 15px 35px -5px rgba(68, 64, 60, 0.08);
-      --field-bg: #fafaf9;
-      --steps-bg: #fafaf9;
-      --steps-border: #e7e5e4;
-      --btn-theme-bg: #ffffff;
-      --btn-theme-text: #57534e;
+      --bg-solid: #e8dfd8; /* ミルク多めのモカ色 */
+      --bg-gradient: linear-gradient(180deg, #e8dfd8 0%, #dfd3ca 100%);
+      --card-bg: #fbf8f6; /* ほぼ白に近いクリーム */
+      --text-main: #4b3621; /* コーヒー豆色 */
+      --text-sub: #856e5b;
+      --border-subtle: #dcd0c5;
+      --shadow-card: 0 15px 35px -5px rgba(75, 54, 33, 0.08);
+      --field-bg: #f3ece7;
+      --steps-bg: #f3ece7;
+      --steps-border: #dcd0c5;
+      --btn-theme-bg: #fbf8f6;
+      --btn-theme-text: #5d4037;
     }
 
-    /* Minimal - Dark Mode */
+    /* Minimal - Dark Mode (Dark Chocolate) */
     body.dark-mode {
-      --bg-solid: #1c1917;
-      --bg-gradient: linear-gradient(180deg, #292524 0%, #0c0a09 100%);
-      --card-bg: rgba(28, 25, 23, 0.8);
-      --text-main: #f5f5f4;
-      --text-sub: #a8a29e;
-      --border-subtle: #44403c;
-      --shadow-card: 0 20px 40px rgba(0,0,0,0.5);
-      --field-bg: rgba(12, 10, 9, 0.4);
-      --steps-bg: rgba(12, 10, 9, 0.6);
-      --steps-border: #44403c;
-      --btn-theme-bg: #292524;
-      --btn-theme-text: #e7e5e4;
+      --bg-solid: #231e1b; /* ダークチョコレート */
+      --bg-gradient: linear-gradient(180deg, #231e1b 0%, #1a1614 100%);
+      --card-bg: #2f2926;
+      --text-main: #ede0d4;
+      --text-sub: #a89f99;
+      --border-subtle: #423a36;
+      --shadow-card: 0 20px 40px rgba(0,0,0,0.4);
+      --field-bg: #1a1614;
+      --steps-bg: #1a1614;
+      --steps-border: #423a36;
+      --btn-theme-bg: #3e3632;
+      --btn-theme-text: #ede0d4;
     }
 
-    /* * 2. Modest (Old Standard) 
+    /* * 2. Modest (Old Standard)
      * クールグレー/ブルーグレーベース
      */
     body.theme-modest {
@@ -110,36 +117,34 @@
       --btn-theme-text: #e2e8f0;
     }
 
-    /* * 3. Coffee (Dark & Rich) 
+    /* * 3. Coffee (Deep Roasted)
      */
     body.theme-coffee {
-      --bg-solid: #2a2725;
-      --bg-gradient: linear-gradient(180deg, #352f2d 0%, #1c1917 100%);
-      --card-bg: #2b2624;
+      --bg-solid: #261e1b; /* 濃い茶色 */
+      --bg-gradient: linear-gradient(180deg, #261e1b 0%, #1f1816 100%);
+      --card-bg: #2e2522;
       --text-main: #e7e5e4;
       --text-sub: #a8a29e;
       --border-subtle: #57534e;
       --shadow-card: 0 20px 50px rgba(0,0,0,0.5);
-      --field-bg: #1c1917;
-      --steps-bg: #1c1917;
+      --field-bg: #1a1513;
+      --steps-bg: #1a1513;
       --steps-border: #57534e;
       --btn-theme-bg: #44403c;
       --btn-theme-text: #e7e5e4;
     }
-    /* Coffee - Dark Mode (More intense black) */
     body.theme-coffee.dark-mode {
-      --bg-solid: #0c0a09;
-      --bg-gradient: linear-gradient(180deg, #1c1917 0%, #000000 100%);
-      --card-bg: rgba(28, 25, 23, 0.9);
-      --border-subtle: #44403c;
+      --bg-solid: #000000; /* 漆黒 */
+      --bg-gradient: linear-gradient(180deg, #000000 0%, #0c0a09 100%);
+      --card-bg: #141211;
+      --border-subtle: #333;
     }
 
-    /* * 4. Neon (Cyber)
+    /* * 4. Neon (Smooth & Deep)
      */
-    /* Neon Light: White Gaming */
     body.theme-neon {
-      --bg-solid: #f8fafc;
-      --bg-gradient: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+      --bg-solid: #f0f4f8;
+      --bg-gradient: linear-gradient(180deg, #f0f4f8 0%, #e2e8f0 100%);
       --card-bg: rgba(255, 255, 255, 0.9);
       --text-main: #0f172a;
       --text-sub: #64748b;
@@ -156,17 +161,17 @@
       --roast-meddark: #b91c1c;
       --roast-dark: #7f1d1d;
     }
-    /* Neon Dark: Cyberpunk */
     body.theme-neon.dark-mode {
-      --bg-solid: #020617;
-      --bg-gradient: radial-gradient(circle at top center, #1e293b 0%, #020617 80%);
-      --card-bg: rgba(15, 23, 42, 0.85);
+      /* Deep void black/blue, no spotlight */
+      --bg-solid: #050508;
+      --bg-gradient: linear-gradient(180deg, #050508 0%, #020204 100%);
+      --card-bg: rgba(15, 17, 26, 0.9);
       --text-main: #f1f5f9;
       --text-sub: #94a3b8;
       --border-subtle: rgba(255,255,255,0.1);
-      --shadow-card: 0 20px 50px rgba(0,0,0,0.6);
-      --field-bg: rgba(2, 6, 23, 0.5);
-      --steps-bg: rgba(2, 6, 23, 0.6);
+      --shadow-card: 0 20px 50px rgba(0,0,0,0.8);
+      --field-bg: rgba(0, 0, 0, 0.5);
+      --steps-bg: rgba(0, 0, 0, 0.6);
       --steps-border: rgba(255,255,255,0.15);
       --btn-theme-bg: #1e293b;
       --btn-theme-text: #f1f5f9;
@@ -177,10 +182,65 @@
       --roast-dark: #ef4444;
     }
 
+    /* * 5. Blueprint (New Drastic Theme)
+     * 設計図、テクニカル、方眼紙
+     */
+    body.theme-blueprint {
+      --bg-solid: #003399; /* Blueprint Blue */
+      --bg-gradient: 
+        linear-gradient(rgba(255,255,255,0.15) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.15) 1px, transparent 1px),
+        linear-gradient(#003399, #003399);
+      --bg-pattern: 20px 20px; /* Grid Size */
+      
+      --card-bg: #003399;
+      --text-main: #ffffff;
+      --text-sub: #abc4ff;
+      --border-subtle: #ffffff; /* Strong white lines */
+      
+      --shadow-card: 10px 10px 0px rgba(0,0,0,0.2); /* Hard shadow */
+      
+      --field-bg: rgba(0,0,0,0.1);
+      --steps-bg: rgba(0,0,0,0.1);
+      --steps-border: #ffffff;
+      
+      --btn-theme-bg: #002266;
+      --btn-theme-text: #ffffff;
+      
+      --radius-card: 0px;
+      --radius-btn: 0px;
+      --radius-pill: 0px;
+
+      font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Console", monospace;
+      letter-spacing: 0.05em;
+    }
+    
+    body.theme-blueprint.dark-mode {
+      --bg-solid: #1a1a1a;
+      --bg-gradient: 
+        linear-gradient(rgba(0,255,0,0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,255,0,0.1) 1px, transparent 1px),
+        linear-gradient(#1a1a1a, #1a1a1a);
+      
+      --card-bg: #1a1a1a;
+      --text-main: #00ff00; /* Terminal Green */
+      --text-sub: #00cc00;
+      --border-subtle: #00ff00;
+      
+      --shadow-card: 8px 8px 0px rgba(0,50,0,0.5);
+      
+      --field-bg: #000000;
+      --steps-bg: #000000;
+      --steps-border: #00ff00;
+      
+      --btn-theme-bg: #000000;
+      --btn-theme-text: #00ff00;
+    }
+
 
     /* ===== アクセントカラー制御 (HOT/ICE) ===== */
     
-    /* HOT MODE: オレンジ */
+    /* HOT */
     body.hot-mode {
       --accent: #f97316;
       --accent-soft: rgba(249,115,22,0.12);
@@ -188,7 +248,7 @@
       --summary-strong: #ea580c;
     }
     
-    /* ICE MODE: 水色 */
+    /* ICE */
     body.ice-mode {
       --accent: #0ea5e9;
       --accent-soft: rgba(14,165,233,0.12);
@@ -196,25 +256,51 @@
       --summary-strong: #0284c7;
     }
 
-    /* Neon Theme Glows Override */
+    /* Theme Specific Accents */
+    
+    /* Neon + HOT */
     body.theme-neon.hot-mode {
-      --accent: #ff6600;
-      --accent-soft: rgba(255, 102, 0, 0.1);
-      --accent-soft-border: rgba(255, 102, 0, 0.5);
-      --summary-strong: #ff6600;
-      --glow-text: 0 0 12px rgba(255, 102, 0, 0.5);
-      --glow-box: 0 0 16px rgba(255, 102, 0, 0.25);
-      --border-subtle: rgba(255, 102, 0, 0.3);
+      --accent: #ff5500;
+      --accent-soft: rgba(255, 85, 0, 0.15);
+      --accent-soft-border: #ff5500;
+      --summary-strong: #ff5500;
+      --glow-text: 0 0 10px rgba(255, 85, 0, 0.6);
+      --glow-box: 0 0 15px rgba(255, 85, 0, 0.25);
+      --border-subtle: rgba(255, 85, 0, 0.3);
     }
     
+    /* Neon + ICE */
     body.theme-neon.ice-mode {
-      --accent: #06b6d4;
-      --accent-soft: rgba(6, 182, 212, 0.1);
-      --accent-soft-border: rgba(6, 182, 212, 0.5);
-      --summary-strong: #22d3ee;
-      --glow-text: 0 0 12px rgba(34, 211, 238, 0.5);
-      --glow-box: 0 0 16px rgba(34, 211, 238, 0.25);
-      --border-subtle: rgba(6, 182, 212, 0.3);
+      --accent: #00ddff;
+      --accent-soft: rgba(0, 221, 255, 0.15);
+      --accent-soft-border: #00ddff;
+      --summary-strong: #00ddff;
+      --glow-text: 0 0 10px rgba(0, 221, 255, 0.6);
+      --glow-box: 0 0 15px rgba(0, 221, 255, 0.25);
+      --border-subtle: rgba(0, 221, 255, 0.3);
+    }
+    
+    /* Blueprint overrides */
+    body.theme-blueprint.hot-mode {
+      --accent: #ffffff; /* In Blueprint, accent is white or yellow usually */
+      --accent-soft: rgba(255,255,255,0.1);
+      --accent-soft-border: #ffffff;
+      --summary-strong: #ffcc00; /* Technical Yellow for emphasis */
+    }
+    body.theme-blueprint.ice-mode {
+      --accent: #ffffff;
+      --accent-soft: rgba(255,255,255,0.1);
+      --accent-soft-border: #ffffff;
+      --summary-strong: #66ccff; /* Light Blue */
+    }
+    body.theme-blueprint.dark-mode.hot-mode {
+      --accent: #00ff00;
+      --accent-soft: rgba(0,255,0,0.1);
+      --accent-soft-border: #00ff00;
+      --summary-strong: #ffff00;
+    }
+    body.theme-blueprint.dark-mode.ice-mode {
+      --summary-strong: #00ffff;
     }
 
 
@@ -226,6 +312,7 @@
       height: 100%;
       background-color: var(--bg-solid);
       background-image: var(--bg-gradient);
+      background-size: var(--bg-pattern, auto); /* For Blueprint grid */
       background-attachment: fixed;
       transition: background var(--trans-speed), color var(--trans-speed);
     }
@@ -246,9 +333,11 @@
 
     .card {
       background: var(--card-bg);
+      /* Blueprint以外はぼかし */
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      border-radius: 32px;
+      
+      border-radius: var(--radius-card);
       padding: 28px 24px;
       border: 1px solid var(--border-subtle);
       box-shadow: var(--shadow-card);
@@ -257,6 +346,11 @@
     body.theme-neon .card {
       box-shadow: var(--shadow-card), var(--glow-box);
     }
+    /* Blueprintはぼかさない（くっきり） */
+    body.theme-blueprint .card {
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
 
     /* Header */
     .app-header {
@@ -264,8 +358,8 @@
       flex-direction: column;
       gap: 6px;
       margin-bottom: 20px;
-      position: relative; /* For absolute positioning of toggle */
-      padding-right: 40px; /* Space for toggle */
+      position: relative; 
+      padding-right: 40px; 
     }
 
     .title-main {
@@ -287,6 +381,10 @@
       box-shadow: var(--glow-box);
       transition: background var(--trans-speed);
     }
+    body.theme-blueprint .title-bar {
+      height: 2px;
+      background: var(--accent);
+    }
 
     .app-subtitle {
       font-size: 1.5rem;
@@ -296,7 +394,7 @@
       text-shadow: var(--glow-text);
     }
 
-    /* Mode Toggle Button (Moon/Sun) */
+    /* Mode Toggle Button */
     .mode-toggle-btn {
       position: absolute;
       top: 0;
@@ -322,6 +420,11 @@
       border-color: var(--accent-soft-border);
       color: var(--accent);
     }
+    body.theme-blueprint .mode-toggle-btn {
+      border-radius: 0;
+      border: 2px solid var(--border-subtle);
+      box-shadow: 4px 4px 0 rgba(0,0,0,0.2);
+    }
     .mode-icon {
       width: 18px;
       height: 18px;
@@ -339,6 +442,12 @@
       align-items: center;
       gap: 8px;
     }
+    body.theme-blueprint .section-title {
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      border-bottom: 1px dashed var(--border-subtle);
+      padding-bottom: 4px;
+    }
 
     .inline-badge {
       padding: 3px 8px;
@@ -352,6 +461,10 @@
       text-shadow: var(--glow-text);
       transition: all var(--trans-speed);
     }
+    body.theme-blueprint .inline-badge {
+      border-radius: 0;
+      border: 1px solid var(--accent);
+    }
 
     /* Controls & Toggles */
     .toggle-group {
@@ -364,6 +477,12 @@
       gap: 4px;
       transition: background var(--trans-speed);
     }
+    body.theme-blueprint .toggle-group {
+      border-radius: 0;
+      border: 2px solid var(--border-subtle);
+      padding: 0;
+      gap: 0;
+    }
 
     .toggle-btn {
       flex: 1;
@@ -373,11 +492,18 @@
       padding: 12px;
       font-size: 0.9rem;
       font-weight: 600;
-      border-radius: 12px;
+      border-radius: var(--radius-btn);
       cursor: pointer;
       transition: all 0.2s;
       position: relative;
       overflow: hidden;
+    }
+    body.theme-blueprint .toggle-btn {
+      border: none;
+      border-right: 1px solid var(--border-subtle);
+    }
+    body.theme-blueprint .toggle-btn:last-child {
+      border-right: none;
     }
 
     /* Active state logic */
@@ -388,17 +514,27 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
 
-    /* Input Mode Toggle Color (Also colored now) */
     #inputModeGroup .toggle-btn.active {
       background: var(--accent-soft);
       color: var(--accent);
       border-color: var(--accent-soft-border);
     }
 
-    /* Neon Effect for Buttons */
     body.theme-neon .toggle-btn.active {
       box-shadow: var(--glow-box) inset;
       text-shadow: var(--glow-text);
+    }
+    
+    body.theme-blueprint .toggle-btn.active {
+      background: var(--accent);
+      color: var(--bg-solid); /* Invert color */
+      border-radius: 0;
+      box-shadow: none;
+      font-weight: 900;
+    }
+    body.theme-blueprint #inputModeGroup .toggle-btn.active {
+      background: var(--text-main);
+      color: var(--bg-solid);
     }
 
     /* Roast Buttons */
@@ -406,6 +542,12 @@
     #roastGroup .toggle-btn[data-roast="medium"].active { color: var(--roast-medium); border-color: var(--roast-medium); background: rgba(255,255,255,0.05); }
     #roastGroup .toggle-btn[data-roast="meddark"].active { color: var(--roast-meddark); border-color: var(--roast-meddark); background: rgba(255,255,255,0.05); }
     #roastGroup .toggle-btn[data-roast="dark"].active { color: var(--roast-dark); border-color: var(--roast-dark); background: rgba(255,255,255,0.05); }
+    
+    body.theme-blueprint #roastGroup .toggle-btn.active {
+      background: transparent;
+      text-decoration: underline;
+    }
+
 
     /* Selects */
     .select-wrapper {
@@ -424,6 +566,10 @@
       font-size: 1rem;
       outline: none;
       transition: border-color 0.2s, background var(--trans-speed);
+    }
+    body.theme-blueprint select {
+      border-radius: 0;
+      border: 2px solid var(--border-subtle);
     }
     select:focus {
       border-color: var(--accent);
@@ -467,11 +613,23 @@
     body.theme-neon .summary {
       box-shadow: var(--glow-box);
     }
+    body.theme-blueprint .summary {
+      border-radius: 0;
+      border: 2px solid var(--accent);
+      background: transparent;
+    }
 
     .summary-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
+    }
+    body.theme-blueprint .summary-row {
+      border-bottom: 1px dotted var(--text-sub);
+      padding-bottom: 4px;
+    }
+    body.theme-blueprint .summary-row:last-child {
+      border-bottom: none;
     }
 
     .summary-label {
@@ -514,6 +672,11 @@
     body.theme-neon .steps-card {
       box-shadow: var(--glow-box);
     }
+    body.theme-blueprint .steps-card {
+      border-radius: 0;
+      border: 2px solid var(--border-subtle);
+      background: transparent;
+    }
 
     .step-row {
       padding: 16px 24px;
@@ -526,6 +689,9 @@
     body.theme-coffee .step-row,
     body.theme-neon .step-row {
       border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    body.theme-blueprint .step-row {
+      border-bottom: 1px solid var(--border-subtle);
     }
 
     .step-row:last-child {
@@ -588,6 +754,10 @@
     body.theme-neon .note {
       box-shadow: var(--glow-box);
     }
+    body.theme-blueprint .note {
+      border-radius: 0;
+      border: 2px solid var(--border-subtle);
+    }
 
     .note::before {
       content: "";
@@ -597,6 +767,16 @@
       bottom: 0;
       width: 6px;
       background: linear-gradient(180deg, var(--accent), transparent);
+    }
+    body.theme-blueprint .note::before {
+      width: 10px;
+      background: repeating-linear-gradient(
+        45deg,
+        var(--accent),
+        var(--accent) 10px,
+        transparent 10px,
+        transparent 20px
+      );
     }
 
     .note-label {
@@ -630,7 +810,7 @@
       background: var(--btn-theme-bg);
       color: var(--btn-theme-text);
       padding: 14px 28px;
-      border-radius: 99px;
+      border-radius: var(--radius-pill);
       box-shadow: var(--btn-theme-shadow);
       border: 1px solid var(--border-subtle);
       font-size: 0.95rem;
@@ -647,6 +827,11 @@
       border-color: var(--accent);
       box-shadow: var(--glow-box);
       text-shadow: var(--glow-text);
+    }
+    body.theme-blueprint .theme-btn-design {
+      border-radius: 0;
+      border: 2px solid var(--border-subtle);
+      box-shadow: 4px 4px 0 rgba(0,0,0,0.2);
     }
 
     .theme-icon {
@@ -781,6 +966,7 @@
             <option value="modest">Modest</option>
             <option value="coffee">Coffee</option>
             <option value="neon">Neon</option>
+            <option value="blueprint">Blueprint</option>
           </select>
         </div>
       </div>
@@ -789,7 +975,7 @@
   </div>
 
   <script>
-    /* --- 1. 初期計算ロジック (変更なし) --- */
+    /* --- 1. 計算ロジック --- */
     const basePoints = [
       { water: 150, beans: 10 },
       { water: 300, beans: 20 },
@@ -830,7 +1016,8 @@
       minimal: "Minimal",
       modest: "Modest",
       coffee: "Coffee",
-      neon: "Neon"
+      neon: "Neon",
+      blueprint: "Blueprint"
     };
 
     function roundToHalf(v) { return Math.round(v * 2) / 2; }
@@ -1079,18 +1266,40 @@
       });
     });
 
-    /* --- 3. テーマ切り替え & ダークモード制御 --- */
+    /* --- 3. テーマ切り替え & ダークモード制御 & ステータスバー --- */
 
-    // テーマ設定
+    const modeToggleBtn = document.getElementById('modeToggleBtn');
+    let isDarkMode = false;
+
+    // ステータスバーの色定義 (Light / Dark)
+    const statusBarColors = {
+      minimal:   { light: "#e8dfd8", dark: "#231e1b" },
+      modest:    { light: "#f3f4f6", dark: "#0f172a" },
+      coffee:    { light: "#261e1b", dark: "#000000" },
+      neon:      { light: "#f0f4f8", dark: "#050508" },
+      blueprint: { light: "#003399", dark: "#1a1a1a" }
+    };
+
+    function updateStatusBar() {
+      const themeKey = themeSelect.value; // current theme
+      const colorMap = statusBarColors[themeKey] || statusBarColors.minimal;
+      const color = isDarkMode ? colorMap.dark : colorMap.light;
+      
+      const meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) {
+        meta.setAttribute("content", color);
+      }
+    }
+
     function applyTheme(key) {
       document.body.classList.remove(
-        "theme-modest", "theme-coffee", "theme-neon"
+        "theme-modest", "theme-coffee", "theme-neon", "theme-blueprint"
       );
-      // Minimal (key="minimal") is default, so no class needed
       if (key !== "minimal") {
         document.body.classList.add("theme-" + key);
       }
       themeLabelText.textContent = "テーマ: " + (themeNameMap[key] || "Minimal");
+      updateStatusBar();
     }
 
     themeSelect.addEventListener("change", (e) => {
@@ -1098,35 +1307,16 @@
       updateView();
     });
 
-    // ダークモード切替
-    const modeToggleBtn = document.getElementById('modeToggleBtn');
-    let isDarkMode = false;
-
     const iconMoon = `<path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />`;
     const iconSun  = `<circle cx="12" cy="12" r="4" /><path d="M3 12h1m8 -9v1m8 8h1m-9 8v1M5.6 5.6l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" />`;
 
     function updateModeIcon() {
       const svg = modeToggleBtn.querySelector('svg');
       if (isDarkMode) {
-        // 今ダークなので、ボタン押したらライトになるよ＝太陽アイコンを表示
-        svg.innerHTML = iconSun;
-        /* 通常は「今の状態を示すアイコン」を表示することが多いですが
-           「トグルボタン」として機能させるため、ここでは
-           「現在のモード」に合わせたアイコンを表示させます。
-           Dark Mode時 -> Moon Icon (Active)
-           Light Mode時 -> Sun Icon (Active)
-           という解釈もできますが、シンプルに「月」アイコンで統一し、
-           ON/OFF切り替えでも良いですが、ご要望の「月」アイコンベースで
-           中身を切り替えます。
-        */
-        // 今回は「現在のモード」を表すアイコンにします
-        // Dark Mode = Moon visible
         svg.innerHTML = iconMoon;
-        // 色を少し明るくしたり調整
         svg.style.fill = "currentColor";
         svg.style.stroke = "none";
       } else {
-        // Light Mode = Sun visible
         svg.innerHTML = iconSun;
         svg.style.fill = "none";
         svg.style.stroke = "currentColor";
@@ -1144,6 +1334,7 @@
         document.body.classList.remove('dark-mode');
       }
       updateModeIcon();
+      updateStatusBar();
     }
 
     // 初期化：OSの設定を確認
@@ -1158,7 +1349,7 @@
 
     /* --- Init --- */
     document.body.classList.add("hot-mode");
-    applyTheme(themeSelect.value); // value defaults to 'minimal' in HTML
+    applyTheme(themeSelect.value); 
     updateView();
   </script>
 </body>
