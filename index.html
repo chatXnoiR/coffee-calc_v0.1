@@ -5,8 +5,8 @@
   <title>コーヒー計算機</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
-  <meta name="theme-color" content="#f6f5f3" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#020617" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#fcfaf8" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0f0e0d" media="(prefers-color-scheme: dark)">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
@@ -20,7 +20,7 @@
     :root {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       
-      /* 共通のベースカラー定義（後ほどモードやテーマで上書き） */
+      /* 共通アクセント (後ほど上書き) */
       --accent: #f97316;
       --accent-soft: rgba(249,115,22,0.12);
       --accent-soft-border: rgba(249,115,22,0.45);
@@ -33,12 +33,53 @@
       --roast-medium: #a06845;
       --roast-meddark: #6d4c41;
       --roast-dark: #3e2723;
+
+      /* トランジション設定 */
+      --trans-speed: 0.3s;
     }
 
-    /* ===== テーマごとのベースデザイン (背景・カード) ===== */
+    /* =========================================
+       テーマ定義 (CSS Variables)
+       ========================================= */
 
-    /* --- Standard --- */
-    body {
+    /* * 1. Minimal (Default / Old Latte Improved) 
+     * 温かみのあるオフホワイト・生成りベース
+     */
+    :root {
+      --bg-solid: #fcfaf8; /* かなり明るいベージュ/オフホワイト */
+      --bg-gradient: linear-gradient(180deg, #fcfaf8 0%, #f5f0eb 100%);
+      --card-bg: #ffffff;
+      --text-main: #44403c; /* 暖色系のダークグレー */
+      --text-sub: #78716c;
+      --border-subtle: #e7e5e4;
+      --shadow-card: 0 15px 35px -5px rgba(68, 64, 60, 0.08);
+      --field-bg: #fafaf9;
+      --steps-bg: #fafaf9;
+      --steps-border: #e7e5e4;
+      --btn-theme-bg: #ffffff;
+      --btn-theme-text: #57534e;
+    }
+
+    /* Minimal - Dark Mode */
+    body.dark-mode {
+      --bg-solid: #1c1917;
+      --bg-gradient: linear-gradient(180deg, #292524 0%, #0c0a09 100%);
+      --card-bg: rgba(28, 25, 23, 0.8);
+      --text-main: #f5f5f4;
+      --text-sub: #a8a29e;
+      --border-subtle: #44403c;
+      --shadow-card: 0 20px 40px rgba(0,0,0,0.5);
+      --field-bg: rgba(12, 10, 9, 0.4);
+      --steps-bg: rgba(12, 10, 9, 0.6);
+      --steps-border: #44403c;
+      --btn-theme-bg: #292524;
+      --btn-theme-text: #e7e5e4;
+    }
+
+    /* * 2. Modest (Old Standard) 
+     * クールグレー/ブルーグレーベース
+     */
+    body.theme-modest {
       --bg-solid: #f3f4f6;
       --bg-gradient: linear-gradient(180deg, #f3f4f6 0%, #e5e7eb 100%);
       --card-bg: #ffffff;
@@ -51,73 +92,51 @@
       --steps-border: #fde68a;
       --btn-theme-bg: #ffffff;
       --btn-theme-text: #374151;
-      --btn-theme-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    }
-    @media (prefers-color-scheme: dark) {
-      body {
-        --bg-solid: #0f172a;
-        --bg-gradient: linear-gradient(180deg, #0f172a 0%, #020617 100%);
-        --card-bg: rgba(30, 41, 59, 0.6);
-        --text-main: #f3f4f6;
-        --text-sub: #9ca3af;
-        --border-subtle: rgba(255,255,255,0.1);
-        --field-bg: rgba(15,23,42, 0.5);
-        --steps-bg: rgba(15,23,42, 0.7);
-        --steps-border: #334155;
-        --btn-theme-bg: #1e293b;
-        --btn-theme-text: #e2e8f0;
-      }
     }
 
-    /* --- Coffee (Dark Brown) --- */
+    /* Modest - Dark Mode */
+    body.theme-modest.dark-mode {
+      --bg-solid: #0f172a;
+      --bg-gradient: linear-gradient(180deg, #0f172a 0%, #020617 100%);
+      --card-bg: rgba(30, 41, 59, 0.6);
+      --text-main: #f3f4f6;
+      --text-sub: #9ca3af;
+      --border-subtle: rgba(255,255,255,0.1);
+      --shadow-card: 0 20px 40px -5px rgba(0,0,0,0.5);
+      --field-bg: rgba(15,23,42, 0.5);
+      --steps-bg: rgba(15,23,42, 0.7);
+      --steps-border: #334155;
+      --btn-theme-bg: #1e293b;
+      --btn-theme-text: #e2e8f0;
+    }
+
+    /* * 3. Coffee (Dark & Rich) 
+     */
     body.theme-coffee {
-      --bg-solid: #1c1917;
-      --bg-gradient: linear-gradient(180deg, #292524 0%, #1c1917 100%);
-      --card-bg: #262220;
+      --bg-solid: #2a2725;
+      --bg-gradient: linear-gradient(180deg, #352f2d 0%, #1c1917 100%);
+      --card-bg: #2b2624;
       --text-main: #e7e5e4;
       --text-sub: #a8a29e;
-      --border-subtle: #44403c;
+      --border-subtle: #57534e;
       --shadow-card: 0 20px 50px rgba(0,0,0,0.5);
-      --field-bg: #171514;
-      --steps-bg: #171514;
+      --field-bg: #1c1917;
+      --steps-bg: #1c1917;
       --steps-border: #57534e;
-      --btn-theme-bg: #292524;
+      --btn-theme-bg: #44403c;
       --btn-theme-text: #e7e5e4;
     }
-
-    /* --- Latte (Soft Beige) --- */
-    body.theme-latte {
-      --bg-solid: #f5f5f4;
-      --bg-gradient: linear-gradient(180deg, #fafaf9 0%, #f5f5f4 100%);
-      --card-bg: #ffffff;
-      --text-main: #44403c;
-      --text-sub: #78716c;
-      --border-subtle: #e7e5e4;
-      --shadow-card: 0 20px 40px rgba(0,0,0,0.06);
-      --field-bg: #fafaf9;
-      --steps-bg: #fafaf9;
-      --steps-border: #e7e5e4;
-      --btn-theme-bg: #ffffff;
-      --btn-theme-text: #57534e;
-    }
-    @media (prefers-color-scheme: dark) {
-      body.theme-latte {
-        --bg-solid: #292524;
-        --bg-gradient: linear-gradient(180deg, #292524 0%, #1c1917 100%);
-        --card-bg: rgba(41, 37, 36, 0.8);
-        --text-main: #f5f5f4;
-        --text-sub: #a8a29e;
-        --border-subtle: #57534e;
-        --field-bg: rgba(28, 25, 23, 0.5);
-        --steps-bg: rgba(28, 25, 23, 0.7);
-        --steps-border: #44403c;
-        --btn-theme-bg: #44403c;
-        --btn-theme-text: #f5f5f4;
-      }
+    /* Coffee - Dark Mode (More intense black) */
+    body.theme-coffee.dark-mode {
+      --bg-solid: #0c0a09;
+      --bg-gradient: linear-gradient(180deg, #1c1917 0%, #000000 100%);
+      --card-bg: rgba(28, 25, 23, 0.9);
+      --border-subtle: #44403c;
     }
 
-    /* --- Neon (Cyber) --- */
-    /* Neon Light Mode: White Gaming Style */
+    /* * 4. Neon (Cyber)
+     */
+    /* Neon Light: White Gaming */
     body.theme-neon {
       --bg-solid: #f8fafc;
       --bg-gradient: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
@@ -137,50 +156,47 @@
       --roast-meddark: #b91c1c;
       --roast-dark: #7f1d1d;
     }
-    /* Neon Dark Mode: Cyberpunk Style */
-    @media (prefers-color-scheme: dark) {
-      body.theme-neon {
-        --bg-solid: #020617;
-        --bg-gradient: radial-gradient(circle at top center, #1e293b 0%, #020617 80%);
-        --card-bg: rgba(15, 23, 42, 0.85);
-        --text-main: #f1f5f9;
-        --text-sub: #94a3b8;
-        --border-subtle: rgba(255,255,255,0.1);
-        --shadow-card: 0 20px 50px rgba(0,0,0,0.6);
-        --field-bg: rgba(2, 6, 23, 0.5);
-        --steps-bg: rgba(2, 6, 23, 0.6);
-        --steps-border: rgba(255,255,255,0.15);
-        --btn-theme-bg: #1e293b;
-        --btn-theme-text: #f1f5f9;
-        
-        --roast-light: #fbbf24;
-        --roast-medium: #fb923c;
-        --roast-meddark: #f87171;
-        --roast-dark: #ef4444;
-      }
+    /* Neon Dark: Cyberpunk */
+    body.theme-neon.dark-mode {
+      --bg-solid: #020617;
+      --bg-gradient: radial-gradient(circle at top center, #1e293b 0%, #020617 80%);
+      --card-bg: rgba(15, 23, 42, 0.85);
+      --text-main: #f1f5f9;
+      --text-sub: #94a3b8;
+      --border-subtle: rgba(255,255,255,0.1);
+      --shadow-card: 0 20px 50px rgba(0,0,0,0.6);
+      --field-bg: rgba(2, 6, 23, 0.5);
+      --steps-bg: rgba(2, 6, 23, 0.6);
+      --steps-border: rgba(255,255,255,0.15);
+      --btn-theme-bg: #1e293b;
+      --btn-theme-text: #f1f5f9;
+      
+      --roast-light: #fbbf24;
+      --roast-medium: #fb923c;
+      --roast-meddark: #f87171;
+      --roast-dark: #ef4444;
     }
 
-    /* ===== ホット/アイス モード別カラー上書き (機能性優先) ===== */
+
+    /* ===== アクセントカラー制御 (HOT/ICE) ===== */
     
-    /* HOT MODE: オレンジ系 */
+    /* HOT MODE: オレンジ */
     body.hot-mode {
       --accent: #f97316;
       --accent-soft: rgba(249,115,22,0.12);
-      --accent-soft-border: rgba(249,115,22,0.4);
+      --accent-soft-border: rgba(249,115,22,0.45);
       --summary-strong: #ea580c;
     }
     
-    /* ICE MODE: 水色系 */
+    /* ICE MODE: 水色 */
     body.ice-mode {
       --accent: #0ea5e9;
       --accent-soft: rgba(14,165,233,0.12);
-      --accent-soft-border: rgba(14,165,233,0.4);
+      --accent-soft-border: rgba(14,165,233,0.45);
       --summary-strong: #0284c7;
     }
 
-    /* --- Neonテーマ特有の「発光」カラー調整 --- */
-    
-    /* Neon + HOT (Orange Glow) */
+    /* Neon Theme Glows Override */
     body.theme-neon.hot-mode {
       --accent: #ff6600;
       --accent-soft: rgba(255, 102, 0, 0.1);
@@ -188,10 +204,9 @@
       --summary-strong: #ff6600;
       --glow-text: 0 0 12px rgba(255, 102, 0, 0.5);
       --glow-box: 0 0 16px rgba(255, 102, 0, 0.25);
-      --border-subtle: rgba(255, 102, 0, 0.3); /* 枠も少しオレンジに */
+      --border-subtle: rgba(255, 102, 0, 0.3);
     }
     
-    /* Neon + ICE (Cyan Glow) */
     body.theme-neon.ice-mode {
       --accent: #06b6d4;
       --accent-soft: rgba(6, 182, 212, 0.1);
@@ -199,7 +214,7 @@
       --summary-strong: #22d3ee;
       --glow-text: 0 0 12px rgba(34, 211, 238, 0.5);
       --glow-box: 0 0 16px rgba(34, 211, 238, 0.25);
-      --border-subtle: rgba(6, 182, 212, 0.3); /* 枠も少しシアンに */
+      --border-subtle: rgba(6, 182, 212, 0.3);
     }
 
 
@@ -212,7 +227,7 @@
       background-color: var(--bg-solid);
       background-image: var(--bg-gradient);
       background-attachment: fixed;
-      transition: background 0.3s;
+      transition: background var(--trans-speed), color var(--trans-speed);
     }
 
     body {
@@ -226,6 +241,7 @@
     .app {
       width: 100%;
       max-width: 440px;
+      position: relative;
     }
 
     .card {
@@ -236,7 +252,7 @@
       padding: 28px 24px;
       border: 1px solid var(--border-subtle);
       box-shadow: var(--shadow-card);
-      transition: box-shadow 0.3s ease, border-color 0.3s ease;
+      transition: all var(--trans-speed);
     }
     body.theme-neon .card {
       box-shadow: var(--shadow-card), var(--glow-box);
@@ -248,6 +264,8 @@
       flex-direction: column;
       gap: 6px;
       margin-bottom: 20px;
+      position: relative; /* For absolute positioning of toggle */
+      padding-right: 40px; /* Space for toggle */
     }
 
     .title-main {
@@ -267,6 +285,7 @@
       background: linear-gradient(90deg, var(--accent), transparent);
       margin-bottom: 8px;
       box-shadow: var(--glow-box);
+      transition: background var(--trans-speed);
     }
 
     .app-subtitle {
@@ -276,6 +295,39 @@
       color: var(--text-main);
       text-shadow: var(--glow-text);
     }
+
+    /* Mode Toggle Button (Moon/Sun) */
+    .mode-toggle-btn {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--border-subtle);
+      background: var(--field-bg);
+      color: var(--text-sub);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .mode-toggle-btn:active {
+      transform: scale(0.92);
+    }
+    body.theme-neon .mode-toggle-btn {
+      box-shadow: var(--glow-box);
+      border-color: var(--accent-soft-border);
+      color: var(--accent);
+    }
+    .mode-icon {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
+
 
     /* Sections */
     .section-title {
@@ -298,6 +350,7 @@
       border: 1px solid var(--accent-soft-border);
       box-shadow: var(--glow-box);
       text-shadow: var(--glow-text);
+      transition: all var(--trans-speed);
     }
 
     /* Controls & Toggles */
@@ -309,6 +362,7 @@
       padding: 4px;
       border: 1px solid var(--border-subtle);
       gap: 4px;
+      transition: background var(--trans-speed);
     }
 
     .toggle-btn {
@@ -326,39 +380,28 @@
       overflow: hidden;
     }
 
-    /* アクティブ状態のデザイン統一 */
+    /* Active state logic */
     .toggle-btn.active {
-      background: var(--card-bg); /* 通常テーマ用 */
+      background: var(--card-bg);
       color: var(--accent);
       border-color: var(--accent-soft-border);
       box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
 
-    /* 入力モードトグルにも色をつける */
+    /* Input Mode Toggle Color (Also colored now) */
     #inputModeGroup .toggle-btn.active {
       background: var(--accent-soft);
       color: var(--accent);
       border-color: var(--accent-soft-border);
     }
-    body.theme-neon #inputModeGroup .toggle-btn.active {
-       box-shadow: var(--glow-box) inset;
-       text-shadow: var(--glow-text);
-    }
 
-    /* スタイルトグル（HOT/ICE）の特定色指定 */
-    #styleGroup .toggle-btn.active {
-      /* 文字色はbodyのhot-mode/ice-modeで定義された--accentに従うので指定不要だが念のため */
-      color: var(--accent);
-      background: var(--accent-soft);
-      border-color: var(--accent-soft-border);
-    }
-    
+    /* Neon Effect for Buttons */
     body.theme-neon .toggle-btn.active {
       box-shadow: var(--glow-box) inset;
       text-shadow: var(--glow-text);
     }
 
-    /* Roast Buttons: 焙煎色は固定 */
+    /* Roast Buttons */
     #roastGroup .toggle-btn[data-roast="light"].active { color: var(--roast-light); border-color: var(--roast-light); background: rgba(255,255,255,0.05); }
     #roastGroup .toggle-btn[data-roast="medium"].active { color: var(--roast-medium); border-color: var(--roast-medium); background: rgba(255,255,255,0.05); }
     #roastGroup .toggle-btn[data-roast="meddark"].active { color: var(--roast-meddark); border-color: var(--roast-meddark); background: rgba(255,255,255,0.05); }
@@ -380,7 +423,7 @@
       padding: 16px 16px;
       font-size: 1rem;
       outline: none;
-      transition: border-color 0.2s;
+      transition: border-color 0.2s, background var(--trans-speed);
     }
     select:focus {
       border-color: var(--accent);
@@ -419,7 +462,7 @@
       gap: 14px;
       position: relative;
       overflow: hidden;
-      transition: all 0.3s;
+      transition: all var(--trans-speed);
     }
     body.theme-neon .summary {
       box-shadow: var(--glow-box);
@@ -466,7 +509,7 @@
       border-radius: 24px;
       padding: 8px 0;
       overflow: hidden;
-      transition: all 0.3s;
+      transition: all var(--trans-speed);
     }
     body.theme-neon .steps-card {
       box-shadow: var(--glow-box);
@@ -479,9 +522,12 @@
       justify-content: space-between;
       align-items: flex-start;
     }
+    body.dark-mode .step-row,
+    body.theme-coffee .step-row,
     body.theme-neon .step-row {
       border-bottom: 1px solid rgba(255,255,255,0.08);
     }
+
     .step-row:last-child {
       border-bottom: none;
     }
@@ -537,6 +583,7 @@
       background: var(--card-bg);
       border: 1px solid var(--border-subtle);
       overflow: hidden;
+      transition: all var(--trans-speed);
     }
     body.theme-neon .note {
       box-shadow: var(--glow-box);
@@ -632,6 +679,12 @@
         <div class="title-main">HAND DRIP CALCULATOR</div>
         <div class="title-bar"></div>
         <div class="app-subtitle">失敗しないコーヒーレシピ</div>
+
+        <button class="mode-toggle-btn" id="modeToggleBtn" aria-label="ダークモード切替">
+          <svg class="mode-icon" viewBox="0 0 24 24">
+            <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+          </svg>
+        </button>
       </div>
 
       <div class="section-title">入力方法</div>
@@ -724,9 +777,9 @@
           <div class="theme-icon"></div>
           <span id="themeLabelText">テーマ変更</span>
           <select id="themeSelect">
-            <option value="standard">Standard</option>
+            <option value="minimal">Minimal</option>
+            <option value="modest">Modest</option>
             <option value="coffee">Coffee</option>
-            <option value="latte">Latte</option>
             <option value="neon">Neon</option>
           </select>
         </div>
@@ -736,7 +789,7 @@
   </div>
 
   <script>
-    /* Logic maintained from original */
+    /* --- 1. 初期計算ロジック (変更なし) --- */
     const basePoints = [
       { water: 150, beans: 10 },
       { water: 300, beans: 20 },
@@ -774,9 +827,9 @@
     };
     
     const themeNameMap = {
-      standard: "Standard",
+      minimal: "Minimal",
+      modest: "Modest",
       coffee: "Coffee",
-      latte: "Latte",
       neon: "Neon"
     };
 
@@ -975,6 +1028,8 @@
     cupsSelect.addEventListener("change", updateView);
     waterSelect.addEventListener("change", updateView);
 
+    /* --- 2. UI操作イベント --- */
+
     document.querySelectorAll("#inputModeGroup .toggle-btn").forEach(btn => {
       btn.addEventListener("click", () => {
         document.querySelectorAll("#inputModeGroup .toggle-btn")
@@ -1024,14 +1079,18 @@
       });
     });
 
+    /* --- 3. テーマ切り替え & ダークモード制御 --- */
+
+    // テーマ設定
     function applyTheme(key) {
       document.body.classList.remove(
-        "theme-coffee", "theme-latte", "theme-neon"
+        "theme-modest", "theme-coffee", "theme-neon"
       );
-      if (key !== "standard") {
+      // Minimal (key="minimal") is default, so no class needed
+      if (key !== "minimal") {
         document.body.classList.add("theme-" + key);
       }
-      themeLabelText.textContent = "テーマ: " + (themeNameMap[key] || "Standard");
+      themeLabelText.textContent = "テーマ: " + (themeNameMap[key] || "Minimal");
     }
 
     themeSelect.addEventListener("change", (e) => {
@@ -1039,9 +1098,67 @@
       updateView();
     });
 
-    // Init
+    // ダークモード切替
+    const modeToggleBtn = document.getElementById('modeToggleBtn');
+    let isDarkMode = false;
+
+    const iconMoon = `<path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />`;
+    const iconSun  = `<circle cx="12" cy="12" r="4" /><path d="M3 12h1m8 -9v1m8 8h1m-9 8v1M5.6 5.6l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" />`;
+
+    function updateModeIcon() {
+      const svg = modeToggleBtn.querySelector('svg');
+      if (isDarkMode) {
+        // 今ダークなので、ボタン押したらライトになるよ＝太陽アイコンを表示
+        svg.innerHTML = iconSun;
+        /* 通常は「今の状態を示すアイコン」を表示することが多いですが
+           「トグルボタン」として機能させるため、ここでは
+           「現在のモード」に合わせたアイコンを表示させます。
+           Dark Mode時 -> Moon Icon (Active)
+           Light Mode時 -> Sun Icon (Active)
+           という解釈もできますが、シンプルに「月」アイコンで統一し、
+           ON/OFF切り替えでも良いですが、ご要望の「月」アイコンベースで
+           中身を切り替えます。
+        */
+        // 今回は「現在のモード」を表すアイコンにします
+        // Dark Mode = Moon visible
+        svg.innerHTML = iconMoon;
+        // 色を少し明るくしたり調整
+        svg.style.fill = "currentColor";
+        svg.style.stroke = "none";
+      } else {
+        // Light Mode = Sun visible
+        svg.innerHTML = iconSun;
+        svg.style.fill = "none";
+        svg.style.stroke = "currentColor";
+        svg.style.strokeWidth = "2";
+        svg.style.strokeLinecap = "round";
+        svg.style.strokeLinejoin = "round";
+      }
+    }
+
+    function toggleDarkMode() {
+      isDarkMode = !isDarkMode;
+      if (isDarkMode) {
+        document.body.classList.add('dark-mode');
+      } else {
+        document.body.classList.remove('dark-mode');
+      }
+      updateModeIcon();
+    }
+
+    // 初期化：OSの設定を確認
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      isDarkMode = true;
+      document.body.classList.add('dark-mode');
+    }
+    updateModeIcon();
+
+    modeToggleBtn.addEventListener('click', toggleDarkMode);
+
+
+    /* --- Init --- */
     document.body.classList.add("hot-mode");
-    applyTheme(themeSelect.value);
+    applyTheme(themeSelect.value); // value defaults to 'minimal' in HTML
     updateView();
   </script>
 </body>
