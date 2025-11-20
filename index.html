@@ -7,7 +7,11 @@
 
   <meta name="theme-color" content="#e8dfd8">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@400;500&family=M+PLUS+Rounded+1c:wght@400;700&display=swap" rel="stylesheet">
 
   <style>
     /* ===== リセット & ベース ===== */
@@ -17,7 +21,9 @@
     }
 
     :root {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Hiragino Sans", sans-serif;
+      /* デフォルトフォント */
+      --font-base: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Hiragino Sans", sans-serif;
+      font-family: var(--font-base);
       
       /* 共通アクセント (後ほど上書き) */
       --accent: #f97316;
@@ -47,15 +53,27 @@
     }
 
     /* =========================================
-       背景固定レイヤー (ツートン問題解決の鍵)
+       背景固定レイヤー & HTML背景
        ========================================= */
-    html, body {
+    html {
+      /* ステータスバーの背景色漏れを防ぐため、HTML自体にも色をつける */
+      background-color: var(--bg-solid);
+      transition: background-color var(--trans-speed);
+    }
+
+    body {
       margin: 0;
       padding: 0;
       width: 100%;
-      height: 100%;
-      /* body自体の背景は透明にする */
-      background: transparent; 
+      min-height: 100vh;
+      background: transparent; /* bodyは透明 */
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 16px 80px;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
     }
 
     /* 背景専用の固定レイヤー */
@@ -64,27 +82,15 @@
       top: 0;
       left: 0;
       width: 100%;
-      height: 100%; /* ビューポートいっぱいに広げる */
-      z-index: -999; /* 最背面 */
+      height: 100%; 
+      z-index: -999; 
       
       background-color: var(--bg-solid);
       background-image: var(--bg-gradient);
       background-size: var(--bg-size, auto);
       background-repeat: repeat;
       transition: background var(--trans-speed);
-      pointer-events: none; /* クリック透過 */
-    }
-
-    body {
-      color: var(--text-main);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px 16px 80px;
-      /* スクロール可能にする設定 */
-      min-height: 100vh;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
+      pointer-events: none;
     }
 
 
@@ -264,12 +270,9 @@
       --btn-theme-text: #00ff00;
     }
 
-    /* * 6. Arcade (New! 8bit Retro) 
-     * ポップなゲームボーイ/ファミコン風
-     */
+    /* * 6. Arcade (8bit Retro) */
     body.theme-arcade {
-      --bg-solid: #fff0f5; /* Lavender Blush */
-      /* ドットパターン */
+      --bg-solid: #fff0f5;
       --bg-gradient: 
         radial-gradient(#ff69b4 2px, transparent 2px),
         radial-gradient(#ff69b4 2px, transparent 2px);
@@ -278,9 +281,9 @@
       --card-bg: #ffffff;
       --text-main: #2d2d2d;
       --text-sub: #555555;
-      --border-subtle: #000000; /* 太い黒枠 */
+      --border-subtle: #000000;
       
-      --shadow-card: 8px 8px 0px #000000; /* ハードシャドウ */
+      --shadow-card: 8px 8px 0px #000000;
       
       --field-bg: #ffffff;
       --steps-bg: #f0f0f0;
@@ -294,9 +297,8 @@
       --radius-pill: 8px;
       
       font-family: "Courier New", Courier, monospace;
-      --trans-speed: 0s; /* レトロ感を出すためアニメーションなし */
+      --trans-speed: 0s;
     }
-
     body.theme-arcade.dark-mode {
       --bg-solid: #202020;
       --bg-gradient: 
@@ -315,6 +317,53 @@
       
       --btn-theme-bg: #000000;
       --btn-theme-text: #ffffff;
+    }
+
+    /* * 7. Lovely (New! Pop & Cute) 
+     * 丸みのあるフォント、パステルカラー、ステッカー風
+     */
+    body.theme-lovely {
+      --bg-solid: #fff0f3; /* Lavender Blush */
+      --bg-gradient: linear-gradient(135deg, #fff0f3 0%, #e6e6fa 100%); /* to Lavender */
+      
+      --card-bg: rgba(255, 255, 255, 0.8);
+      --text-main: #5d4b5d; /* Purple Grey */
+      --text-sub: #9c8a9c;
+      --border-subtle: #ffffff;
+      
+      --shadow-card: 0 10px 30px rgba(255, 105, 180, 0.15);
+      
+      --field-bg: #ffffff;
+      --steps-bg: #ffffff;
+      --steps-border: #ffb7b2; /* Pastel Red/Pink */
+      
+      --btn-theme-bg: #ffffff;
+      --btn-theme-text: #ff69b4;
+      
+      --radius-card: 32px;
+      --radius-btn: 20px;
+      --radius-pill: 99px;
+      
+      font-family: "Kiwi Maru", "M PLUS Rounded 1c", var(--font-base);
+    }
+    
+    body.theme-lovely.dark-mode {
+      --bg-solid: #2d2038; /* Deep Purple */
+      --bg-gradient: linear-gradient(135deg, #2d2038 0%, #1a1020 100%);
+      
+      --card-bg: rgba(50, 35, 60, 0.8);
+      --text-main: #f8e8f8;
+      --text-sub: #c8b0c8;
+      --border-subtle: rgba(255,255,255,0.1);
+      
+      --shadow-card: 0 10px 30px rgba(0,0,0,0.3);
+      
+      --field-bg: rgba(20, 10, 25, 0.4);
+      --steps-bg: rgba(20, 10, 25, 0.6);
+      --steps-border: #885588;
+      
+      --btn-theme-bg: #4a3555;
+      --btn-theme-text: #f8e8f8;
     }
 
 
@@ -381,15 +430,15 @@
       --summary-strong: #00ffff;
     }
 
-    /* Arcade Overrides (Pop Colors) */
+    /* Arcade Overrides */
     body.theme-arcade.hot-mode {
-      --accent: #ff4500; /* OrangeRed */
+      --accent: #ff4500;
       --accent-soft: #ffe4e1;
       --accent-soft-border: #000000;
       --summary-strong: #ff4500;
     }
     body.theme-arcade.ice-mode {
-      --accent: #1e90ff; /* DodgerBlue */
+      --accent: #1e90ff;
       --accent-soft: #e0ffff;
       --accent-soft-border: #000000;
       --summary-strong: #1e90ff;
@@ -401,6 +450,26 @@
     body.theme-arcade.dark-mode.ice-mode {
       --accent: #00bfff;
       --accent-soft: #333;
+    }
+
+    /* Lovely Overrides (Cute Pastels) */
+    body.theme-lovely.hot-mode {
+      --accent: #ff8da1; /* Rose Pink */
+      --accent-soft: #fff0f5;
+      --accent-soft-border: #ffc0cb;
+      --summary-strong: #ff6b81;
+    }
+    body.theme-lovely.ice-mode {
+      --accent: #93a5cf; /* Periwinkle */
+      --accent-soft: #f0f4ff;
+      --accent-soft-border: #bccce8;
+      --summary-strong: #7388b9;
+    }
+    body.theme-lovely.dark-mode.hot-mode {
+      --accent: #ff85a2;
+      --accent-soft: rgba(255, 133, 162, 0.15);
+      --accent-soft-border: #a05566;
+      --summary-strong: #ff85a2;
     }
 
 
@@ -432,7 +501,14 @@
     body.theme-arcade .card {
       backdrop-filter: none;
       -webkit-backdrop-filter: none;
-      border-width: 4px; /* Arcadeは太枠 */
+      border-width: 4px;
+    }
+    body.theme-lovely .card {
+      border: 3px solid #ffffff; /* 白い縁取りでシールっぽく */
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+    body.theme-lovely.dark-mode .card {
+      border: 1px solid rgba(255,255,255,0.1);
     }
 
     /* Header */
@@ -475,6 +551,11 @@
       border-radius: 0;
       box-shadow: 2px 2px 0 #000;
     }
+    body.theme-lovely .title-bar {
+      height: 6px;
+      border-radius: 99px;
+      background: var(--accent);
+    }
 
     .app-subtitle {
       font-size: 1.5rem;
@@ -482,6 +563,10 @@
       line-height: 1.2;
       color: var(--text-main);
       text-shadow: var(--glow-text);
+    }
+    body.theme-lovely .app-subtitle {
+      font-weight: 700;
+      letter-spacing: 0.05em;
     }
 
     /* Mode Toggle Button */
@@ -523,6 +608,11 @@
     body.theme-arcade .mode-toggle-btn:active {
       transform: translate(2px, 2px);
       box-shadow: 2px 2px 0 #000;
+    }
+    body.theme-lovely .mode-toggle-btn {
+      background: #fff;
+      border: 2px solid var(--accent);
+      color: var(--accent);
     }
     .mode-icon {
       width: 18px;
@@ -569,6 +659,11 @@
       border-radius: 4px;
       box-shadow: 2px 2px 0 #000;
     }
+    body.theme-lovely .inline-badge {
+      border-radius: 99px;
+      background: #fff;
+      border: 1px solid var(--accent);
+    }
 
     /* Controls & Toggles */
     .toggle-group {
@@ -594,6 +689,11 @@
       box-shadow: 4px 4px 0 #000;
       gap: 0;
       padding: 0;
+    }
+    body.theme-lovely .toggle-group {
+      background: #ffffff;
+      border: 2px solid #fff;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
 
     .toggle-btn {
@@ -660,10 +760,21 @@
     body.theme-arcade .toggle-btn.active {
       background: var(--accent);
       color: #ffffff;
-      box-shadow: inset 2px 2px 0 rgba(0,0,0,0.3); /* 押し込んだ感じ */
+      box-shadow: inset 2px 2px 0 rgba(0,0,0,0.3);
     }
     body.theme-arcade #inputModeGroup .toggle-btn.active {
       border-color: transparent;
+    }
+    
+    body.theme-lovely .toggle-btn.active {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transform: scale(0.95); /* ぷにっと感 */
+    }
+    body.theme-lovely #inputModeGroup .toggle-btn.active {
+      background: var(--accent);
+      color: #fff;
     }
 
     /* Roast Buttons */
@@ -680,6 +791,10 @@
       background: var(--accent);
       color: #fff;
       box-shadow: inset 2px 2px 0 rgba(0,0,0,0.3);
+    }
+    body.theme-lovely #roastGroup .toggle-btn.active {
+      background: #fff;
+      border: 2px solid currentColor;
     }
 
 
@@ -714,6 +829,11 @@
       transform: translate(2px, 2px);
       box-shadow: 2px 2px 0 #000;
     }
+    body.theme-lovely select {
+      background: #ffffff;
+      border: 2px solid #fff;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
 
     select:focus {
       border-color: var(--accent);
@@ -722,6 +842,11 @@
     body.theme-neon select:focus {
       box-shadow: var(--glow-box);
     }
+    body.theme-lovely select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px var(--accent-soft);
+    }
+    
     .select-arrow {
       position: absolute;
       right: 16px;
@@ -766,6 +891,10 @@
       border: 2px solid #000;
       border-radius: 8px;
       box-shadow: 6px 6px 0 #000;
+    }
+    body.theme-lovely .summary {
+      background: #ffffff;
+      border: 2px dashed var(--accent);
     }
 
     .summary-row {
@@ -831,6 +960,11 @@
       border-radius: 8px;
       box-shadow: 6px 6px 0 #000;
     }
+    body.theme-lovely .steps-card {
+      background: #fff;
+      border: 1px solid #fff;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
 
     .step-row {
       padding: 16px 24px;
@@ -852,6 +986,9 @@
     }
     body.theme-arcade.dark-mode .step-row {
       border-bottom: 2px dashed #666;
+    }
+    body.theme-lovely .step-row {
+      border-bottom: 1px dashed var(--steps-border);
     }
 
     .step-row:last-child {
@@ -895,7 +1032,7 @@
 
     .placeholder {
       padding: 30px 20px;
-      text-align: center;
+      text-align: left; /* Left alignment requested */
       font-size: 0.9rem;
       color: var(--text-sub);
     }
@@ -923,6 +1060,11 @@
       border-radius: 8px;
       box-shadow: 6px 6px 0 #000;
     }
+    body.theme-lovely .note {
+      background: #fff;
+      border: 1px solid #fff;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
 
     .note::before {
       content: "";
@@ -947,6 +1089,14 @@
       border-right: 2px solid #000;
       background: var(--accent);
     }
+    body.theme-lovely .note::before {
+      background: var(--accent);
+      width: 8px;
+      border-radius: 4px;
+      top: 8px;
+      bottom: 8px;
+      left: 6px;
+    }
 
     .note-label {
       font-size: 0.75rem;
@@ -962,6 +1112,9 @@
       font-size: 0.85rem;
       line-height: 1.6;
       color: var(--text-main);
+    }
+    body.theme-lovely .note-body {
+      padding-left: 4px;
     }
 
     /* Theme Switcher */
@@ -1011,6 +1164,12 @@
       transform: translate(2px, 2px);
       box-shadow: 2px 2px 0 #000;
     }
+    body.theme-lovely .theme-btn-design {
+      background: #fff;
+      border: 2px solid var(--accent);
+      color: var(--accent);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
 
     .theme-icon {
       width: 20px;
@@ -1023,6 +1182,10 @@
     body.theme-arcade .theme-icon {
       border: 2px solid #000;
       box-shadow: none;
+    }
+    body.theme-lovely .theme-icon {
+      border: 2px solid #fff;
+      background: var(--accent);
     }
 
     #themeSelect {
@@ -1152,7 +1315,8 @@
             <option value="coffee">Coffee</option>
             <option value="neon">Neon</option>
             <option value="blueprint">Blueprint</option>
-            <option value="arcade">Arcade (New!)</option>
+            <option value="arcade">Arcade</option>
+            <option value="lovely">Lovely</option>
           </select>
         </div>
       </div>
@@ -1204,7 +1368,8 @@
       coffee: "Coffee",
       neon: "Neon",
       blueprint: "Blueprint",
-      arcade: "Arcade"
+      arcade: "Arcade",
+      lovely: "Lovely"
     };
 
     function roundToHalf(v) { return Math.round(v * 2) / 2; }
@@ -1465,7 +1630,8 @@
       coffee:    { light: "#261e1b", dark: "#000000" },
       neon:      { light: "#f0f4f8", dark: "#050508" },
       blueprint: { light: "#003399", dark: "#1a1a1a" },
-      arcade:    { light: "#fff0f5", dark: "#202020" }
+      arcade:    { light: "#fff0f5", dark: "#202020" },
+      lovely:    { light: "#fff0f3", dark: "#2d2038" }
     };
 
     function updateStatusBar() {
@@ -1481,7 +1647,7 @@
 
     function applyTheme(key) {
       document.body.classList.remove(
-        "theme-modest", "theme-coffee", "theme-neon", "theme-blueprint", "theme-arcade"
+        "theme-modest", "theme-coffee", "theme-neon", "theme-blueprint", "theme-arcade", "theme-lovely"
       );
       if (key !== "minimal") {
         document.body.classList.add("theme-" + key);
