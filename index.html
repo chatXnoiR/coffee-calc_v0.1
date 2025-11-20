@@ -119,20 +119,40 @@
       box-shadow: var(--shadow-card);
     }
 
-    .app-title {
-      font-size: 1.6rem;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+    /* ヘッダーまわり */
+    .app-header {
+      margin-bottom: 10px;
     }
-    .app-title span {
-      font-size: 1.4rem;
+
+    .app-title {
+      font-size: 1.7rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      background: linear-gradient(120deg, #0f172a, #fb923c);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .app-title {
+        background: linear-gradient(120deg, #e5e7eb, #38bdf8);
+      }
+    }
+
+    .title-accent {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-sub);
+      margin-top: 2px;
+      padding-left: 2px;
     }
 
     .app-subtitle {
       font-size: 0.9rem;
       color: var(--text-sub);
+      margin-top: 10px;
       margin-bottom: 18px;
     }
 
@@ -302,8 +322,9 @@
 
     .placeholder {
       font-size: 0.85rem;
-      text-align: center;
+      text-align: left;
       color: rgba(31,41,55,0.7);
+      padding: 4px 2px;
     }
 
     .note {
@@ -318,8 +339,13 @@
   <div class="app">
     <div class="card">
 
-      <div class="app-title">コーヒー計算機 <span>☕</span></div>
-      <div class="app-subtitle">任意の量から、豆量・蒸らし・注湯ステップを自動計算。</div>
+      <div class="app-header">
+        <div class="app-title">コーヒー計算機</div>
+        <div class="title-accent">Hand drip helper</div>
+      </div>
+      <div class="app-subtitle">
+        つくりたい量から、豆量とお湯の投入量を計算。
+      </div>
 
       <!-- 入力方法 -->
       <div class="section-title">入力方法</div>
@@ -406,10 +432,14 @@
       </div>
 
       <div class="steps-card" id="stepsBox">
-        <div class="placeholder">杯数または湯量を選択すると、ここにステップが表示されます。</div>
+        <div class="placeholder">
+          杯数または湯量を選択すると、ここにステップが表示されます。
+        </div>
       </div>
 
-      <div class="note">・アイスは豆量1.5倍・湯量半分・同量の氷を目安。</div>
+      <div class="note">
+        ・アイスは豆量1.5倍、湯量半分、お湯と同量の氷を目安。ロック氷ではなく家庭用冷蔵庫の氷の場合は、溶けやすく薄くなるため氷少なめがベター。
+      </div>
 
     </div>
   </div>
