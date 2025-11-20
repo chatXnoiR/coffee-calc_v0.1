@@ -19,229 +19,189 @@
 
     :root {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    }
-
-    /* ===== カラーパレット定義 ===== */
-
-    /* --- 標準 (Standard) --- */
-    :root {
-      --bg-solid: #f6f5f3;
-      --bg-gradient: linear-gradient(180deg, #f6f5f3 0%, #ece9e6 100%);
-      --card-bg: #ffffff;
-      --text-main: #1f2937;
-      --text-sub: #6b7280;
-      --border-subtle: #e5e7eb;
-      --shadow-card: 0 20px 40px -5px rgba(0,0,0,0.1);
       
+      /* 共通のベースカラー定義（後ほどモードやテーマで上書き） */
       --accent: #f97316;
       --accent-soft: rgba(249,115,22,0.12);
       --accent-soft-border: rgba(249,115,22,0.45);
-
-      --field-bg: #f9fafb;
-      --steps-bg: #fffbeb;
-      --steps-border: #fde68a;
       --summary-strong: #ea580c;
-
-      --btn-theme-bg: #ffffff;
-      --btn-theme-text: #374151;
-      --btn-theme-shadow: 0 4px 12px rgba(0,0,0,0.1);
-
+      
       --glow-text: none;
       --glow-box: none;
-
-      /* Roast Colors */
+      
       --roast-light: #d4a373;
       --roast-medium: #a06845;
       --roast-meddark: #6d4c41;
       --roast-dark: #3e2723;
     }
 
+    /* ===== テーマごとのベースデザイン (背景・カード) ===== */
+
+    /* --- Standard --- */
+    body {
+      --bg-solid: #f3f4f6;
+      --bg-gradient: linear-gradient(180deg, #f3f4f6 0%, #e5e7eb 100%);
+      --card-bg: #ffffff;
+      --text-main: #1f2937;
+      --text-sub: #6b7280;
+      --border-subtle: #e5e7eb;
+      --shadow-card: 0 10px 25px -5px rgba(0,0,0,0.05);
+      --field-bg: #f9fafb;
+      --steps-bg: #fffbeb;
+      --steps-border: #fde68a;
+      --btn-theme-bg: #ffffff;
+      --btn-theme-text: #374151;
+      --btn-theme-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
     @media (prefers-color-scheme: dark) {
-      :root {
-        --bg-solid: #020617;
+      body {
+        --bg-solid: #0f172a;
         --bg-gradient: linear-gradient(180deg, #0f172a 0%, #020617 100%);
-        --card-bg: rgba(30, 41, 59, 0.7);
+        --card-bg: rgba(30, 41, 59, 0.6);
         --text-main: #f3f4f6;
         --text-sub: #9ca3af;
         --border-subtle: rgba(255,255,255,0.1);
-        --shadow-card: 0 20px 40px -5px rgba(0,0,0,0.5);
-
-        --field-bg: rgba(15,23,42, 0.6);
-        --steps-bg: rgba(15,23,42, 0.8);
+        --field-bg: rgba(15,23,42, 0.5);
+        --steps-bg: rgba(15,23,42, 0.7);
         --steps-border: #334155;
-        
         --btn-theme-bg: #1e293b;
         --btn-theme-text: #e2e8f0;
-        --btn-theme-shadow: 0 4px 12px rgba(0,0,0,0.4);
       }
     }
 
-    /* --- テーマ: Coffee --- */
+    /* --- Coffee (Dark Brown) --- */
     body.theme-coffee {
-      --bg-solid: #2a1b15;
-      --bg-gradient: linear-gradient(180deg, #3c2a21 0%, #1a110d 100%);
-      --card-bg: #261a15;
-      --text-main: #ede0d4;
-      --text-sub: #b09a89;
-      --border-subtle: #5e4637;
-      --shadow-card: 0 20px 50px rgba(0,0,0,0.6);
-
-      --accent: #d4a373;
-      --accent-soft: rgba(212,163,115,0.15);
-      --accent-soft-border: rgba(212,163,115,0.5);
-      
-      --field-bg: #1f1511;
-      --steps-bg: #1f1511;
-      --steps-border: #5e4637;
-      --summary-strong: #e6be8a;
-
-      --btn-theme-bg: #3c2a21;
-      --btn-theme-text: #ede0d4;
-    }
-    @media (prefers-color-scheme: dark) {
-      body.theme-coffee {
-        --bg-solid: #110a08;
-        --bg-gradient: linear-gradient(180deg, #1a100c 0%, #000000 100%);
-        --card-bg: rgba(28, 18, 14, 0.9);
-        --border-subtle: #4a352a;
-      }
+      --bg-solid: #1c1917;
+      --bg-gradient: linear-gradient(180deg, #292524 0%, #1c1917 100%);
+      --card-bg: #262220;
+      --text-main: #e7e5e4;
+      --text-sub: #a8a29e;
+      --border-subtle: #44403c;
+      --shadow-card: 0 20px 50px rgba(0,0,0,0.5);
+      --field-bg: #171514;
+      --steps-bg: #171514;
+      --steps-border: #57534e;
+      --btn-theme-bg: #292524;
+      --btn-theme-text: #e7e5e4;
     }
 
-    /* --- テーマ: Latte --- */
+    /* --- Latte (Soft Beige) --- */
     body.theme-latte {
-      --bg-solid: #fdfbf7;
-      --bg-gradient: linear-gradient(180deg, #fdfbf7 0%, #efe6dd 100%);
-      --card-bg: #fffaf5;
-      --text-main: #4a3b32;
-      --text-sub: #8c7b70;
-      --border-subtle: #eaddcf;
-      --shadow-card: 0 20px 38px rgba(94, 70, 56, 0.1);
-
-      --accent: #a88b7d;
-      --accent-soft: rgba(168,139,125,0.12);
-      --accent-soft-border: #dccac1;
-      
-      --field-bg: #fff;
-      --steps-bg: #fff;
-      --steps-border: #ebdccf;
-      --summary-strong: #7d5a4f;
-
-      --btn-theme-bg: #fff;
-      --btn-theme-text: #5d4037;
+      --bg-solid: #f5f5f4;
+      --bg-gradient: linear-gradient(180deg, #fafaf9 0%, #f5f5f4 100%);
+      --card-bg: #ffffff;
+      --text-main: #44403c;
+      --text-sub: #78716c;
+      --border-subtle: #e7e5e4;
+      --shadow-card: 0 20px 40px rgba(0,0,0,0.06);
+      --field-bg: #fafaf9;
+      --steps-bg: #fafaf9;
+      --steps-border: #e7e5e4;
+      --btn-theme-bg: #ffffff;
+      --btn-theme-text: #57534e;
     }
     @media (prefers-color-scheme: dark) {
       body.theme-latte {
-        --bg-solid: #3e2723;
-        --bg-gradient: linear-gradient(180deg, #4e342e 0%, #281916 100%);
-        --card-bg: rgba(62, 39, 35, 0.9);
-        --text-main: #efebe9;
-        --text-sub: #bcaaa4;
-        --border-subtle: #6d4c41;
-        --shadow-card: 0 20px 40px rgba(0,0,0,0.5);
-
-        --accent: #d7ccc8;
-        --accent-soft: rgba(215,204,200,0.1);
-        --accent-soft-border: #8d6e63;
-
-        --field-bg: rgba(40, 25, 22, 0.6);
-        --steps-bg: rgba(40, 25, 22, 0.8);
-        --steps-border: #5d4037;
-        --summary-strong: #ffccbc;
-        
-        --btn-theme-bg: #4e342e;
-        --btn-theme-text: #efebe9;
+        --bg-solid: #292524;
+        --bg-gradient: linear-gradient(180deg, #292524 0%, #1c1917 100%);
+        --card-bg: rgba(41, 37, 36, 0.8);
+        --text-main: #f5f5f4;
+        --text-sub: #a8a29e;
+        --border-subtle: #57534e;
+        --field-bg: rgba(28, 25, 23, 0.5);
+        --steps-bg: rgba(28, 25, 23, 0.7);
+        --steps-border: #44403c;
+        --btn-theme-bg: #44403c;
+        --btn-theme-text: #f5f5f4;
       }
     }
 
-    /* --- テーマ: Neon (White Gaming / Cyber) --- */
-    
-    /* Neon Light Mode: White Gaming PC Style */
+    /* --- Neon (Cyber) --- */
+    /* Neon Light Mode: White Gaming Style */
     body.theme-neon {
-      --bg-solid: #f8f9fa;
-      --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-      --card-bg: rgba(255, 255, 255, 0.85);
-      --text-main: #111827;
+      --bg-solid: #f8fafc;
+      --bg-gradient: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+      --card-bg: rgba(255, 255, 255, 0.9);
+      --text-main: #0f172a;
       --text-sub: #64748b;
-      --border-subtle: rgba(56, 189, 248, 0.3); /* Blueish tint border */
-      --shadow-card: 0 15px 35px rgba(56, 189, 248, 0.15), 0 5px 15px rgba(168, 85, 247, 0.1);
-
-      --accent: #0ea5e9; /* Cyan */
-      --accent-soft: rgba(56, 189, 248, 0.1);
-      --accent-soft-border: #38bdf8;
-      
+      --border-subtle: #e2e8f0;
+      --shadow-card: 0 10px 40px rgba(0,0,0,0.1);
       --field-bg: #ffffff;
-      --steps-bg: rgba(255,255,255,0.9);
-      --steps-border: #bae6fd;
-      --summary-strong: #0284c7;
-
+      --steps-bg: #ffffff;
+      --steps-border: #cbd5e1;
       --btn-theme-bg: #ffffff;
-      --btn-theme-text: #0284c7;
+      --btn-theme-text: #0f172a;
       
-      /* Sharp, Electric Glows against White */
-      --glow-text: none;
-      --glow-box: 0 0 0 1px rgba(56, 189, 248, 0.3), 0 0 12px rgba(56, 189, 248, 0.2);
-      
-      --roast-light: #fbbf24;
-      --roast-medium: #d97706;
-      --roast-meddark: #b45309;
-      --roast-dark: #78350f;
+      --roast-light: #f59e0b;
+      --roast-medium: #ea580c;
+      --roast-meddark: #b91c1c;
+      --roast-dark: #7f1d1d;
     }
-
-    /* Neon Dark Mode: Cyberpunk */
+    /* Neon Dark Mode: Cyberpunk Style */
     @media (prefers-color-scheme: dark) {
       body.theme-neon {
-        --bg-solid: #000000;
-        --bg-gradient: radial-gradient(circle at top, #1a1b4b 0%, #050511 60%, #000000 100%);
-        --card-bg: rgba(10, 12, 25, 0.85);
-        --text-main: #e0e7ff;
-        --text-sub: #818cf8;
-        --border-subtle: rgba(99, 102, 241, 0.3);
-        --shadow-card: 0 0 40px rgba(99, 102, 241, 0.2);
-
-        --accent: #38bdf8;
-        --accent-soft: rgba(56, 189, 248, 0.15);
-        --accent-soft-border: rgba(56, 189, 248, 0.6);
+        --bg-solid: #020617;
+        --bg-gradient: radial-gradient(circle at top center, #1e293b 0%, #020617 80%);
+        --card-bg: rgba(15, 23, 42, 0.85);
+        --text-main: #f1f5f9;
+        --text-sub: #94a3b8;
+        --border-subtle: rgba(255,255,255,0.1);
+        --shadow-card: 0 20px 50px rgba(0,0,0,0.6);
+        --field-bg: rgba(2, 6, 23, 0.5);
+        --steps-bg: rgba(2, 6, 23, 0.6);
+        --steps-border: rgba(255,255,255,0.15);
+        --btn-theme-bg: #1e293b;
+        --btn-theme-text: #f1f5f9;
         
-        --field-bg: rgba(15, 23, 42, 0.6);
-        --steps-bg: rgba(8, 15, 30, 0.9);
-        --steps-border: #38bdf8;
-        --summary-strong: #22d3ee;
-
-        --btn-theme-bg: #0f172a;
-        --btn-theme-text: #38bdf8;
-        
-        --glow-text: 0 0 8px rgba(56, 189, 248, 0.6);
-        --glow-box: 0 0 12px rgba(56, 189, 248, 0.3);
-
-        --roast-light: #fcd34d;
+        --roast-light: #fbbf24;
         --roast-medium: #fb923c;
         --roast-meddark: #f87171;
         --roast-dark: #ef4444;
       }
     }
 
-    /* ===== アイスモード上書き ===== */
+    /* ===== ホット/アイス モード別カラー上書き (機能性優先) ===== */
+    
+    /* HOT MODE: オレンジ系 */
+    body.hot-mode {
+      --accent: #f97316;
+      --accent-soft: rgba(249,115,22,0.12);
+      --accent-soft-border: rgba(249,115,22,0.4);
+      --summary-strong: #ea580c;
+    }
+    
+    /* ICE MODE: 水色系 */
     body.ice-mode {
       --accent: #0ea5e9;
-      --accent-soft: rgba(14,165,233,0.15);
-      --accent-soft-border: rgba(56,189,248,0.5);
+      --accent-soft: rgba(14,165,233,0.12);
+      --accent-soft-border: rgba(14,165,233,0.4);
       --summary-strong: #0284c7;
     }
-    /* Neon theme ice mode tweaks (Purple Accent) */
+
+    /* --- Neonテーマ特有の「発光」カラー調整 --- */
+    
+    /* Neon + HOT (Orange Glow) */
+    body.theme-neon.hot-mode {
+      --accent: #ff6600;
+      --accent-soft: rgba(255, 102, 0, 0.1);
+      --accent-soft-border: rgba(255, 102, 0, 0.5);
+      --summary-strong: #ff6600;
+      --glow-text: 0 0 12px rgba(255, 102, 0, 0.5);
+      --glow-box: 0 0 16px rgba(255, 102, 0, 0.25);
+      --border-subtle: rgba(255, 102, 0, 0.3); /* 枠も少しオレンジに */
+    }
+    
+    /* Neon + ICE (Cyan Glow) */
     body.theme-neon.ice-mode {
-      --accent: #a855f7;
-      --accent-soft: rgba(168, 85, 247, 0.15);
-      --accent-soft-border: rgba(168, 85, 247, 0.6);
-      --summary-strong: #9333ea;
-      --glow-box: 0 0 0 1px rgba(168, 85, 247, 0.3), 0 0 12px rgba(168, 85, 247, 0.2);
+      --accent: #06b6d4;
+      --accent-soft: rgba(6, 182, 212, 0.1);
+      --accent-soft-border: rgba(6, 182, 212, 0.5);
+      --summary-strong: #22d3ee;
+      --glow-text: 0 0 12px rgba(34, 211, 238, 0.5);
+      --glow-box: 0 0 16px rgba(34, 211, 238, 0.25);
+      --border-subtle: rgba(6, 182, 212, 0.3); /* 枠も少しシアンに */
     }
-    @media (prefers-color-scheme: dark) {
-      body.theme-neon.ice-mode {
-        --summary-strong: #d8b4fe;
-        --glow-text: 0 0 8px rgba(168, 85, 247, 0.6);
-        --glow-box: 0 0 12px rgba(168, 85, 247, 0.3);
-      }
-    }
+
 
     /* ===== レイアウト & コンポーネント ===== */
 
@@ -252,6 +212,7 @@
       background-color: var(--bg-solid);
       background-image: var(--bg-gradient);
       background-attachment: fixed;
+      transition: background 0.3s;
     }
 
     body {
@@ -275,7 +236,7 @@
       padding: 28px 24px;
       border: 1px solid var(--border-subtle);
       box-shadow: var(--shadow-card);
-      transition: box-shadow 0.3s ease;
+      transition: box-shadow 0.3s ease, border-color 0.3s ease;
     }
     body.theme-neon .card {
       box-shadow: var(--shadow-card), var(--glow-box);
@@ -290,12 +251,13 @@
     }
 
     .title-main {
-      font-size: 1.2rem; /* 大きくしました */
+      font-size: 1.2rem;
       font-weight: 800;
-      letter-spacing: 0.15em;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--text-sub);
       text-shadow: var(--glow-text);
+      opacity: 0.8;
     }
 
     .title-bar {
@@ -304,6 +266,7 @@
       border-radius: 2px;
       background: linear-gradient(90deg, var(--accent), transparent);
       margin-bottom: 8px;
+      box-shadow: var(--glow-box);
     }
 
     .app-subtitle {
@@ -316,10 +279,10 @@
 
     /* Sections */
     .section-title {
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       color: var(--text-sub);
       font-weight: 600;
-      margin: 24px 0 10px;
+      margin: 26px 0 10px;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -331,18 +294,17 @@
       background: var(--accent-soft);
       color: var(--accent);
       font-size: 0.7rem;
-      font-weight: 600;
+      font-weight: 700;
       border: 1px solid var(--accent-soft-border);
-    }
-    body.theme-neon .inline-badge {
       box-shadow: var(--glow-box);
+      text-shadow: var(--glow-text);
     }
 
-    /* Controls */
+    /* Controls & Toggles */
     .toggle-group {
       display: inline-flex;
       width: 100%;
-      border-radius: 14px;
+      border-radius: 16px;
       background: var(--field-bg);
       padding: 4px;
       border: 1px solid var(--border-subtle);
@@ -351,61 +313,58 @@
 
     .toggle-btn {
       flex: 1;
-      border: none;
+      border: 1px solid transparent;
       background: transparent;
       color: var(--text-sub);
-      padding: 10px;
+      padding: 12px;
       font-size: 0.9rem;
       font-weight: 600;
-      border-radius: 10px;
+      border-radius: 12px;
       cursor: pointer;
       transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
     }
 
+    /* アクティブ状態のデザイン統一 */
     .toggle-btn.active {
-      background: var(--card-bg);
-      color: var(--text-main);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-      border: 1px solid var(--border-subtle);
+      background: var(--card-bg); /* 通常テーマ用 */
+      color: var(--accent);
+      border-color: var(--accent-soft-border);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
 
-    /* トグルに色をつける */
-    /* Hot/Ice */
-    #styleGroup .toggle-btn[data-style="hot"].active {
-      color: #f97316;
-      border-color: rgba(249,115,22,0.3);
+    /* 入力モードトグルにも色をつける */
+    #inputModeGroup .toggle-btn.active {
+      background: var(--accent-soft);
+      color: var(--accent);
+      border-color: var(--accent-soft-border);
     }
-    #styleGroup .toggle-btn[data-style="ice"].active {
-      color: #0ea5e9;
-      border-color: rgba(14,165,233,0.3);
-    }
-    body.theme-neon.ice-mode #styleGroup .toggle-btn[data-style="ice"].active {
-      color: #a855f7; /* Neon Purple for Ice */
-      border-color: #a855f7;
+    body.theme-neon #inputModeGroup .toggle-btn.active {
+       box-shadow: var(--glow-box) inset;
+       text-shadow: var(--glow-text);
     }
 
-    /* Roast Buttons */
-    #roastGroup .toggle-btn[data-roast="light"].active {
-      color: var(--roast-light);
-      border-color: var(--roast-light);
+    /* スタイルトグル（HOT/ICE）の特定色指定 */
+    #styleGroup .toggle-btn.active {
+      /* 文字色はbodyのhot-mode/ice-modeで定義された--accentに従うので指定不要だが念のため */
+      color: var(--accent);
+      background: var(--accent-soft);
+      border-color: var(--accent-soft-border);
     }
-    #roastGroup .toggle-btn[data-roast="medium"].active {
-      color: var(--roast-medium);
-      border-color: var(--roast-medium);
-    }
-    #roastGroup .toggle-btn[data-roast="meddark"].active {
-      color: var(--roast-meddark);
-      border-color: var(--roast-meddark);
-    }
-    #roastGroup .toggle-btn[data-roast="dark"].active {
-      color: var(--roast-dark);
-      border-color: var(--roast-dark);
-    }
-
+    
     body.theme-neon .toggle-btn.active {
       box-shadow: var(--glow-box) inset;
+      text-shadow: var(--glow-text);
     }
 
+    /* Roast Buttons: 焙煎色は固定 */
+    #roastGroup .toggle-btn[data-roast="light"].active { color: var(--roast-light); border-color: var(--roast-light); background: rgba(255,255,255,0.05); }
+    #roastGroup .toggle-btn[data-roast="medium"].active { color: var(--roast-medium); border-color: var(--roast-medium); background: rgba(255,255,255,0.05); }
+    #roastGroup .toggle-btn[data-roast="meddark"].active { color: var(--roast-meddark); border-color: var(--roast-meddark); background: rgba(255,255,255,0.05); }
+    #roastGroup .toggle-btn[data-roast="dark"].active { color: var(--roast-dark); border-color: var(--roast-dark); background: rgba(255,255,255,0.05); }
+
+    /* Selects */
     .select-wrapper {
       position: relative;
       margin-bottom: 8px;
@@ -417,14 +376,18 @@
       background: var(--field-bg);
       color: var(--text-main);
       border: 1px solid var(--border-subtle);
-      border-radius: 14px;
-      padding: 14px 16px;
+      border-radius: 16px;
+      padding: 16px 16px;
       font-size: 1rem;
       outline: none;
       transition: border-color 0.2s;
     }
     select:focus {
       border-color: var(--accent);
+      box-shadow: 0 0 0 1px var(--accent-soft);
+    }
+    body.theme-neon select:focus {
+      box-shadow: var(--glow-box);
     }
     .select-arrow {
       position: absolute;
@@ -433,28 +396,30 @@
       transform: translateY(-50%);
       pointer-events: none;
       color: var(--text-sub);
-      font-size: 0.8rem;
+      font-size: 0.7rem;
     }
 
     .hint {
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       color: var(--text-sub);
-      margin-top: 6px;
+      margin-top: 8px;
+      margin-left: 4px;
       opacity: 0.8;
     }
 
     /* Summary Box */
     .summary {
-      margin-top: 24px;
-      padding: 20px;
-      border-radius: 20px;
+      margin-top: 28px;
+      padding: 24px;
+      border-radius: 24px;
       background: var(--accent-soft);
       border: 1px solid var(--accent-soft-border);
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 14px;
       position: relative;
       overflow: hidden;
+      transition: all 0.3s;
     }
     body.theme-neon .summary {
       box-shadow: var(--glow-box);
@@ -463,17 +428,18 @@
     .summary-row {
       display: flex;
       justify-content: space-between;
-      align-items: baseline;
+      align-items: center;
     }
 
     .summary-label {
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       color: var(--text-main);
+      font-weight: 500;
       opacity: 0.9;
     }
 
     .summary-value {
-      font-size: 1.4rem;
+      font-size: 1.5rem;
       font-weight: 800;
       color: var(--summary-strong);
       font-variant-numeric: tabular-nums;
@@ -481,35 +447,40 @@
     }
 
     .summary-temp {
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       font-weight: 700;
       color: var(--summary-strong);
       text-shadow: var(--glow-text);
     }
     .summary-temp.placeholder {
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       font-weight: 400;
-      opacity: 0.7;
+      opacity: 0.6;
+      font-style: italic;
     }
 
     /* Steps */
     .steps-card {
       background: var(--steps-bg);
       border: 1px solid var(--steps-border);
-      border-radius: 20px;
+      border-radius: 24px;
       padding: 8px 0;
       overflow: hidden;
+      transition: all 0.3s;
     }
     body.theme-neon .steps-card {
       box-shadow: var(--glow-box);
     }
 
     .step-row {
-      padding: 14px 20px;
+      padding: 16px 24px;
       border-bottom: 1px solid rgba(0,0,0,0.05);
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
+    }
+    body.theme-neon .step-row {
+      border-bottom: 1px solid rgba(255,255,255,0.08);
     }
     .step-row:last-child {
       border-bottom: none;
@@ -521,11 +492,12 @@
     .step-name {
       font-weight: 700;
       color: var(--text-main);
-      font-size: 0.95rem;
-      margin-bottom: 2px;
+      font-size: 1rem;
+      margin-bottom: 4px;
+      text-shadow: var(--glow-text);
     }
     .step-sub {
-      font-size: 0.75rem;
+      font-size: 0.8rem;
       color: var(--text-sub);
       line-height: 1.4;
     }
@@ -538,51 +510,56 @@
       font-size: 0.7rem;
       color: var(--text-sub);
       display: block;
+      margin-bottom: 2px;
     }
     .step-acc-value {
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       font-weight: 700;
       color: var(--text-main);
       display: block;
       font-variant-numeric: tabular-nums;
+      text-shadow: var(--glow-text);
     }
 
     .placeholder {
-      padding: 20px;
+      padding: 30px 20px;
       text-align: center;
       font-size: 0.9rem;
       color: var(--text-sub);
     }
 
-    /* Memo (Revert to Original Text & Refined Style) */
+    /* Memo */
     .note {
       position: relative;
       margin-top: 24px;
-      padding: 16px 18px;
-      border-radius: 16px;
+      padding: 18px 20px;
+      border-radius: 20px;
       background: var(--card-bg);
       border: 1px solid var(--border-subtle);
       overflow: hidden;
     }
+    body.theme-neon .note {
+      box-shadow: var(--glow-box);
+    }
 
-    /* グラデーションバーの復活（モダン化） */
     .note::before {
       content: "";
       position: absolute;
       left: 0;
       top: 0;
       bottom: 0;
-      width: 5px;
-      background: linear-gradient(180deg, var(--accent), var(--summary-strong));
+      width: 6px;
+      background: linear-gradient(180deg, var(--accent), transparent);
     }
 
     .note-label {
       font-size: 0.75rem;
       letter-spacing: 0.1em;
-      font-weight: 700;
+      font-weight: 800;
       color: var(--text-sub);
-      margin-bottom: 6px;
+      margin-bottom: 8px;
       display: block;
+      text-transform: uppercase;
     }
 
     .note-body {
@@ -591,13 +568,9 @@
       color: var(--text-main);
     }
 
-    body.theme-neon .note {
-      box-shadow: var(--glow-box);
-    }
-
-    /* テーマスイッチャー */
+    /* Theme Switcher */
     .theme-floater {
-      margin-top: 30px;
+      margin-top: 40px;
       display: flex;
       justify-content: center;
     }
@@ -609,12 +582,12 @@
       gap: 10px;
       background: var(--btn-theme-bg);
       color: var(--btn-theme-text);
-      padding: 12px 24px;
+      padding: 14px 28px;
       border-radius: 99px;
       box-shadow: var(--btn-theme-shadow);
       border: 1px solid var(--border-subtle);
-      font-size: 0.9rem;
-      font-weight: 600;
+      font-size: 0.95rem;
+      font-weight: 700;
       cursor: pointer;
       transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s;
     }
@@ -630,11 +603,12 @@
     }
 
     .theme-icon {
-      width: 18px;
-      height: 18px;
+      width: 20px;
+      height: 20px;
       border-radius: 50%;
       background: linear-gradient(135deg, var(--accent), var(--summary-strong));
       border: 2px solid rgba(255,255,255,0.4);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
 
     #themeSelect {
@@ -646,7 +620,6 @@
       opacity: 0;
       cursor: pointer;
       appearance: none;
-      -webkit-appearance: none;
     }
 
   </style>
@@ -763,7 +736,7 @@
   </div>
 
   <script>
-    /* 計算ロジック: 元のコード(初期バージョン)のロジックへ完全復旧 */
+    /* Logic maintained from original */
     const basePoints = [
       { water: 150, beans: 10 },
       { water: 300, beans: 20 },
@@ -878,7 +851,6 @@
 
       brewWater = Math.round(brewWater);
 
-      // 元の計算式: 豆量 x 1.5 を10ml単位で切り上げ
       let bloom = beans * 1.5;
       bloom = roundUpTo10ml(bloom);
       if (bloom > brewWater) bloom = brewWater;
@@ -962,7 +934,6 @@
         sumTemp.classList.remove("placeholder");
       }
 
-      // 注湯ステップのHTML生成（積算と個別投入量を併記）
       let html = `
         <div class="step-row">
           <div class="step-info">
