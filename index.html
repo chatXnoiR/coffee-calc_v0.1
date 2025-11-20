@@ -36,27 +36,68 @@
       /* トランジション設定 */
       --trans-speed: 0.3s;
       
-      /* 形状 (Blueprintで変更するため変数化) */
+      /* 形状変数 */
       --radius-card: 32px;
       --radius-btn: 12px;
       --radius-pill: 99px;
       
-      /* 背景パターン */
+      /* 背景パターン制御 */
       --bg-pattern: none;
+      --bg-size: auto;
     }
+
+    /* =========================================
+       背景固定レイヤー (ツートン問題解決の鍵)
+       ========================================= */
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      /* body自体の背景は透明にする */
+      background: transparent; 
+    }
+
+    /* 背景専用の固定レイヤー */
+    #bg-layer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%; /* ビューポートいっぱいに広げる */
+      z-index: -999; /* 最背面 */
+      
+      background-color: var(--bg-solid);
+      background-image: var(--bg-gradient);
+      background-size: var(--bg-size, auto);
+      background-repeat: repeat;
+      transition: background var(--trans-speed);
+      pointer-events: none; /* クリック透過 */
+    }
+
+    body {
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 16px 80px;
+      /* スクロール可能にする設定 */
+      min-height: 100vh;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
 
     /* =========================================
        テーマ定義 (CSS Variables)
        ========================================= */
 
-    /* * 1. Minimal (Default / Mocha Cafe Style)
-     * しっかりとしたモカベージュ、ブラウン文字
-     */
+    /* * 1. Minimal (Default / Mocha Cafe) */
     :root {
-      --bg-solid: #e8dfd8; /* ミルク多めのモカ色 */
+      --bg-solid: #e8dfd8; 
       --bg-gradient: linear-gradient(180deg, #e8dfd8 0%, #dfd3ca 100%);
-      --card-bg: #fbf8f6; /* ほぼ白に近いクリーム */
-      --text-main: #4b3621; /* コーヒー豆色 */
+      --card-bg: #fbf8f6;
+      --text-main: #4b3621;
       --text-sub: #856e5b;
       --border-subtle: #dcd0c5;
       --shadow-card: 0 15px 35px -5px rgba(75, 54, 33, 0.08);
@@ -65,11 +106,11 @@
       --steps-border: #dcd0c5;
       --btn-theme-bg: #fbf8f6;
       --btn-theme-text: #5d4037;
+      --btn-theme-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
 
-    /* Minimal - Dark Mode (Dark Chocolate) */
     body.dark-mode {
-      --bg-solid: #231e1b; /* ダークチョコレート */
+      --bg-solid: #231e1b;
       --bg-gradient: linear-gradient(180deg, #231e1b 0%, #1a1614 100%);
       --card-bg: #2f2926;
       --text-main: #ede0d4;
@@ -83,9 +124,7 @@
       --btn-theme-text: #ede0d4;
     }
 
-    /* * 2. Modest (Old Standard)
-     * クールグレー/ブルーグレーベース
-     */
+    /* * 2. Modest (Old Standard) */
     body.theme-modest {
       --bg-solid: #f3f4f6;
       --bg-gradient: linear-gradient(180deg, #f3f4f6 0%, #e5e7eb 100%);
@@ -100,8 +139,6 @@
       --btn-theme-bg: #ffffff;
       --btn-theme-text: #374151;
     }
-
-    /* Modest - Dark Mode */
     body.theme-modest.dark-mode {
       --bg-solid: #0f172a;
       --bg-gradient: linear-gradient(180deg, #0f172a 0%, #020617 100%);
@@ -117,10 +154,9 @@
       --btn-theme-text: #e2e8f0;
     }
 
-    /* * 3. Coffee (Deep Roasted)
-     */
+    /* * 3. Coffee (Deep Roasted) */
     body.theme-coffee {
-      --bg-solid: #261e1b; /* 濃い茶色 */
+      --bg-solid: #261e1b;
       --bg-gradient: linear-gradient(180deg, #261e1b 0%, #1f1816 100%);
       --card-bg: #2e2522;
       --text-main: #e7e5e4;
@@ -134,14 +170,13 @@
       --btn-theme-text: #e7e5e4;
     }
     body.theme-coffee.dark-mode {
-      --bg-solid: #000000; /* 漆黒 */
+      --bg-solid: #000000;
       --bg-gradient: linear-gradient(180deg, #000000 0%, #0c0a09 100%);
       --card-bg: #141211;
       --border-subtle: #333;
     }
 
-    /* * 4. Neon (Smooth & Deep)
-     */
+    /* * 4. Neon (Smooth & Deep) */
     body.theme-neon {
       --bg-solid: #f0f4f8;
       --bg-gradient: linear-gradient(180deg, #f0f4f8 0%, #e2e8f0 100%);
@@ -162,7 +197,6 @@
       --roast-dark: #7f1d1d;
     }
     body.theme-neon.dark-mode {
-      /* Deep void black/blue, no spotlight */
       --bg-solid: #050508;
       --bg-gradient: linear-gradient(180deg, #050508 0%, #020204 100%);
       --card-bg: rgba(15, 17, 26, 0.9);
@@ -182,23 +216,20 @@
       --roast-dark: #ef4444;
     }
 
-    /* * 5. Blueprint (New Drastic Theme)
-     * 設計図、テクニカル、方眼紙
-     */
+    /* * 5. Blueprint (Technical) */
     body.theme-blueprint {
-      --bg-solid: #003399; /* Blueprint Blue */
+      --bg-solid: #003399;
       --bg-gradient: 
         linear-gradient(rgba(255,255,255,0.15) 1px, transparent 1px),
         linear-gradient(90deg, rgba(255,255,255,0.15) 1px, transparent 1px),
         linear-gradient(#003399, #003399);
-      --bg-pattern: 20px 20px; /* Grid Size */
+      --bg-size: 20px 20px;
       
       --card-bg: #003399;
       --text-main: #ffffff;
       --text-sub: #abc4ff;
-      --border-subtle: #ffffff; /* Strong white lines */
-      
-      --shadow-card: 10px 10px 0px rgba(0,0,0,0.2); /* Hard shadow */
+      --border-subtle: #ffffff;
+      --shadow-card: 10px 10px 0px rgba(0,0,0,0.2);
       
       --field-bg: rgba(0,0,0,0.1);
       --steps-bg: rgba(0,0,0,0.1);
@@ -211,10 +242,9 @@
       --radius-btn: 0px;
       --radius-pill: 0px;
 
-      font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Console", monospace;
+      font-family: "Courier New", Courier, monospace;
       letter-spacing: 0.05em;
     }
-    
     body.theme-blueprint.dark-mode {
       --bg-solid: #1a1a1a;
       --bg-gradient: 
@@ -223,18 +253,68 @@
         linear-gradient(#1a1a1a, #1a1a1a);
       
       --card-bg: #1a1a1a;
-      --text-main: #00ff00; /* Terminal Green */
+      --text-main: #00ff00;
       --text-sub: #00cc00;
       --border-subtle: #00ff00;
-      
       --shadow-card: 8px 8px 0px rgba(0,50,0,0.5);
-      
       --field-bg: #000000;
       --steps-bg: #000000;
       --steps-border: #00ff00;
-      
       --btn-theme-bg: #000000;
       --btn-theme-text: #00ff00;
+    }
+
+    /* * 6. Arcade (New! 8bit Retro) 
+     * ポップなゲームボーイ/ファミコン風
+     */
+    body.theme-arcade {
+      --bg-solid: #fff0f5; /* Lavender Blush */
+      /* ドットパターン */
+      --bg-gradient: 
+        radial-gradient(#ff69b4 2px, transparent 2px),
+        radial-gradient(#ff69b4 2px, transparent 2px);
+      --bg-size: 20px 20px;
+      
+      --card-bg: #ffffff;
+      --text-main: #2d2d2d;
+      --text-sub: #555555;
+      --border-subtle: #000000; /* 太い黒枠 */
+      
+      --shadow-card: 8px 8px 0px #000000; /* ハードシャドウ */
+      
+      --field-bg: #ffffff;
+      --steps-bg: #f0f0f0;
+      --steps-border: #000000;
+      
+      --btn-theme-bg: #ffffff;
+      --btn-theme-text: #000000;
+      
+      --radius-card: 8px;
+      --radius-btn: 4px;
+      --radius-pill: 8px;
+      
+      font-family: "Courier New", Courier, monospace;
+      --trans-speed: 0s; /* レトロ感を出すためアニメーションなし */
+    }
+
+    body.theme-arcade.dark-mode {
+      --bg-solid: #202020;
+      --bg-gradient: 
+        radial-gradient(#444 2px, transparent 2px),
+        radial-gradient(#444 2px, transparent 2px);
+      
+      --card-bg: #2d2d2d;
+      --text-main: #ffffff;
+      --text-sub: #cccccc;
+      --border-subtle: #ffffff;
+      --shadow-card: 8px 8px 0px #000000;
+      
+      --field-bg: #000000;
+      --steps-bg: #404040;
+      --steps-border: #ffffff;
+      
+      --btn-theme-bg: #000000;
+      --btn-theme-text: #ffffff;
     }
 
 
@@ -258,7 +338,7 @@
 
     /* Theme Specific Accents */
     
-    /* Neon + HOT */
+    /* Neon Overrides */
     body.theme-neon.hot-mode {
       --accent: #ff5500;
       --accent-soft: rgba(255, 85, 0, 0.15);
@@ -268,8 +348,6 @@
       --glow-box: 0 0 15px rgba(255, 85, 0, 0.25);
       --border-subtle: rgba(255, 85, 0, 0.3);
     }
-    
-    /* Neon + ICE */
     body.theme-neon.ice-mode {
       --accent: #00ddff;
       --accent-soft: rgba(0, 221, 255, 0.15);
@@ -280,18 +358,18 @@
       --border-subtle: rgba(0, 221, 255, 0.3);
     }
     
-    /* Blueprint overrides */
+    /* Blueprint Overrides */
     body.theme-blueprint.hot-mode {
-      --accent: #ffffff; /* In Blueprint, accent is white or yellow usually */
+      --accent: #ffffff;
       --accent-soft: rgba(255,255,255,0.1);
       --accent-soft-border: #ffffff;
-      --summary-strong: #ffcc00; /* Technical Yellow for emphasis */
+      --summary-strong: #ffcc00;
     }
     body.theme-blueprint.ice-mode {
       --accent: #ffffff;
       --accent-soft: rgba(255,255,255,0.1);
       --accent-soft-border: #ffffff;
-      --summary-strong: #66ccff; /* Light Blue */
+      --summary-strong: #66ccff;
     }
     body.theme-blueprint.dark-mode.hot-mode {
       --accent: #00ff00;
@@ -303,27 +381,30 @@
       --summary-strong: #00ffff;
     }
 
+    /* Arcade Overrides (Pop Colors) */
+    body.theme-arcade.hot-mode {
+      --accent: #ff4500; /* OrangeRed */
+      --accent-soft: #ffe4e1;
+      --accent-soft-border: #000000;
+      --summary-strong: #ff4500;
+    }
+    body.theme-arcade.ice-mode {
+      --accent: #1e90ff; /* DodgerBlue */
+      --accent-soft: #e0ffff;
+      --accent-soft-border: #000000;
+      --summary-strong: #1e90ff;
+    }
+    body.theme-arcade.dark-mode.hot-mode {
+      --accent: #ff6347;
+      --accent-soft: #333;
+    }
+    body.theme-arcade.dark-mode.ice-mode {
+      --accent: #00bfff;
+      --accent-soft: #333;
+    }
+
 
     /* ===== レイアウト & コンポーネント ===== */
-
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      background-color: var(--bg-solid);
-      background-image: var(--bg-gradient);
-      background-size: var(--bg-pattern, auto); /* For Blueprint grid */
-      background-attachment: fixed;
-      transition: background var(--trans-speed), color var(--trans-speed);
-    }
-
-    body {
-      color: var(--text-main);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px 16px 80px;
-    }
 
     .app {
       width: 100%;
@@ -333,10 +414,8 @@
 
     .card {
       background: var(--card-bg);
-      /* Blueprint以外はぼかし */
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      
       border-radius: var(--radius-card);
       padding: 28px 24px;
       border: 1px solid var(--border-subtle);
@@ -346,10 +425,14 @@
     body.theme-neon .card {
       box-shadow: var(--shadow-card), var(--glow-box);
     }
-    /* Blueprintはぼかさない（くっきり） */
     body.theme-blueprint .card {
       backdrop-filter: none;
       -webkit-backdrop-filter: none;
+    }
+    body.theme-arcade .card {
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      border-width: 4px; /* Arcadeは太枠 */
     }
 
     /* Header */
@@ -384,6 +467,13 @@
     body.theme-blueprint .title-bar {
       height: 2px;
       background: var(--accent);
+    }
+    body.theme-arcade .title-bar {
+      background: var(--accent);
+      border: 2px solid #000;
+      height: 8px;
+      border-radius: 0;
+      box-shadow: 2px 2px 0 #000;
     }
 
     .app-subtitle {
@@ -425,6 +515,15 @@
       border: 2px solid var(--border-subtle);
       box-shadow: 4px 4px 0 rgba(0,0,0,0.2);
     }
+    body.theme-arcade .mode-toggle-btn {
+      border-radius: 4px;
+      border: 2px solid var(--border-subtle);
+      box-shadow: 4px 4px 0 #000;
+    }
+    body.theme-arcade .mode-toggle-btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: 2px 2px 0 #000;
+    }
     .mode-icon {
       width: 18px;
       height: 18px;
@@ -465,6 +564,11 @@
       border-radius: 0;
       border: 1px solid var(--accent);
     }
+    body.theme-arcade .inline-badge {
+      border: 2px solid #000;
+      border-radius: 4px;
+      box-shadow: 2px 2px 0 #000;
+    }
 
     /* Controls & Toggles */
     .toggle-group {
@@ -482,6 +586,14 @@
       border: 2px solid var(--border-subtle);
       padding: 0;
       gap: 0;
+    }
+    body.theme-arcade .toggle-group {
+      border: 2px solid #000;
+      border-radius: 8px;
+      background: transparent;
+      box-shadow: 4px 4px 0 #000;
+      gap: 0;
+      padding: 0;
     }
 
     .toggle-btn {
@@ -503,6 +615,14 @@
       border-right: 1px solid var(--border-subtle);
     }
     body.theme-blueprint .toggle-btn:last-child {
+      border-right: none;
+    }
+    body.theme-arcade .toggle-btn {
+      border: none;
+      border-right: 2px solid #000;
+      border-radius: 0;
+    }
+    body.theme-arcade .toggle-btn:last-child {
       border-right: none;
     }
 
@@ -527,7 +647,7 @@
     
     body.theme-blueprint .toggle-btn.active {
       background: var(--accent);
-      color: var(--bg-solid); /* Invert color */
+      color: var(--bg-solid);
       border-radius: 0;
       box-shadow: none;
       font-weight: 900;
@@ -535,6 +655,15 @@
     body.theme-blueprint #inputModeGroup .toggle-btn.active {
       background: var(--text-main);
       color: var(--bg-solid);
+    }
+
+    body.theme-arcade .toggle-btn.active {
+      background: var(--accent);
+      color: #ffffff;
+      box-shadow: inset 2px 2px 0 rgba(0,0,0,0.3); /* 押し込んだ感じ */
+    }
+    body.theme-arcade #inputModeGroup .toggle-btn.active {
+      border-color: transparent;
     }
 
     /* Roast Buttons */
@@ -546,6 +675,11 @@
     body.theme-blueprint #roastGroup .toggle-btn.active {
       background: transparent;
       text-decoration: underline;
+    }
+    body.theme-arcade #roastGroup .toggle-btn.active {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: inset 2px 2px 0 rgba(0,0,0,0.3);
     }
 
 
@@ -571,6 +705,16 @@
       border-radius: 0;
       border: 2px solid var(--border-subtle);
     }
+    body.theme-arcade select {
+      border: 2px solid #000;
+      border-radius: 4px;
+      box-shadow: 4px 4px 0 #000;
+    }
+    body.theme-arcade select:active {
+      transform: translate(2px, 2px);
+      box-shadow: 2px 2px 0 #000;
+    }
+
     select:focus {
       border-color: var(--accent);
       box-shadow: 0 0 0 1px var(--accent-soft);
@@ -617,6 +761,11 @@
       border-radius: 0;
       border: 2px solid var(--accent);
       background: transparent;
+    }
+    body.theme-arcade .summary {
+      border: 2px solid #000;
+      border-radius: 8px;
+      box-shadow: 6px 6px 0 #000;
     }
 
     .summary-row {
@@ -677,6 +826,11 @@
       border: 2px solid var(--border-subtle);
       background: transparent;
     }
+    body.theme-arcade .steps-card {
+      border: 2px solid #000;
+      border-radius: 8px;
+      box-shadow: 6px 6px 0 #000;
+    }
 
     .step-row {
       padding: 16px 24px;
@@ -692,6 +846,12 @@
     }
     body.theme-blueprint .step-row {
       border-bottom: 1px solid var(--border-subtle);
+    }
+    body.theme-arcade .step-row {
+      border-bottom: 2px dashed #000;
+    }
+    body.theme-arcade.dark-mode .step-row {
+      border-bottom: 2px dashed #666;
     }
 
     .step-row:last-child {
@@ -758,6 +918,11 @@
       border-radius: 0;
       border: 2px solid var(--border-subtle);
     }
+    body.theme-arcade .note {
+      border: 2px solid #000;
+      border-radius: 8px;
+      box-shadow: 6px 6px 0 #000;
+    }
 
     .note::before {
       content: "";
@@ -777,6 +942,10 @@
         transparent 10px,
         transparent 20px
       );
+    }
+    body.theme-arcade .note::before {
+      border-right: 2px solid #000;
+      background: var(--accent);
     }
 
     .note-label {
@@ -833,6 +1002,15 @@
       border: 2px solid var(--border-subtle);
       box-shadow: 4px 4px 0 rgba(0,0,0,0.2);
     }
+    body.theme-arcade .theme-btn-design {
+      border: 2px solid #000;
+      border-radius: 8px;
+      box-shadow: 4px 4px 0 #000;
+    }
+    body.theme-arcade .theme-btn-design:active {
+      transform: translate(2px, 2px);
+      box-shadow: 2px 2px 0 #000;
+    }
 
     .theme-icon {
       width: 20px;
@@ -841,6 +1019,10 @@
       background: linear-gradient(135deg, var(--accent), var(--summary-strong));
       border: 2px solid rgba(255,255,255,0.4);
       box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    body.theme-arcade .theme-icon {
+      border: 2px solid #000;
+      box-shadow: none;
     }
 
     #themeSelect {
@@ -857,6 +1039,9 @@
   </style>
 </head>
 <body class="hot-mode">
+  
+  <div id="bg-layer"></div>
+
   <div class="app">
     <div class="card">
 
@@ -967,6 +1152,7 @@
             <option value="coffee">Coffee</option>
             <option value="neon">Neon</option>
             <option value="blueprint">Blueprint</option>
+            <option value="arcade">Arcade (New!)</option>
           </select>
         </div>
       </div>
@@ -1017,7 +1203,8 @@
       modest: "Modest",
       coffee: "Coffee",
       neon: "Neon",
-      blueprint: "Blueprint"
+      blueprint: "Blueprint",
+      arcade: "Arcade"
     };
 
     function roundToHalf(v) { return Math.round(v * 2) / 2; }
@@ -1277,7 +1464,8 @@
       modest:    { light: "#f3f4f6", dark: "#0f172a" },
       coffee:    { light: "#261e1b", dark: "#000000" },
       neon:      { light: "#f0f4f8", dark: "#050508" },
-      blueprint: { light: "#003399", dark: "#1a1a1a" }
+      blueprint: { light: "#003399", dark: "#1a1a1a" },
+      arcade:    { light: "#fff0f5", dark: "#202020" }
     };
 
     function updateStatusBar() {
@@ -1293,7 +1481,7 @@
 
     function applyTheme(key) {
       document.body.classList.remove(
-        "theme-modest", "theme-coffee", "theme-neon", "theme-blueprint"
+        "theme-modest", "theme-coffee", "theme-neon", "theme-blueprint", "theme-arcade"
       );
       if (key !== "minimal") {
         document.body.classList.add("theme-" + key);
