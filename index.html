@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>コーヒー計算機</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 
   <meta name="theme-color" content="#e8dfd8">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -11,7 +11,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@400;500&family=M+PLUS+Rounded+1c:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@400;500&family=M+PLUS+Rounded+1c:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 
   <style>
     /* ===== リセット & ベース ===== */
@@ -25,7 +25,7 @@
       --font-base: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Hiragino Sans", sans-serif;
       font-family: var(--font-base);
       
-      /* 共通アクセント (後ほど上書き) */
+      /* 共通アクセント */
       --accent: #f97316;
       --accent-soft: rgba(249,115,22,0.12);
       --accent-soft-border: rgba(249,115,22,0.45);
@@ -53,30 +53,32 @@
     }
 
     /* =========================================
-       背景固定レイヤー & HTML背景
+       背景 & ステータスバー対策
        ========================================= */
     html {
-      /* ステータスバーの背景色漏れを防ぐため、HTML自体にも色をつける */
+      /* JSでこの色が書き換わり、ステータスバー領域の色漏れを防ぐ */
       background-color: var(--bg-solid);
       transition: background-color var(--trans-speed);
+      height: 100%;
     }
 
     body {
       margin: 0;
       padding: 0;
       width: 100%;
-      min-height: 100vh;
-      background: transparent; /* bodyは透明 */
+      min-height: 100%;
+      background: transparent;
       color: var(--text-main);
       display: flex;
       flex-direction: column;
       align-items: center;
       padding: 20px 16px 80px;
+      /* iOSスクロール対策 */
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
     }
 
-    /* 背景専用の固定レイヤー */
+    /* 背景専用の固定レイヤー (コンテンツ背景) */
     #bg-layer {
       position: fixed;
       top: 0;
@@ -98,7 +100,7 @@
        テーマ定義 (CSS Variables)
        ========================================= */
 
-    /* * 1. Minimal (Default / Mocha Cafe) */
+    /* * 1. Minimal (Default) */
     :root {
       --bg-solid: #e8dfd8; 
       --bg-gradient: linear-gradient(180deg, #e8dfd8 0%, #dfd3ca 100%);
@@ -130,7 +132,7 @@
       --btn-theme-text: #ede0d4;
     }
 
-    /* * 2. Modest (Old Standard) */
+    /* * 2. Modest */
     body.theme-modest {
       --bg-solid: #f3f4f6;
       --bg-gradient: linear-gradient(180deg, #f3f4f6 0%, #e5e7eb 100%);
@@ -160,7 +162,7 @@
       --btn-theme-text: #e2e8f0;
     }
 
-    /* * 3. Coffee (Deep Roasted) */
+    /* * 3. Coffee */
     body.theme-coffee {
       --bg-solid: #261e1b;
       --bg-gradient: linear-gradient(180deg, #261e1b 0%, #1f1816 100%);
@@ -182,7 +184,7 @@
       --border-subtle: #333;
     }
 
-    /* * 4. Neon (Smooth & Deep) */
+    /* * 4. Neon (Original) */
     body.theme-neon {
       --bg-solid: #f0f4f8;
       --bg-gradient: linear-gradient(180deg, #f0f4f8 0%, #e2e8f0 100%);
@@ -222,7 +224,7 @@
       --roast-dark: #ef4444;
     }
 
-    /* * 5. Blueprint (Technical) */
+    /* * 5. Blueprint */
     body.theme-blueprint {
       --bg-solid: #003399;
       --bg-gradient: 
@@ -270,7 +272,7 @@
       --btn-theme-text: #00ff00;
     }
 
-    /* * 6. Arcade (8bit Retro) */
+    /* * 6. Arcade */
     body.theme-arcade {
       --bg-solid: #fff0f5;
       --bg-gradient: 
@@ -319,15 +321,13 @@
       --btn-theme-text: #ffffff;
     }
 
-    /* * 7. Lovely (New! Pop & Cute) 
-     * 丸みのあるフォント、パステルカラー、ステッカー風
-     */
+    /* * 7. Lovely (Fix: Dark Mode Visibility) */
     body.theme-lovely {
-      --bg-solid: #fff0f3; /* Lavender Blush */
-      --bg-gradient: linear-gradient(135deg, #fff0f3 0%, #e6e6fa 100%); /* to Lavender */
+      --bg-solid: #fff0f3; 
+      --bg-gradient: linear-gradient(135deg, #fff0f3 0%, #e6e6fa 100%);
       
-      --card-bg: rgba(255, 255, 255, 0.8);
-      --text-main: #5d4b5d; /* Purple Grey */
+      --card-bg: rgba(255, 255, 255, 0.9);
+      --text-main: #5d4b5d;
       --text-sub: #9c8a9c;
       --border-subtle: #ffffff;
       
@@ -335,7 +335,7 @@
       
       --field-bg: #ffffff;
       --steps-bg: #ffffff;
-      --steps-border: #ffb7b2; /* Pastel Red/Pink */
+      --steps-border: #ffb7b2;
       
       --btn-theme-bg: #ffffff;
       --btn-theme-text: #ff69b4;
@@ -348,22 +348,71 @@
     }
     
     body.theme-lovely.dark-mode {
-      --bg-solid: #2d2038; /* Deep Purple */
-      --bg-gradient: linear-gradient(135deg, #2d2038 0%, #1a1020 100%);
+      /* ダークモード時は背景を濃い紫、カードも濃くして文字を明るくする */
+      --bg-solid: #2a1d2e; /* Dark Plum */
+      --bg-gradient: linear-gradient(135deg, #2a1d2e 0%, #1a0d20 100%);
       
-      --card-bg: rgba(50, 35, 60, 0.8);
-      --text-main: #f8e8f8;
-      --text-sub: #c8b0c8;
-      --border-subtle: rgba(255,255,255,0.1);
+      --card-bg: #3e2a42; /* Card is distinct dark purple */
+      --text-main: #ffd1dc; /* Bright Pastel Pink for text */
+      --text-sub: #e6c0e6;
+      --border-subtle: #704875;
       
-      --shadow-card: 0 10px 30px rgba(0,0,0,0.3);
+      --shadow-card: 0 15px 40px rgba(0,0,0,0.4);
       
-      --field-bg: rgba(20, 10, 25, 0.4);
-      --steps-bg: rgba(20, 10, 25, 0.6);
-      --steps-border: #885588;
+      --field-bg: #2a1d2e;
+      --steps-bg: #2a1d2e;
+      --steps-border: #ff8da1; /* Bright pink border */
       
-      --btn-theme-bg: #4a3555;
-      --btn-theme-text: #f8e8f8;
+      --btn-theme-bg: #503555;
+      --btn-theme-text: #ffd1dc;
+    }
+
+    /* * 8. Cyberpunk (New! Enhanced Neon) */
+    body.theme-cyberpunk {
+      --bg-solid: #050010;
+      /* スキャンライン風グリッド */
+      --bg-gradient: 
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(0, 255, 255, 0.03) 2px,
+          rgba(0, 255, 255, 0.03) 4px
+        ),
+        linear-gradient(180deg, #0a0015 0%, #000000 100%);
+      --bg-size: auto;
+
+      --card-bg: rgba(15, 10, 25, 0.95);
+      --text-main: #e0ffff;
+      --text-sub: #00e5ff; /* Cyan */
+      --border-subtle: #ff00ff; /* Magenta Border */
+      
+      --shadow-card: 0 0 20px rgba(255, 0, 255, 0.3), inset 0 0 20px rgba(0, 255, 255, 0.1);
+      
+      --field-bg: rgba(0, 20, 40, 0.8);
+      --steps-bg: rgba(20, 0, 40, 0.8);
+      --steps-border: #00e5ff;
+      
+      --btn-theme-bg: #000000;
+      --btn-theme-text: #00e5ff;
+      
+      --radius-card: 4px;
+      --radius-btn: 0px;
+      --radius-pill: 0px;
+      
+      /* Glitch Text Shadow */
+      --glow-text: 2px 0 #ff00ff, -2px 0 #00e5ff;
+      --glow-box: 0 0 10px #ff00ff;
+
+      font-family: "Share Tech Mono", monospace;
+      letter-spacing: 0.05em;
+    }
+    
+    body.theme-cyberpunk.dark-mode {
+      /* Dark mode dims the background slightly but keeps neon pop */
+      --bg-solid: #000000;
+      --card-bg: #050505;
+      --shadow-card: 0 0 30px rgba(255, 0, 255, 0.15);
     }
 
 
@@ -452,24 +501,48 @@
       --accent-soft: #333;
     }
 
-    /* Lovely Overrides (Cute Pastels) */
+    /* Lovely Overrides */
     body.theme-lovely.hot-mode {
-      --accent: #ff8da1; /* Rose Pink */
+      --accent: #ff8da1; 
       --accent-soft: #fff0f5;
       --accent-soft-border: #ffc0cb;
       --summary-strong: #ff6b81;
     }
     body.theme-lovely.ice-mode {
-      --accent: #93a5cf; /* Periwinkle */
+      --accent: #93a5cf;
       --accent-soft: #f0f4ff;
       --accent-soft-border: #bccce8;
       --summary-strong: #7388b9;
     }
     body.theme-lovely.dark-mode.hot-mode {
-      --accent: #ff85a2;
-      --accent-soft: rgba(255, 133, 162, 0.15);
-      --accent-soft-border: #a05566;
-      --summary-strong: #ff85a2;
+      --accent: #ff9eb5; /* Brighter pink for dark mode text */
+      --accent-soft: rgba(255, 133, 162, 0.2);
+      --accent-soft-border: #ff6b81;
+      --summary-strong: #ff9eb5;
+    }
+    body.theme-lovely.dark-mode.ice-mode {
+      --accent: #aaccff;
+      --accent-soft: rgba(147, 165, 207, 0.2);
+      --accent-soft-border: #93a5cf;
+      --summary-strong: #aaccff;
+    }
+
+    /* Cyberpunk Overrides */
+    body.theme-cyberpunk.hot-mode {
+      --accent: #ff0055; /* Hot Pink/Red */
+      --accent-soft: rgba(255, 0, 85, 0.2);
+      --accent-soft-border: #ff0055;
+      --summary-strong: #ffff00; /* Yellow for contrast */
+      --glow-text: 2px 0 #ff0055, -2px 0 #ffff00;
+      --glow-box: 0 0 15px #ff0055;
+    }
+    body.theme-cyberpunk.ice-mode {
+      --accent: #00ffff; /* Cyan */
+      --accent-soft: rgba(0, 255, 255, 0.2);
+      --accent-soft-border: #00ffff;
+      --summary-strong: #ffffff;
+      --glow-text: 2px 0 #00ffff, -2px 0 #ff00ff;
+      --glow-box: 0 0 15px #00ffff;
     }
 
 
@@ -504,11 +577,19 @@
       border-width: 4px;
     }
     body.theme-lovely .card {
-      border: 3px solid #ffffff; /* 白い縁取りでシールっぽく */
+      border: 3px solid #ffffff;
       box-shadow: 0 8px 20px rgba(0,0,0,0.08);
     }
     body.theme-lovely.dark-mode .card {
-      border: 1px solid rgba(255,255,255,0.1);
+      border: 2px solid var(--accent); /* Dark mode uses colored border */
+    }
+    body.theme-cyberpunk .card {
+      border: 1px solid var(--border-subtle);
+      clip-path: polygon(
+        0 10px, 10px 0, 
+        100% 0, 100% calc(100% - 10px), 
+        calc(100% - 10px) 100%, 0 100%
+      ); /* 角を落とす */
     }
 
     /* Header */
@@ -555,6 +636,12 @@
       height: 6px;
       border-radius: 99px;
       background: var(--accent);
+    }
+    body.theme-cyberpunk .title-bar {
+      width: 100px;
+      height: 2px;
+      background: var(--accent);
+      box-shadow: var(--glow-box);
     }
 
     .app-subtitle {
@@ -610,9 +697,16 @@
       box-shadow: 2px 2px 0 #000;
     }
     body.theme-lovely .mode-toggle-btn {
-      background: #fff;
+      background: var(--card-bg);
       border: 2px solid var(--accent);
       color: var(--accent);
+    }
+    body.theme-cyberpunk .mode-toggle-btn {
+      border-radius: 0;
+      border: 1px solid var(--accent);
+      background: #000;
+      color: var(--accent);
+      box-shadow: var(--glow-box);
     }
     .mode-icon {
       width: 18px;
@@ -636,6 +730,11 @@
       letter-spacing: 0.1em;
       border-bottom: 1px dashed var(--border-subtle);
       padding-bottom: 4px;
+    }
+    body.theme-cyberpunk .section-title {
+      text-transform: uppercase;
+      color: var(--accent);
+      text-shadow: var(--glow-text);
     }
 
     .inline-badge {
@@ -661,7 +760,12 @@
     }
     body.theme-lovely .inline-badge {
       border-radius: 99px;
-      background: #fff;
+      background: var(--card-bg);
+      border: 1px solid var(--accent);
+    }
+    body.theme-cyberpunk .inline-badge {
+      border-radius: 0;
+      background: #000;
       border: 1px solid var(--accent);
     }
 
@@ -691,9 +795,18 @@
       padding: 0;
     }
     body.theme-lovely .toggle-group {
-      background: #ffffff;
+      background: var(--card-bg);
       border: 2px solid #fff;
       box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    body.theme-lovely.dark-mode .toggle-group {
+      border-color: var(--border-subtle);
+    }
+    body.theme-cyberpunk .toggle-group {
+      border-radius: 0;
+      border: 1px solid var(--border-subtle);
+      background: rgba(0,0,0,0.5);
+      gap: 2px;
     }
 
     .toggle-btn {
@@ -724,6 +837,9 @@
     }
     body.theme-arcade .toggle-btn:last-child {
       border-right: none;
+    }
+    body.theme-cyberpunk .toggle-btn {
+      border-radius: 0;
     }
 
     /* Active state logic */
@@ -768,13 +884,20 @@
     
     body.theme-lovely .toggle-btn.active {
       background: var(--accent);
-      color: #fff;
+      color: #fff; /* Active text white */
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      transform: scale(0.95); /* ぷにっと感 */
+      transform: scale(0.95);
     }
     body.theme-lovely #inputModeGroup .toggle-btn.active {
       background: var(--accent);
       color: #fff;
+    }
+    
+    body.theme-cyberpunk .toggle-btn.active {
+      background: var(--accent);
+      color: #000;
+      box-shadow: var(--glow-box);
+      text-shadow: none;
     }
 
     /* Roast Buttons */
@@ -793,8 +916,13 @@
       box-shadow: inset 2px 2px 0 rgba(0,0,0,0.3);
     }
     body.theme-lovely #roastGroup .toggle-btn.active {
-      background: #fff;
+      background: var(--card-bg);
       border: 2px solid currentColor;
+      color: var(--text-main);
+    }
+    body.theme-cyberpunk #roastGroup .toggle-btn.active {
+      background: #000;
+      box-shadow: var(--glow-box);
     }
 
 
@@ -830,9 +958,17 @@
       box-shadow: 2px 2px 0 #000;
     }
     body.theme-lovely select {
-      background: #ffffff;
+      background: var(--card-bg);
       border: 2px solid #fff;
       box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+    body.theme-lovely.dark-mode select {
+      border-color: var(--border-subtle);
+    }
+    body.theme-cyberpunk select {
+      border-radius: 0;
+      background: #000;
+      border: 1px solid var(--border-subtle);
     }
 
     select:focus {
@@ -845,6 +981,9 @@
     body.theme-lovely select:focus {
       border-color: var(--accent);
       box-shadow: 0 0 0 2px var(--accent-soft);
+    }
+    body.theme-cyberpunk select:focus {
+      box-shadow: var(--glow-box);
     }
     
     .select-arrow {
@@ -893,8 +1032,14 @@
       box-shadow: 6px 6px 0 #000;
     }
     body.theme-lovely .summary {
-      background: #ffffff;
+      background: var(--card-bg);
       border: 2px dashed var(--accent);
+    }
+    body.theme-cyberpunk .summary {
+      border-radius: 0;
+      border: 1px solid var(--accent);
+      background: rgba(0,0,0,0.6);
+      box-shadow: var(--glow-box);
     }
 
     .summary-row {
@@ -961,9 +1106,17 @@
       box-shadow: 6px 6px 0 #000;
     }
     body.theme-lovely .steps-card {
-      background: #fff;
+      background: var(--card-bg);
       border: 1px solid #fff;
       box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+    body.theme-lovely.dark-mode .steps-card {
+      border-color: var(--border-subtle);
+    }
+    body.theme-cyberpunk .steps-card {
+      border-radius: 0;
+      border: 1px solid var(--accent);
+      background: rgba(0,0,0,0.8);
     }
 
     .step-row {
@@ -989,6 +1142,9 @@
     }
     body.theme-lovely .step-row {
       border-bottom: 1px dashed var(--steps-border);
+    }
+    body.theme-cyberpunk .step-row {
+      border-bottom: 1px solid var(--border-subtle);
     }
 
     .step-row:last-child {
@@ -1032,7 +1188,7 @@
 
     .placeholder {
       padding: 30px 20px;
-      text-align: left; /* Left alignment requested */
+      text-align: left;
       font-size: 0.9rem;
       color: var(--text-sub);
     }
@@ -1061,9 +1217,18 @@
       box-shadow: 6px 6px 0 #000;
     }
     body.theme-lovely .note {
-      background: #fff;
+      background: var(--card-bg);
       border: 1px solid #fff;
       box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+    body.theme-lovely.dark-mode .note {
+      border-color: var(--border-subtle);
+    }
+    body.theme-cyberpunk .note {
+      border-radius: 0;
+      border: 1px solid var(--accent);
+      background: #000;
+      box-shadow: var(--glow-box);
     }
 
     .note::before {
@@ -1091,7 +1256,7 @@
     }
     body.theme-lovely .note::before {
       background: var(--accent);
-      width: 8px;
+      width: 6px;
       border-radius: 4px;
       top: 8px;
       bottom: 8px;
@@ -1165,10 +1330,17 @@
       box-shadow: 2px 2px 0 #000;
     }
     body.theme-lovely .theme-btn-design {
-      background: #fff;
+      background: var(--card-bg);
       border: 2px solid var(--accent);
       color: var(--accent);
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    body.theme-cyberpunk .theme-btn-design {
+      border-radius: 0;
+      background: #000;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      box-shadow: var(--glow-box);
     }
 
     .theme-icon {
@@ -1317,6 +1489,7 @@
             <option value="blueprint">Blueprint</option>
             <option value="arcade">Arcade</option>
             <option value="lovely">Lovely</option>
+            <option value="cyberpunk">Cyberpunk</option>
           </select>
         </div>
       </div>
@@ -1369,7 +1542,8 @@
       neon: "Neon",
       blueprint: "Blueprint",
       arcade: "Arcade",
-      lovely: "Lovely"
+      lovely: "Lovely",
+      cyberpunk: "Cyberpunk"
     };
 
     function roundToHalf(v) { return Math.round(v * 2) / 2; }
@@ -1631,7 +1805,8 @@
       neon:      { light: "#f0f4f8", dark: "#050508" },
       blueprint: { light: "#003399", dark: "#1a1a1a" },
       arcade:    { light: "#fff0f5", dark: "#202020" },
-      lovely:    { light: "#fff0f3", dark: "#2d2038" }
+      lovely:    { light: "#fff0f3", dark: "#2a1d2e" },
+      cyberpunk: { light: "#000000", dark: "#000000" }
     };
 
     function updateStatusBar() {
@@ -1643,11 +1818,13 @@
       if (meta) {
         meta.setAttribute("content", color);
       }
+      // HTML全体の背景色も変えて、バウンス領域やノッチ周りの色を合わせる
+      document.documentElement.style.backgroundColor = color;
     }
 
     function applyTheme(key) {
       document.body.classList.remove(
-        "theme-modest", "theme-coffee", "theme-neon", "theme-blueprint", "theme-arcade", "theme-lovely"
+        "theme-modest", "theme-coffee", "theme-neon", "theme-blueprint", "theme-arcade", "theme-lovely", "theme-cyberpunk"
       );
       if (key !== "minimal") {
         document.body.classList.add("theme-" + key);
