@@ -5,7 +5,7 @@
   <title>コーヒー計算機</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- iOSステータスバー色：背景に寄せる -->
+  <!-- iOSステータスバー色 -->
   <meta name="theme-color" content="#f6f5f3" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#020617" media="(prefers-color-scheme: dark)">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -40,7 +40,7 @@
 
       --sub-strong: #1f2937;
 
-      --summary-strong: #ea580c; /* デフォはホット色 */
+      --summary-strong: #ea580c;
     }
 
     /* ダークテーマ */
@@ -50,7 +50,7 @@
         --bg-gradient: linear-gradient(180deg, #020617 0%, #020617 100%);
         --card-bg: rgba(15,23,42,0.98);
         --text-main: #e5e7eb;
-        --text-sub: #d1d5db;            /* だいぶ明るめのグレーに */
+        --text-sub: #d1d5db;
         --border-subtle: #111827;
         --shadow-card: 0 18px 36px rgba(0,0,0,0.7);
 
@@ -75,7 +75,7 @@
       --accent-soft-border: rgba(249,115,22,0.6);
       --steps-bg: #fef3c7;
       --steps-border: #facc15;
-      --summary-strong: #ea580c; /* 濃いオレンジ */
+      --summary-strong: #ea580c;
     }
 
     body.ice-mode {
@@ -84,13 +84,13 @@
       --accent-soft-border: rgba(56,189,248,0.8);
       --steps-bg: #e0f2fe;
       --steps-border: #7dd3fc;
-      --summary-strong: #0284c7; /* 濃い水色 */
+      --summary-strong: #0284c7;
     }
 
     html, body {
       margin: 0;
       padding: 0;
-      background-color: var(--bg-solid);   /* ステータスバーと揃える */
+      background-color: var(--bg-solid);
       background-image: var(--bg-gradient);
       background-repeat: no-repeat;
       background-attachment: fixed;
@@ -102,7 +102,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding-top: 24px; /* 上寄せ */
+      padding-top: 24px;
     }
 
     .app {
@@ -136,7 +136,6 @@
       margin-bottom: 18px;
     }
 
-    /* 見出し強め */
     .section-title {
       font-size: 1.02rem;
       color: var(--text-main);
@@ -170,7 +169,7 @@
     select {
       padding: 10px 12px;
       border-radius: 12px;
-      border: 1px solid var(--accent-soft-border);  /* アクセント枠 */
+      border: 1px solid var(--accent-soft-border);
       background: var(--field-bg);
       color: var(--text-main);
       font-size: 1rem;
@@ -198,7 +197,6 @@
       padding: 3px;
       gap: 2px;
     }
-    /* 入力方法のホイールは縁取りを強調 */
     .toggle-group.emphasize {
       border-color: var(--accent-soft-border);
     }
@@ -251,7 +249,7 @@
 
     .summary-temp {
       font-weight: 700;
-      color: var(--summary-strong); /* 数字と同じ色に */
+      color: var(--summary-strong);
       font-size: 1.0rem;
     }
 
@@ -381,7 +379,7 @@
         <button class="toggle-btn" data-style="ice">アイス</button>
       </div>
 
-      <!-- サマリー（杯数は削除済み） -->
+      <!-- サマリー -->
       <div class="summary" id="summaryBox">
         <div class="summary-row">
           <span class="summary-label">豆量</span>
@@ -417,7 +415,7 @@
   </div>
 
   <script>
-    // 水量→豆量の基準カーブ
+    // 基準カーブ
     const basePoints = [
       { water: 150, beans: 10 },
       { water: 300, beans: 20 },
@@ -444,7 +442,7 @@
     let styleMode = "hot";    // "hot"  | "ice"
     let roastMode = "";       // "light" | "medium" | "meddark" | "dark" | ""
 
-    // 水量ドロップダウン：150〜1000mlを10刻みで生成
+    // 水量ドロップダウン：150〜1000mlを10刻み
     (function fillWaterOptions() {
       for (let v = 150; v <= 1000; v += 10) {
         const opt = document.createElement("option");
@@ -454,7 +452,6 @@
       }
     })();
 
-    // 煎り具合 → 湯温
     const roastTempMap = {
       light:   "90〜92℃",
       medium:  "86〜88℃",
@@ -473,8 +470,9 @@
       if (Math.abs(v - Math.round(v)) < 0.001) return String(Math.round(v));
       return v.toFixed(1);
     }
-    function roundTo5ml(v) {
-      return Math.round(v / 5) * 5;
+    // 蒸らし用：10ml単位で切り上げ
+    function roundUpTo10ml(v) {
+      return Math.ceil(v / 10) * 10;
     }
     function interpolateBeans(water) {
       const pts = basePoints;
@@ -531,25 +529,26 @@
 
       brewWater = Math.round(brewWater);
 
+      // 蒸らし：豆量×1.5 を 10ml単位で切り上げ
       let bloom = beans * 1.5;
-      bloom = roundTo5ml(bloom);
+      bloom = roundUpTo10ml(bloom);
       if (bloom > brewWater) bloom = brewWater;
 
       let remaining = brewWater - bloom;
       let pours = [];
 
       if (remaining > 0) {
-        const idealEach = remaining / 3;
-        let base = Math.round(idealEach / 10) * 10;
-        let p1 = base;
-        let p3 = base;
-        let p2 = remaining - p1 - p3;
+        // 残りを3分割して10ml単位切り下げ、余りは2投目に全部足す
+        const baseEach = Math.floor(remaining / 3 / 10) * 10;
+        let p1 = baseEach;
+        let p2 = baseEach;
+        let p3 = baseEach;
 
-        if (p2 < 0) {
-          p2 = 0;
-          const rest = remaining - p2;
-          p1 = Math.round(rest / 2 / 10) * 10;
-          p3 = rest - p1;
+        let used = p1 + p2 + p3;
+        let rem = remaining - used;
+
+        if (rem > 0) {
+          p2 += rem; // 余り全部2投目
         }
 
         let acc = bloom;
@@ -593,7 +592,7 @@
 
       if (styleMode === "ice") {
         iceRow.style.display = "";
-        sumIce.textContent = data.ice + " g";   // 括弧書き削除
+        sumIce.textContent = data.ice + " g";
       } else {
         iceRow.style.display = "none";
         sumIce.textContent = "";
