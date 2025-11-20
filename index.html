@@ -5,7 +5,7 @@
   <title>コーヒー計算機</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- iOSステータスバー色 -->
+  <!-- iOSステータスバー色（標準テーマ用。カスタムテーマは多少ズレても許して） -->
   <meta name="theme-color" content="#f6f5f3" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#020617" media="(prefers-color-scheme: dark)">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -16,12 +16,13 @@
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
-    /* ライトテーマ（標準） */
+    /* ===== 標準テーマ（OSライト/ダークをベースに変化） ===== */
+
     :root {
       --bg-solid: #f6f5f3;
       --bg-gradient: linear-gradient(180deg, #f6f5f3 0%, #ece9e6 100%);
       --card-bg: #ffffff;
-      --text-main: #1f2937;    /* 少し柔らかい濃いグレー */
+      --text-main: #1f2937;
       --text-sub: #6b7280;
       --border-subtle: #e5e7eb;
       --shadow-card: 0 20px 38px rgba(0,0,0,0.06);
@@ -43,7 +44,6 @@
       --summary-strong: #ea580c;
     }
 
-    /* ダークテーマ（標準） */
     @media (prefers-color-scheme: dark) {
       :root {
         --bg-solid: #020617;
@@ -68,7 +68,9 @@
       }
     }
 
-    /* 手動テーマ：コーヒー */
+    /* ===== 手動カラーテーマ群 ===== */
+
+    /* 深煎りコーヒー */
     body.theme-coffee {
       --bg-solid: #20110b;
       --bg-gradient: linear-gradient(180deg, #3b2416 0%, #120a05 100%);
@@ -83,19 +85,89 @@
 
       --field-bg: rgba(26,18,12,0.98);
 
-      --steps-bg: #3b2416;
-      --steps-border: #d1a054;
+      --steps-bg: rgba(32,18,10,0.96);
+      --steps-border: rgba(248,198,153,0.9);
 
       --sub-strong: #f9fafb;
     }
+    body.theme-coffee .placeholder {
+      color: #fef9c3;
+    }
 
-    /* ホット／アイスでアクセント切替 */
+    /* カフェラテ：明るいベージュ系 */
+    body.theme-latte {
+      --bg-solid: #f3ebe3;
+      --bg-gradient: linear-gradient(180deg, #f7eee6 0%, #e8ddcf 100%);
+      --card-bg: #fffaf3;
+      --text-main: #1f2937;
+      --text-sub: #6b4f3b;
+      --border-subtle: #ead7c4;
+      --shadow-card: 0 20px 38px rgba(120,85,60,0.18);
+
+      --badge-bg: #fdf4e7;
+      --badge-border: #e6c9a7;
+
+      --field-bg: #fdf6ee;
+
+      --steps-bg: #fff6dd;
+      --steps-border: #facc6b;
+
+      --sub-strong: #4b3424;
+    }
+
+    /* 抹茶ラテ：グリーン系 */
+    body.theme-matcha {
+      --bg-solid: #e5f1e5;
+      --bg-gradient: linear-gradient(180deg, #e8f5e9 0%, #d7e7d8 100%);
+      --card-bg: #f7fbf7;
+      --text-main: #102a14;
+      --text-sub: #4b6350;
+      --border-subtle: #c4ddc5;
+      --shadow-card: 0 20px 38px rgba(49,87,60,0.18);
+
+      --badge-bg: #edf7ee;
+      --badge-border: #b5d5b8;
+
+      --field-bg: #f2f9f3;
+
+      --steps-bg: #f3fce5;
+      --steps-border: #c4e88f;
+
+      --sub-strong: #143a1c;
+    }
+
+    /* ネオン：遊び枠（暗め＋ビビッド） */
+    body.theme-neon {
+      --bg-solid: #050816;
+      --bg-gradient: radial-gradient(circle at top, #1e293b 0%, #020617 55%, #020617 100%);
+      --card-bg: rgba(15,23,42,0.98);
+      --text-main: #e5e7eb;
+      --text-sub: #a5b4fc;
+      --border-subtle: #1f2937;
+      --shadow-card: 0 24px 50px rgba(0,0,0,0.85);
+
+      --badge-bg: rgba(15,23,42,0.95);
+      --badge-border: rgba(129,140,248,0.8);
+
+      --field-bg: rgba(15,23,42,0.98);
+
+      --steps-bg: rgba(8,47,73,0.98);
+      --steps-border: #38bdf8;
+
+      --sub-strong: #e5e7eb;
+    }
+    body.theme-neon .placeholder {
+      color: #e5e7eb;
+    }
+
+    /* ===== ホット／アイスでアクセント切替 ===== */
+
     body.hot-mode {
       --accent: #f97316;
       --accent-soft: rgba(249,115,22,0.16);
       --accent-soft-border: rgba(249,115,22,0.6);
-      --steps-bg: #fef3c7;
-      --steps-border: #facc15;
+      --steps-bg: var(--steps-bg);   /* ベーステーマ側に任せる */
+      --steps-border: var(--steps-border);
       --summary-strong: #ea580c;
     }
 
@@ -103,10 +175,12 @@
       --accent: #0ea5e9;
       --accent-soft: rgba(14,165,233,0.16);
       --accent-soft-border: rgba(56,189,248,0.8);
-      --steps-bg: #e0f2fe;
-      --steps-border: #7dd3fc;
+      --steps-bg: var(--steps-bg);
+      --steps-border: var(--steps-border);
       --summary-strong: #0284c7;
     }
+
+    /* ===== 共通レイアウト ===== */
 
     html, body {
       margin: 0;
@@ -123,7 +197,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding-top: 8px;  /* 上に寄せる */
+      padding-top: 8px;
     }
 
     .app {
@@ -158,12 +232,6 @@
       height: 4px;
       border-radius: 999px;
       background: linear-gradient(120deg, #38bdf8, #f97316);
-    }
-
-    @media (prefers-color-scheme: dark) {
-      .title-bar {
-        background: linear-gradient(120deg, #38bdf8, #f97316);
-      }
     }
 
     .app-subtitle {
@@ -328,7 +396,7 @@
       border-bottom: none;
     }
 
-    /* 左カラムの幅を制限して右側を押し出さない */
+    /* 左カラムの最大幅を制限して、右の積算量を押し出さない */
     .step-row > div:first-child {
       max-width: 65%;
     }
@@ -355,27 +423,54 @@
       margin-top: 2px;
     }
 
+    /* 積算量ラベルだけ控えめに */
+    .step-acc-label {
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: rgba(31,41,55,0.6);
+      margin-right: 3px;
+    }
+
+    .step-acc-value {
+      font-size: 1.0rem;
+      font-weight: 700;
+      color: #1f2937;
+    }
+
     @media (prefers-color-scheme: dark) {
       .step-name,
-      .step-amount {
+      .step-amount,
+      .step-acc-value {
         color: #0f172a;
       }
-      .step-sub {
+      .step-sub,
+      .step-acc-label {
         color: rgba(15,23,42,0.8);
       }
     }
 
-    /* コーヒーテーマ時：ステップカードをカフェ色＆高コントラストに */
+    /* コーヒーテーマ時：カード類の色 */
     body.theme-coffee .steps-card {
       background: rgba(32,18,10,0.96);
       border-color: rgba(248,198,153,0.9);
     }
     body.theme-coffee .step-name,
-    body.theme-coffee .step-amount {
+    body.theme-coffee .step-acc-value {
       color: #fef9c3;
     }
-    body.theme-coffee .step-sub {
+    body.theme-coffee .step-sub,
+    body.theme-coffee .step-acc-label {
       color: #fde68a;
+    }
+
+    /* ネオンは強めコントラスト */
+    body.theme-neon .step-name,
+    body.theme-neon .step-acc-value {
+      color: #e5e7eb;
+    }
+    body.theme-neon .step-sub,
+    body.theme-neon .step-acc-label {
+      color: #a5b4fc;
     }
 
     .placeholder {
@@ -383,11 +478,6 @@
       text-align: left;
       color: rgba(31,41,55,0.7);
       padding: 4px 2px;
-    }
-
-    /* コーヒーテーマ時のプレースホルダ色 */
-    body.theme-coffee .placeholder {
-      color: #fef9c3;
     }
 
     .note {
@@ -418,7 +508,7 @@
       }
     }
 
-    /* コーヒーテーマのメモ */
+    /* テーマ別メモ調整 */
     body.theme-coffee .note {
       background: rgba(32,18,10,0.96);
       border-color: rgba(248,198,153,0.9);
@@ -428,6 +518,27 @@
     }
     body.theme-coffee .note-label {
       color: #facc6b;
+    }
+
+    body.theme-latte .note {
+      background: #fff7ec;
+      border-color: #f4cf9f;
+    }
+
+    body.theme-matcha .note {
+      background: #f4fbef;
+      border-color: #c4e88f;
+    }
+
+    body.theme-neon .note {
+      background: rgba(15,23,42,0.96);
+      border-color: #38bdf8;
+    }
+    body.theme-neon .note-label {
+      color: #a5b4fc;
+    }
+    body.theme-neon .note-body {
+      color: #e5e7eb;
     }
 
     .note-label {
@@ -446,7 +557,7 @@
       line-height: 1.4;
     }
 
-    /* テーマ切替ボタン（控えめなやつ） */
+    /* テーマ切替ボタン（控えめ） */
     .theme-small {
       display: flex;
       justify-content: flex-end;
@@ -463,10 +574,12 @@
       cursor: pointer;
     }
 
-    body.theme-coffee .theme-button {
+    body.theme-coffee .theme-button,
+    body.theme-latte  .theme-button,
+    body.theme-matcha .theme-button,
+    body.theme-neon   .theme-button {
       border-style: solid;
-      border-color: rgba(248,198,153,0.9);
-      color: #fde68a;
+      color: var(--text-sub);
     }
   </style>
 </head>
@@ -572,6 +685,7 @@
         </div>
       </div>
 
+      <!-- メモ -->
       <div class="note">
         <div class="note-label">MEMO</div>
         <div class="note-body">
@@ -579,6 +693,7 @@
         </div>
       </div>
 
+      <!-- テーマ切替ボタン -->
       <div class="theme-small">
         <button id="themeSwitch" class="theme-button">テーマ：標準</button>
       </div>
@@ -587,7 +702,7 @@
   </div>
 
   <script>
-    // 基準カーブ
+    // ===== 基準カーブ =====
     const basePoints = [
       { water: 150, beans: 10 },
       { water: 300, beans: 20 },
@@ -614,10 +729,19 @@
 
     let inputMode = "cups";   // "cups" | "water"
     let styleMode = "hot";    // "hot"  | "ice"
-    let roastMode = "";       // 焙煎度
-    let themeMode = "system"; // "system" | "coffee"
+    let roastMode = "";       // "light" | "medium" | "meddark" | "dark" | ""
 
-    // 水量ドロップダウン：150〜1000mlを10刻み
+    // テーマ一覧
+    const themes = [
+      { key: "standard", label: "標準" },
+      { key: "coffee",   label: "コーヒー" },
+      { key: "latte",    label: "カフェラテ" },
+      { key: "matcha",   label: "抹茶ラテ" },
+      { key: "neon",     label: "ネオン" }
+    ];
+    let themeIndex = 0;
+
+    // ドロップダウン：150〜1000mlを10刻み
     (function fillWaterOptions() {
       for (let v = 150; v <= 1000; v += 10) {
         const opt = document.createElement("option");
@@ -641,10 +765,10 @@
       if (Math.abs(v - Math.round(v)) < 0.001) return String(Math.round(v));
       return v.toFixed(1);
     }
-    // 蒸らし用：10ml単位で切り上げ
     function roundUpTo10ml(v) {
       return Math.ceil(v / 10) * 10;
     }
+
     function interpolateBeans(water) {
       const pts = basePoints;
       const n = pts.length;
@@ -700,7 +824,7 @@
 
       brewWater = Math.round(brewWater);
 
-      // 蒸らし：豆量×1.5 を 10ml単位で切り上げ
+      // 蒸らし：豆量×1.5 を 10ml切り上げ
       let bloom = beans * 1.5;
       bloom = roundUpTo10ml(bloom);
       if (bloom > brewWater) bloom = brewWater;
@@ -718,7 +842,7 @@
         let rem = remaining - used;
 
         if (rem > 0) {
-          p2 += rem; // 余りは2投目にまとめる
+          p2 += rem; // 余りを2投目に
         }
 
         let acc = bloom;
@@ -750,7 +874,6 @@
         (inputMode === "water" && waterSelect.value);
 
       if (!hasBase) {
-        // 量が未選択のときは全部空欄＆ステッププレースホルダ
         sumBeans.textContent = "";
         sumWater.textContent = "";
         sumIce.textContent   = "";
@@ -764,7 +887,7 @@
       }
 
       const data = calculate();
-      if (!data) return; // 念のため
+      if (!data) return;
 
       sumBeans.textContent = formatNumber(data.beans) + " g";
       sumWater.textContent = data.brewWater + " ml";
@@ -777,7 +900,7 @@
         sumIce.textContent = "";
       }
 
-      // 焙煎度合いの表示ロジック
+      // 焙煎度合い
       if (!roastMode) {
         sumTemp.textContent = "焙煎度合いを選択してください";
         sumTemp.classList.add("placeholder");
@@ -786,7 +909,7 @@
         sumTemp.classList.remove("placeholder");
       }
 
-      // 蒸らし＋3投の描画
+      // 蒸らし＋3投描画
       let html = `
         <div class="step-row">
           <div>
@@ -794,7 +917,8 @@
             <div class="step-sub step-note">※投入後30秒程待つ。</div>
           </div>
           <div class="step-amount">
-            積算量 ${data.bloom} ml<br>
+            <span class="step-acc-label">積算量</span>
+            <span class="step-acc-value">${data.bloom} ml</span><br>
             <span class="step-sub">投入量 ${data.bloom} ml</span>
           </div>
         </div>
@@ -813,7 +937,8 @@
               ${noteText ? `<div class="step-sub step-note">${noteText}</div>` : ""}
             </div>
             <div class="step-amount">
-              積算量 ${p.total} ml<br>
+              <span class="step-acc-label">積算量</span>
+              <span class="step-acc-value">${p.total} ml</span><br>
               <span class="step-sub">投入量 ${p.pour} ml</span>
             </div>
           </div>
@@ -823,7 +948,8 @@
       stepsBox.innerHTML = html;
     }
 
-    // 入力系イベント
+    // ===== イベント系 =====
+
     cupsSelect.addEventListener("change", updateView);
     waterSelect.addEventListener("change", updateView);
 
@@ -874,24 +1000,33 @@
       });
     });
 
-    // テーマ切替（控えめボタン）
+    // テーマ適用
     function applyTheme() {
-      if (themeMode === "coffee") {
-        document.body.classList.add("theme-coffee");
-        themeSwitchBtn.textContent = "テーマ：コーヒー";
-      } else {
-        document.body.classList.remove("theme-coffee");
-        themeSwitchBtn.textContent = "テーマ：標準";
+      // 既存テーマクラスを全削除
+      document.body.classList.remove(
+        "theme-coffee",
+        "theme-latte",
+        "theme-matcha",
+        "theme-neon"
+      );
+
+      const current = themes[themeIndex];
+      const key = current.key;
+
+      if (key !== "standard") {
+        document.body.classList.add("theme-" + key);
       }
+      themeSwitchBtn.textContent = "テーマ：" + current.label;
     }
 
     themeSwitchBtn.addEventListener("click", () => {
-      themeMode = (themeMode === "system") ? "coffee" : "system";
+      themeIndex = (themeIndex + 1) % themes.length;
       applyTheme();
       updateView();
     });
 
     // 初期表示
+    document.body.classList.add("hot-mode");
     applyTheme();
     updateView();
   </script>
