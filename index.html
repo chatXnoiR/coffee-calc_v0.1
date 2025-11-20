@@ -385,6 +385,11 @@
       padding: 4px 2px;
     }
 
+    /* コーヒーテーマ時のプレースホルダ色 */
+    body.theme-coffee .placeholder {
+      color: #fef9c3;
+    }
+
     .note {
       position: relative;
       margin-top: 12px;
@@ -781,6 +786,7 @@
         sumTemp.classList.remove("placeholder");
       }
 
+      // 蒸らし＋3投の描画
       let html = `
         <div class="step-row">
           <div>
@@ -788,7 +794,7 @@
             <div class="step-sub step-note">※投入後30秒程待つ。</div>
           </div>
           <div class="step-amount">
-            ${data.bloom} ml<br>
+            積算量 ${data.bloom} ml<br>
             <span class="step-sub">投入量 ${data.bloom} ml</span>
           </div>
         </div>
@@ -807,7 +813,7 @@
               ${noteText ? `<div class="step-sub step-note">${noteText}</div>` : ""}
             </div>
             <div class="step-amount">
-              ${p.total} ml<br>
+              積算量 ${p.total} ml<br>
               <span class="step-sub">投入量 ${p.pour} ml</span>
             </div>
           </div>
@@ -882,7 +888,6 @@
     themeSwitchBtn.addEventListener("click", () => {
       themeMode = (themeMode === "system") ? "coffee" : "system";
       applyTheme();
-      // テーマ変えても中身は変わらないので再描画だけ
       updateView();
     });
 
