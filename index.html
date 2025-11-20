@@ -48,6 +48,12 @@
 
       --glow-text: none;
       --glow-box: none;
+
+      /* Roast Colors */
+      --roast-light: #d4a373;
+      --roast-medium: #a06845;
+      --roast-meddark: #6d4c41;
+      --roast-dark: #3e2723;
     }
 
     @media (prefers-color-scheme: dark) {
@@ -70,7 +76,7 @@
       }
     }
 
-    /* --- テーマ: Coffee (Dark & Rich) --- */
+    /* --- テーマ: Coffee --- */
     body.theme-coffee {
       --bg-solid: #2a1b15;
       --bg-gradient: linear-gradient(180deg, #3c2a21 0%, #1a110d 100%);
@@ -92,7 +98,6 @@
       --btn-theme-bg: #3c2a21;
       --btn-theme-text: #ede0d4;
     }
-    /* Coffee Dark Mode (More intense) */
     @media (prefers-color-scheme: dark) {
       body.theme-coffee {
         --bg-solid: #110a08;
@@ -102,7 +107,7 @@
       }
     }
 
-    /* --- テーマ: Latte (Warm & Soft) --- */
+    /* --- テーマ: Latte --- */
     body.theme-latte {
       --bg-solid: #fdfbf7;
       --bg-gradient: linear-gradient(180deg, #fdfbf7 0%, #efe6dd 100%);
@@ -124,7 +129,6 @@
       --btn-theme-bg: #fff;
       --btn-theme-text: #5d4037;
     }
-    /* Latte Dark Mode (Mocha style) */
     @media (prefers-color-scheme: dark) {
       body.theme-latte {
         --bg-solid: #3e2723;
@@ -149,96 +153,94 @@
       }
     }
 
-    /* --- テーマ: Matcha (Fresh & Natural) --- */
-    body.theme-matcha {
-      --bg-solid: #f1f8f1;
-      --bg-gradient: linear-gradient(180deg, #f1f8f1 0%, #e0ebe0 100%);
-      --card-bg: #ffffff;
-      --text-main: #1b3c23;
-      --text-sub: #56705c;
-      --border-subtle: #cfe0d1;
-      --shadow-card: 0 20px 38px rgba(27, 60, 35, 0.1);
+    /* --- テーマ: Neon (White Gaming / Cyber) --- */
+    
+    /* Neon Light Mode: White Gaming PC Style */
+    body.theme-neon {
+      --bg-solid: #f8f9fa;
+      --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      --card-bg: rgba(255, 255, 255, 0.85);
+      --text-main: #111827;
+      --text-sub: #64748b;
+      --border-subtle: rgba(56, 189, 248, 0.3); /* Blueish tint border */
+      --shadow-card: 0 15px 35px rgba(56, 189, 248, 0.15), 0 5px 15px rgba(168, 85, 247, 0.1);
 
-      --accent: #5c8d65;
-      --accent-soft: rgba(92,141,101,0.12);
-      --accent-soft-border: #b5ccba;
+      --accent: #0ea5e9; /* Cyan */
+      --accent-soft: rgba(56, 189, 248, 0.1);
+      --accent-soft-border: #38bdf8;
       
-      --field-bg: #f8faf8;
-      --steps-bg: #f5fbf5;
-      --steps-border: #cce6d0;
-      --summary-strong: #2e5e38;
+      --field-bg: #ffffff;
+      --steps-bg: rgba(255,255,255,0.9);
+      --steps-border: #bae6fd;
+      --summary-strong: #0284c7;
 
       --btn-theme-bg: #ffffff;
-      --btn-theme-text: #1b3c23;
+      --btn-theme-text: #0284c7;
+      
+      /* Sharp, Electric Glows against White */
+      --glow-text: none;
+      --glow-box: 0 0 0 1px rgba(56, 189, 248, 0.3), 0 0 12px rgba(56, 189, 248, 0.2);
+      
+      --roast-light: #fbbf24;
+      --roast-medium: #d97706;
+      --roast-meddark: #b45309;
+      --roast-dark: #78350f;
     }
-    /* Matcha Dark Mode (Deep Forest) */
+
+    /* Neon Dark Mode: Cyberpunk */
     @media (prefers-color-scheme: dark) {
-      body.theme-matcha {
-        --bg-solid: #052e16;
-        --bg-gradient: linear-gradient(180deg, #0f3922 0%, #021f0e 100%);
-        --card-bg: rgba(10, 50, 30, 0.85);
-        --text-main: #e6f5eb;
-        --text-sub: #8ebda0;
-        --border-subtle: #1f5735;
-        --shadow-card: 0 20px 40px rgba(0,0,0,0.6);
+      body.theme-neon {
+        --bg-solid: #000000;
+        --bg-gradient: radial-gradient(circle at top, #1a1b4b 0%, #050511 60%, #000000 100%);
+        --card-bg: rgba(10, 12, 25, 0.85);
+        --text-main: #e0e7ff;
+        --text-sub: #818cf8;
+        --border-subtle: rgba(99, 102, 241, 0.3);
+        --shadow-card: 0 0 40px rgba(99, 102, 241, 0.2);
 
-        --accent: #86efac;
-        --accent-soft: rgba(134,239,172,0.1);
-        --accent-soft-border: #166534;
+        --accent: #38bdf8;
+        --accent-soft: rgba(56, 189, 248, 0.15);
+        --accent-soft-border: rgba(56, 189, 248, 0.6);
+        
+        --field-bg: rgba(15, 23, 42, 0.6);
+        --steps-bg: rgba(8, 15, 30, 0.9);
+        --steps-border: #38bdf8;
+        --summary-strong: #22d3ee;
 
-        --field-bg: rgba(2, 31, 14, 0.6);
-        --steps-bg: rgba(2, 31, 14, 0.8);
-        --steps-border: #14532d;
-        --summary-strong: #4ade80;
+        --btn-theme-bg: #0f172a;
+        --btn-theme-text: #38bdf8;
+        
+        --glow-text: 0 0 8px rgba(56, 189, 248, 0.6);
+        --glow-box: 0 0 12px rgba(56, 189, 248, 0.3);
 
-        --btn-theme-bg: #0f3922;
-        --btn-theme-text: #e6f5eb;
+        --roast-light: #fcd34d;
+        --roast-medium: #fb923c;
+        --roast-meddark: #f87171;
+        --roast-dark: #ef4444;
       }
     }
 
-    /* --- テーマ: Neon (Cyber & Glow) --- */
-    body.theme-neon {
-      --bg-solid: #000000;
-      --bg-gradient: radial-gradient(circle at top, #1a1b4b 0%, #050511 60%, #000000 100%);
-      --card-bg: rgba(10, 12, 25, 0.85);
-      --text-main: #e0e7ff;
-      --text-sub: #818cf8;
-      --border-subtle: rgba(99, 102, 241, 0.3);
-      --shadow-card: 0 0 40px rgba(99, 102, 241, 0.2);
-
-      --accent: #38bdf8; /* Cyan */
-      --accent-soft: rgba(56, 189, 248, 0.15);
-      --accent-soft-border: rgba(56, 189, 248, 0.6);
-      
-      --field-bg: rgba(15, 23, 42, 0.6);
-      --steps-bg: rgba(8, 15, 30, 0.9);
-      --steps-border: #38bdf8;
-      --summary-strong: #22d3ee;
-
-      --btn-theme-bg: #0f172a;
-      --btn-theme-text: #38bdf8;
-      
-      /* Neon Glow Effects */
-      --glow-text: 0 0 8px rgba(56, 189, 248, 0.6);
-      --glow-box: 0 0 12px rgba(56, 189, 248, 0.3);
-    }
-    /* Neon theme doesn't change much in light/dark OS, it's always dark. */
-
-    /* ===== アイスモード上書き (Ice Accents) ===== */
+    /* ===== アイスモード上書き ===== */
     body.ice-mode {
       --accent: #0ea5e9;
       --accent-soft: rgba(14,165,233,0.15);
       --accent-soft-border: rgba(56,189,248,0.5);
       --summary-strong: #0284c7;
     }
-    /* Neon theme ice mode tweaks */
+    /* Neon theme ice mode tweaks (Purple Accent) */
     body.theme-neon.ice-mode {
-      --accent: #a855f7; /* Purple for Ice/Neon contrast */
+      --accent: #a855f7;
       --accent-soft: rgba(168, 85, 247, 0.15);
       --accent-soft-border: rgba(168, 85, 247, 0.6);
-      --summary-strong: #d8b4fe;
-      --glow-text: 0 0 8px rgba(168, 85, 247, 0.6);
-      --glow-box: 0 0 12px rgba(168, 85, 247, 0.3);
+      --summary-strong: #9333ea;
+      --glow-box: 0 0 0 1px rgba(168, 85, 247, 0.3), 0 0 12px rgba(168, 85, 247, 0.2);
+    }
+    @media (prefers-color-scheme: dark) {
+      body.theme-neon.ice-mode {
+        --summary-strong: #d8b4fe;
+        --glow-text: 0 0 8px rgba(168, 85, 247, 0.6);
+        --glow-box: 0 0 12px rgba(168, 85, 247, 0.3);
+      }
     }
 
     /* ===== レイアウト & コンポーネント ===== */
@@ -257,7 +259,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 20px 16px 80px; /* Bottom padding for scroll */
+      padding: 20px 16px 80px;
     }
 
     .app {
@@ -288,8 +290,8 @@
     }
 
     .title-main {
-      font-size: 0.9rem;
-      font-weight: 700;
+      font-size: 1.2rem; /* 大きくしました */
+      font-weight: 800;
       letter-spacing: 0.15em;
       text-transform: uppercase;
       color: var(--text-sub);
@@ -297,7 +299,7 @@
     }
 
     .title-bar {
-      width: 40px;
+      width: 50px;
       height: 4px;
       border-radius: 2px;
       background: linear-gradient(90deg, var(--accent), transparent);
@@ -344,6 +346,7 @@
       background: var(--field-bg);
       padding: 4px;
       border: 1px solid var(--border-subtle);
+      gap: 4px;
     }
 
     .toggle-btn {
@@ -365,9 +368,41 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.08);
       border: 1px solid var(--border-subtle);
     }
+
+    /* トグルに色をつける */
+    /* Hot/Ice */
+    #styleGroup .toggle-btn[data-style="hot"].active {
+      color: #f97316;
+      border-color: rgba(249,115,22,0.3);
+    }
+    #styleGroup .toggle-btn[data-style="ice"].active {
+      color: #0ea5e9;
+      border-color: rgba(14,165,233,0.3);
+    }
+    body.theme-neon.ice-mode #styleGroup .toggle-btn[data-style="ice"].active {
+      color: #a855f7; /* Neon Purple for Ice */
+      border-color: #a855f7;
+    }
+
+    /* Roast Buttons */
+    #roastGroup .toggle-btn[data-roast="light"].active {
+      color: var(--roast-light);
+      border-color: var(--roast-light);
+    }
+    #roastGroup .toggle-btn[data-roast="medium"].active {
+      color: var(--roast-medium);
+      border-color: var(--roast-medium);
+    }
+    #roastGroup .toggle-btn[data-roast="meddark"].active {
+      color: var(--roast-meddark);
+      border-color: var(--roast-meddark);
+    }
+    #roastGroup .toggle-btn[data-roast="dark"].active {
+      color: var(--roast-dark);
+      border-color: var(--roast-dark);
+    }
+
     body.theme-neon .toggle-btn.active {
-      color: var(--accent);
-      border-color: var(--accent);
       box-shadow: var(--glow-box) inset;
     }
 
@@ -497,7 +532,7 @@
 
     .step-amount {
       text-align: right;
-      min-width: 80px;
+      min-width: 90px;
     }
     .step-acc-label {
       font-size: 0.7rem;
@@ -519,31 +554,54 @@
       color: var(--text-sub);
     }
 
-    /* Memo */
+    /* Memo (Revert to Original Text & Refined Style) */
     .note {
+      position: relative;
       margin-top: 24px;
       padding: 16px 18px;
       border-radius: 16px;
       background: var(--card-bg);
-      border: 1px dashed var(--border-subtle);
-      font-size: 0.85rem;
-      line-height: 1.6;
-      color: var(--text-sub);
-    }
-    .note strong {
-      color: var(--text-main);
-      font-weight: 700;
+      border: 1px solid var(--border-subtle);
+      overflow: hidden;
     }
 
-    /* ===== デザイン刷新: テーマスイッチャー ===== */
-    
+    /* グラデーションバーの復活（モダン化） */
+    .note::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 5px;
+      background: linear-gradient(180deg, var(--accent), var(--summary-strong));
+    }
+
+    .note-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      font-weight: 700;
+      color: var(--text-sub);
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .note-body {
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: var(--text-main);
+    }
+
+    body.theme-neon .note {
+      box-shadow: var(--glow-box);
+    }
+
+    /* テーマスイッチャー */
     .theme-floater {
       margin-top: 30px;
       display: flex;
       justify-content: center;
     }
 
-    /* カスタムデザインされたボタンスタイル */
     .theme-btn-design {
       position: relative;
       display: flex;
@@ -579,7 +637,6 @@
       border: 2px solid rgba(255,255,255,0.4);
     }
 
-    /* 本物のselectを透明にして上にかぶせる（ホイール発動用） */
     #themeSelect {
       position: absolute;
       top: 0;
@@ -599,15 +656,15 @@
     <div class="card">
 
       <div class="app-header">
-        <div class="title-main">Hand Drip Calculator</div>
+        <div class="title-main">HAND DRIP CALCULATOR</div>
         <div class="title-bar"></div>
-        <div class="app-subtitle">美味しいコーヒーの<br>レシピを計算。</div>
+        <div class="app-subtitle">失敗しないコーヒーレシピ</div>
       </div>
 
-      <div class="section-title">計算の基準</div>
+      <div class="section-title">入力方法</div>
       <div class="toggle-group" id="inputModeGroup">
-        <button class="toggle-btn active" data-mode="cups">杯数から</button>
-        <button class="toggle-btn" data-mode="water">お湯の量から</button>
+        <button class="toggle-btn active" data-mode="cups">杯数で指定</button>
+        <button class="toggle-btn" data-mode="water">湯量(ml)で指定</button>
       </div>
 
       <div class="section-title">作りたい量</div>
@@ -636,13 +693,13 @@
         <div class="select-arrow">▼</div>
       </div>
       
-      <div class="hint" id="hintText">※ 1杯 = 150ml 換算</div>
+      <div class="hint" id="hintText">※ 1杯 = 150ml として計算</div>
 
-      <div class="section-title">豆の焙煎度</div>
+      <div class="section-title">豆の焙煎度合い</div>
       <div class="toggle-group" id="roastGroup">
         <button class="toggle-btn" data-roast="light">浅煎り</button>
         <button class="toggle-btn" data-roast="medium">中煎り</button>
-        <button class="toggle-btn" data-roast="meddark">中深煎</button>
+        <button class="toggle-btn" data-roast="meddark">中深煎り</button>
         <button class="toggle-btn" data-roast="dark">深煎り</button>
       </div>
 
@@ -654,37 +711,39 @@
 
       <div class="summary" id="summaryBox">
         <div class="summary-row">
-          <span class="summary-label">必要な豆</span>
+          <span class="summary-label">豆量</span>
           <span class="summary-value" id="sumBeans">-- g</span>
         </div>
         <div class="summary-row">
-          <span class="summary-label">総湯量</span>
+          <span class="summary-label">抽出に使うお湯</span>
           <span class="summary-value" id="sumWater">-- ml</span>
         </div>
         <div class="summary-row" id="iceRow" style="display:none;">
-          <span class="summary-label">氷（目安）</span>
+          <span class="summary-label">氷の目安</span>
           <span class="summary-value" id="sumIce"></span>
         </div>
         <div class="summary-row">
-          <span class="summary-label">適正湯温</span>
+          <span class="summary-label">湯温の目安</span>
           <span class="summary-temp placeholder" id="sumTemp">焙煎度を選択</span>
         </div>
       </div>
 
       <div class="section-title">
         注湯ステップ
-        <span class="inline-badge">4回注ぎ</span>
+        <span class="inline-badge">むらし＋3回注ぎ</span>
       </div>
 
       <div class="steps-card" id="stepsBox">
         <div class="placeholder">
-          数量を選択するとレシピを表示します
+          杯数または湯量を選択すると、ここにステップが表示されます。
         </div>
       </div>
 
       <div class="note">
-        <strong>MEMO:</strong><br>
-        アイスは氷が溶ける分を考慮し、豆を1.5倍、抽出湯量を半分にして濃く抽出します。急冷して香りを閉じ込めましょう。
+        <span class="note-label">MEMO</span>
+        <div class="note-body">
+          アイスは豆量1.5倍、湯量半分、お湯と同量の氷を目安。ロック氷ではなく家庭用冷蔵庫の氷の場合は、溶けやすく薄くなるため氷少なめがベター。
+        </div>
       </div>
 
       <div class="theme-floater">
@@ -692,11 +751,10 @@
           <div class="theme-icon"></div>
           <span id="themeLabelText">テーマ変更</span>
           <select id="themeSelect">
-            <option value="standard">スタンダード</option>
-            <option value="coffee">Coffee (深煎り)</option>
-            <option value="latte">Latte (モカ)</option>
-            <option value="matcha">Matcha (深緑)</option>
-            <option value="neon">Neon (サイバー)</option>
+            <option value="standard">Standard</option>
+            <option value="coffee">Coffee</option>
+            <option value="latte">Latte</option>
+            <option value="neon">Neon</option>
           </select>
         </div>
       </div>
@@ -705,7 +763,7 @@
   </div>
 
   <script>
-    /* ロジックは変更なし */
+    /* 計算ロジック: 元のコード(初期バージョン)のロジックへ完全復旧 */
     const basePoints = [
       { water: 150, beans: 10 },
       { water: 300, beans: 20 },
@@ -746,7 +804,6 @@
       standard: "Standard",
       coffee: "Coffee",
       latte: "Latte",
-      matcha: "Matcha",
       neon: "Neon"
     };
 
@@ -790,7 +847,8 @@
     }
 
     function calculate() {
-      let totalWater, cupsApprox;
+      let totalWater;
+      let cupsApprox;
 
       if (inputMode === "cups") {
         const val = cupsSelect.value;
@@ -819,7 +877,9 @@
       }
 
       brewWater = Math.round(brewWater);
-      let bloom = beans * 2; // 少し多めに変更
+
+      // 元の計算式: 豆量 x 1.5 を10ml単位で切り上げ
+      let bloom = beans * 1.5;
       bloom = roundUpTo10ml(bloom);
       if (bloom > brewWater) bloom = brewWater;
 
@@ -828,23 +888,44 @@
 
       if (remaining > 0) {
         const baseEach = Math.floor(remaining / 3 / 10) * 10;
-        let p1 = baseEach, p2 = baseEach, p3 = baseEach;
-        let rem = remaining - (p1 + p2 + p3);
-        if (rem > 0) p2 += rem;
+        let p1 = baseEach;
+        let p2 = baseEach;
+        let p3 = baseEach;
+
+        let used = p1 + p2 + p3;
+        let rem = remaining - used;
+
+        if (rem > 0) {
+          p2 += rem;
+        }
 
         let acc = bloom;
         const arr = [p1, p2, p3];
         for (let i = 0; i < arr.length; i++) {
           acc += arr[i];
-          pours.push({ name: (i + 1) + "投目", pour: arr[i], total: acc });
+          pours.push({
+            name: (i + 1) + "投目",
+            pour: arr[i],
+            total: acc
+          });
         }
       }
 
-      return { totalWater: Math.round(totalWater), cupsApprox, beans, brewWater, ice: Math.round(ice), bloom, pours };
+      return {
+        totalWater: Math.round(totalWater),
+        cupsApprox,
+        beans,
+        brewWater,
+        ice: Math.round(ice),
+        bloom,
+        pours
+      };
     }
 
     function updateView() {
-      const hasBase = (inputMode === "cups" && cupsSelect.value) || (inputMode === "water" && waterSelect.value);
+      const hasBase =
+        (inputMode === "cups"  && cupsSelect.value) ||
+        (inputMode === "water" && waterSelect.value);
 
       if (!hasBase) {
         sumBeans.textContent = "-- g";
@@ -853,7 +934,9 @@
         iceRow.style.display = "none";
         sumTemp.textContent  = "焙煎度を選択";
         sumTemp.classList.add("placeholder");
-        stepsBox.innerHTML = '<div class="placeholder">数量を選択するとレシピを表示します</div>';
+
+        stepsBox.innerHTML =
+          '<div class="placeholder">杯数または湯量を選択すると、ここにステップが表示されます。</div>';
         return;
       }
 
@@ -868,6 +951,7 @@
         sumIce.textContent = data.ice + " g";
       } else {
         iceRow.style.display = "none";
+        sumIce.textContent = "";
       }
 
       if (!roastMode) {
@@ -878,32 +962,37 @@
         sumTemp.classList.remove("placeholder");
       }
 
+      // 注湯ステップのHTML生成（積算と個別投入量を併記）
       let html = `
         <div class="step-row">
           <div class="step-info">
             <div class="step-name">蒸らし</div>
-            <div class="step-sub">全体にお湯を行き渡らせ、<br>30〜40秒待ちます。</div>
+            <div class="step-sub">※投入後30秒程待つ。</div>
           </div>
           <div class="step-amount">
-            <span class="step-acc-label">ここまで</span>
+            <span class="step-acc-label">積算量</span>
             <span class="step-acc-value">${data.bloom} ml</span>
+            <span class="step-sub">（今回 ${data.bloom} ml）</span>
           </div>
         </div>
       `;
 
       data.pours.forEach((p, idx) => {
         const isLast = idx === data.pours.length - 1;
-        const noteText = isLast ? "落ち切ったら完成です。" : "円を描くように注ぎます。";
+        const noteText = isLast
+          ? "※2分30秒程で落ち切るように。"
+          : "";
 
         html += `
           <div class="step-row">
             <div class="step-info">
               <div class="step-name">${p.name}</div>
-              <div class="step-sub">${noteText}</div>
+              ${noteText ? `<div class="step-sub">${noteText}</div>` : ""}
             </div>
             <div class="step-amount">
-              <span class="step-acc-label">ここまで</span>
+              <span class="step-acc-label">積算量</span>
               <span class="step-acc-value">${p.total} ml</span>
+              <span class="step-sub">（今回 +${p.pour} ml）</span>
             </div>
           </div>
         `;
@@ -917,9 +1006,11 @@
 
     document.querySelectorAll("#inputModeGroup .toggle-btn").forEach(btn => {
       btn.addEventListener("click", () => {
-        document.querySelectorAll("#inputModeGroup .toggle-btn").forEach(b => b.classList.remove("active"));
+        document.querySelectorAll("#inputModeGroup .toggle-btn")
+          .forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
         inputMode = btn.dataset.mode;
+
         if (inputMode === "cups") {
           rowCups.style.display = "block";
           rowWater.style.display = "none";
@@ -935,11 +1026,14 @@
 
     document.querySelectorAll("#styleGroup .toggle-btn").forEach(btn => {
       btn.addEventListener("click", () => {
-        document.querySelectorAll("#styleGroup .toggle-btn").forEach(b => b.classList.remove("active"));
+        document.querySelectorAll("#styleGroup .toggle-btn")
+          .forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
         styleMode = btn.dataset.style;
+
         document.body.classList.remove("hot-mode", "ice-mode");
         document.body.classList.add(styleMode + "-mode");
+
         updateView();
       });
     });
@@ -947,7 +1041,8 @@
     document.querySelectorAll("#roastGroup .toggle-btn").forEach(btn => {
       btn.addEventListener("click", () => {
         const already = btn.classList.contains("active");
-        document.querySelectorAll("#roastGroup .toggle-btn").forEach(b => b.classList.remove("active"));
+        document.querySelectorAll("#roastGroup .toggle-btn")
+          .forEach(b => b.classList.remove("active"));
         if (!already) {
           btn.classList.add("active");
           roastMode = btn.dataset.roast;
@@ -959,11 +1054,12 @@
     });
 
     function applyTheme(key) {
-      document.body.classList.remove("theme-coffee", "theme-latte", "theme-matcha", "theme-neon");
+      document.body.classList.remove(
+        "theme-coffee", "theme-latte", "theme-neon"
+      );
       if (key !== "standard") {
         document.body.classList.add("theme-" + key);
       }
-      // ボタンのテキストも更新
       themeLabelText.textContent = "テーマ: " + (themeNameMap[key] || "Standard");
     }
 
