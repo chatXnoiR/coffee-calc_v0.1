@@ -123,13 +123,13 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding-top: 24px;
+      padding-top: 8px;  /* 上に寄せる */
     }
 
     .app {
       width: 100%;
       max-width: 460px;
-      padding: 16px;
+      padding: 8px 16px 16px; /* 上側も少し削る */
     }
 
     .card {
@@ -359,7 +359,11 @@
       }
     }
 
-    /* コーヒーテーマ時のステップ文字色 */
+    /* コーヒーテーマ時：ステップカードをカフェ色＆高コントラストに */
+    body.theme-coffee .steps-card {
+      background: rgba(32,18,10,0.96);
+      border-color: rgba(248,198,153,0.9);
+    }
     body.theme-coffee .step-name,
     body.theme-coffee .step-amount {
       color: #fef9c3;
