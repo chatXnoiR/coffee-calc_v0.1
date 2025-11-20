@@ -124,35 +124,31 @@
       margin-bottom: 10px;
     }
 
-    /* 上部のグラデーションバー */
-    .app-title {
-      height: 14px;
+    .title-main {
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-sub);
+      margin-bottom: 6px;
+    }
+
+    .title-bar {
+      height: 6px;
       border-radius: 999px;
       background: linear-gradient(120deg, #38bdf8, #f97316);
-      margin-bottom: 10px;
-      text-indent: 100%;
-      white-space: nowrap;
-      overflow: hidden; /* 文字は見せない */
     }
 
     @media (prefers-color-scheme: dark) {
-      .app-title {
+      .title-bar {
         background: linear-gradient(120deg, #38bdf8, #f97316);
       }
-    }
-
-    .title-accent {
-      font-size: 0.78rem;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: var(--text-sub);
-      padding-left: 2px;
     }
 
     .app-subtitle {
       font-size: 0.9rem;
       color: var(--text-sub);
-      margin-top: 6px;
+      margin-top: 10px;
       margin-bottom: 18px;
     }
 
@@ -325,19 +321,12 @@
       color: rgba(31,41,55,0.7);
     }
 
-    .step-note-line {
-      font-size: 0.78rem;
-      color: rgba(31,41,55,0.7);
-      margin: 0 0 4px;
-    }
-
     @media (prefers-color-scheme: dark) {
       .step-name,
       .step-amount {
         color: #0f172a;
       }
-      .step-sub,
-      .step-note-line {
+      .step-sub {
         color: rgba(15,23,42,0.8);
       }
     }
@@ -399,8 +388,8 @@
     <div class="card">
 
       <div class="app-header">
-        <div class="app-title">コーヒー計算機</div>
-        <div class="title-accent">HAND DRIP CALCULATOR</div>
+        <div class="title-main">HAND DRIP CALCULATOR</div>
+        <div class="title-bar"></div>
       </div>
       <div class="app-subtitle">
         つくりたい量から、豆量とお湯の投入量を計算。
@@ -701,25 +690,25 @@
           <div class="step-name">蒸らし</div>
           <div class="step-amount">
             ${data.bloom} ml<br>
-            <span class="step-sub">投入量 ${data.bloom} ml</span>
+            <span class="step-sub">投入量 ${data.bloom} ml／※投入後30秒程待つ。</span>
           </div>
         </div>
-        <div class="step-note-line">※投入後30秒程待つ。</div>
       `;
 
       data.pours.forEach((p, idx) => {
+        const isLast = idx === data.pours.length - 1;
+        const note = isLast
+          ? "／※淹れ始めから2分30秒程で3投目の湯が抜けきるように。"
+          : "";
         html += `
           <div class="step-row">
             <div class="step-name">${p.name}</div>
             <div class="step-amount">
               ${p.total} ml<br>
-              <span class="step-sub">投入量 ${p.pour} ml</span>
+              <span class="step-sub">投入量 ${p.pour} ml${note}</span>
             </div>
           </div>
         `;
-        if (idx === data.pours.length - 1) {
-          html += `<div class="step-note-line">※淹れ始めから2分30秒程で3投目の湯が抜けきるように。</div>`;
-        }
       });
 
       stepsBox.innerHTML = html;
