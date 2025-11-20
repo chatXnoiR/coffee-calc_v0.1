@@ -16,7 +16,7 @@
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
-    /* ライトテーマ */
+    /* ライトテーマ（標準） */
     :root {
       --bg-solid: #f6f5f3;
       --bg-gradient: linear-gradient(180deg, #f6f5f3 0%, #ece9e6 100%);
@@ -43,7 +43,7 @@
       --summary-strong: #ea580c;
     }
 
-    /* ダークテーマ */
+    /* ダークテーマ（標準） */
     @media (prefers-color-scheme: dark) {
       :root {
         --bg-solid: #020617;
@@ -68,7 +68,29 @@
       }
     }
 
-    /* ホット／アイスで色切替 */
+    /* 手動テーマ：コーヒー（標準ライト/ダークにオーバーレイ） */
+    body.theme-coffee {
+      --bg-solid: #20110b;
+      --bg-gradient: linear-gradient(180deg, #3b2416 0%, #120a05 100%);
+      --card-bg: rgba(24,16,11,0.98);
+      --text-main: #f9fafb;
+      --text-sub: #e5e7eb;
+      --border-subtle: rgba(148,81,40,0.7);
+      --shadow-card: 0 20px 40px rgba(0,0,0,0.8);
+
+      --badge-bg: rgba(30,20,14,0.96);
+      --badge-border: rgba(248,198,153,0.7);
+
+      --field-bg: rgba(26,18,12,0.98);
+
+      /* ステップはちょっとカフェラテっぽい色 */
+      --steps-bg: #fef3c7;
+      --steps-border: #fbbf24;
+
+      --sub-strong: #f9fafb;
+    }
+
+    /* ホット／アイスで色切替（アクセント系だけ） */
     body.hot-mode {
       --accent: #f97316;
       --accent-soft: rgba(249,115,22,0.16);
@@ -121,20 +143,20 @@
 
     /* ヘッダーまわり */
     .app-header {
-      margin-bottom: 10px;
-    }
-
-    .title-main {
-      font-size: 0.95rem;
-      font-weight: 600;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--text-sub);
       margin-bottom: 6px;
     }
 
+    .title-main {
+      font-size: 1.1rem;  /* ここを大きめに */
+      font-weight: 650;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-sub);
+      margin-bottom: 4px;
+    }
+
     .title-bar {
-      height: 6px;
+      height: 4px;        /* 細めのバー */
       border-radius: 999px;
       background: linear-gradient(120deg, #38bdf8, #f97316);
     }
@@ -148,8 +170,21 @@
     .app-subtitle {
       font-size: 0.9rem;
       color: var(--text-sub);
-      margin-top: 10px;
-      margin-bottom: 18px;
+      margin-top: 8px;
+      margin-bottom: 14px;
+    }
+
+    .theme-row {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .theme-label {
+      font-size: 0.78rem;
+      color: var(--text-sub);
     }
 
     .section-title {
@@ -395,6 +430,15 @@
         つくりたい量から、豆量とお湯の投入量を計算。
       </div>
 
+      <!-- テーマ切り替え -->
+      <div class="theme-row">
+        <span class="theme-label">テーマ</span>
+        <div class="toggle-group" id="themeGroup">
+          <button class="toggle-btn active" data-theme="system">標準</button>
+          <button class="toggle-btn" data-theme="coffee">コーヒー</button>
+        </div>
+      </div>
+
       <!-- 入力方法 -->
       <div class="section-title">入力方法</div>
       <div class="toggle-group emphasize" id="inputModeGroup">
@@ -521,7 +565,8 @@
 
     let inputMode = "cups";   // "cups" | "water"
     let styleMode = "hot";    // "hot"  | "ice"
-    let roastMode = "";       // "light" | "medium" | "meddark" | "dark" | ""
+    let roastMode = "";       // 焙煎度
+    let themeMode = "system"; // "system" | "coffee"
 
     // 水量ドロップダウン：150〜1000mlを10刻み
     (function fillWaterOptions() {
@@ -714,7 +759,7 @@
       stepsBox.innerHTML = html;
     }
 
-    // イベント設定
+    // 入力系イベント
     cupsSelect.addEventListener("change", updateView);
     waterSelect.addEventListener("change", updateView);
 
@@ -762,6 +807,22 @@
           roastMode = "";
         }
         updateTemp();
+      });
+    });
+
+    // テーマ切り替え
+    document.querySelectorAll("#themeGroup .toggle-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll("#themeGroup .toggle-btn")
+          .forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        themeMode = btn.dataset.theme;
+
+        if (themeMode === "coffee") {
+          document.body.classList.add("theme-coffee");
+        } else {
+          document.body.classList.remove("theme-coffee");
+        }
       });
     });
 
